@@ -28,7 +28,6 @@ dependencies {
 	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("tools.jackson.module:jackson-module-kotlin")
-	implementation("me.paulschwarz:spring-dotenv:4.0.0")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
@@ -53,4 +52,7 @@ allOpen {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
+    workingDir = project.projectDir
 }
