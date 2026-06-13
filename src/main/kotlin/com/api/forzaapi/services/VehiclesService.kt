@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.data.repository.findByIdOrNull
 
 @Service
 class VehiclesService(
@@ -21,7 +22,7 @@ class VehiclesService(
             .toPageResponse()
     }
 
-    fun getVehicleById(id: Int): VehiclesResp? {
+    fun getVehicleById(id: String): VehiclesResp? {
         val vehicle = vehiclesRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "vehicle with id $id not found")
         return vehicle.toResponse()
@@ -35,7 +36,8 @@ class VehiclesService(
             manufacturer = ManufacturerResp(
 
                 name = this.manufacturer.name,
-                country = this.manufacturer.country
+                country = this.manufacturer.country,
+                id = this.manufacturer.id
             ),
             enginespec = this.enginespec,
             horsepower = this.horsepower,
