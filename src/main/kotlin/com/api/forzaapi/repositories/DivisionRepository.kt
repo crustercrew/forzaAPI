@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface DivisionRepository: JpaRepository<Divisions,String> {
-    fun findByName(name: String): Divisions?
+interface DivisionRepository: JpaRepository<Divisions,Int> {
+    fun findByNameContainingIgnoreCase(name: String): Divisions?
 }
