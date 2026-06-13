@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface VehiclesRepository: JpaRepository<Vehicles,String> {
     fun findByModelName(modelName: String): Vehicles
-    fun findByIdOrNull(id:Int): Vehicles
 }
