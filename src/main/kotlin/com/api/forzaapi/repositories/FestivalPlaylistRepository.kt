@@ -6,9 +6,15 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface FestivalPlaylistRepository: JpaRepository<FestivalPlaylist,String> {
-    fun findBySeriesName(seriesName: String): List<FestivalPlaylist>
-    fun findBySeasonName(seasonName: String): List<FestivalPlaylist>
-    fun findByGameName(gameName: String): List<FestivalPlaylist>
-    fun findBySeriesNameAndSeasonName(seriesName: String, seasonName: String): List<FestivalPlaylist>
-    fun findBySeriesNameAndGameName(seriesName: String, gameName: String): List<FestivalPlaylist>
+    fun findBySeriesNumber(seriesNumber: Int): List<FestivalPlaylist>
+    fun findBySeason(season: String): List<FestivalPlaylist>
+    fun findByGame_Title(gameTitle: String): List<FestivalPlaylist>
+    fun findBySeriesNumberAndSeason(
+        seriesNumber: Int,
+        season: String
+    ): List<FestivalPlaylist>
+    fun findBySeriesNumberAndGame_Title(
+        seriesNumber: Int,
+        gameTitle: String
+    ): List<FestivalPlaylist>
 }

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ManufacturersRepository: JpaRepository<Manufacturers,String> {
     fun findByName(name:String): Manufacturers?
+    fun findByCountry(country: String): List<Manufacturers>
 }

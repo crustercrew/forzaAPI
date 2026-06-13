@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GameVehicleStatsRepository: JpaRepository<GameVehicleStats,String> {
-    fun findByVehicleName(vehicleName: String): List<GameVehicleStats>
-    fun findByGameName(gameName: String): List<GameVehicleStats>
-    fun findByVehicleNameAndGameName(vehicleName: String, gameName: String): GameVehicleStats?
+    fun findByVehicle_ModelName(vehicleModelName: String): List<GameVehicleStats>
+    fun findByGame_Title(gameName: String): List<GameVehicleStats>
 }
