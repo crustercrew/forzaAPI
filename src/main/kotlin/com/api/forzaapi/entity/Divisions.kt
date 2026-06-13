@@ -10,4 +10,4 @@ class Divisions(
 
     @Column(nullable = false, unique = true, length = 100)
     val name:String,
-)
+): BaseEntity()

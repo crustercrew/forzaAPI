@@ -13,4 +13,4 @@ class Manufacturers(
 
     @Column(length = 100)
     val country:String
-)
+): BaseEntity()

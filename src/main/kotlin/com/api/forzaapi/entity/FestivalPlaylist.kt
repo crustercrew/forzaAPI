@@ -40,4 +40,4 @@ class FestivalPlaylist (
     )
     var rewards: MutableSet<GameVehicleStats> = mutableSetOf()
     // Menggunakan Set agar tidak ada data mobil duplikat di dalam satu playlist yang sama
-)
+): BaseEntity()

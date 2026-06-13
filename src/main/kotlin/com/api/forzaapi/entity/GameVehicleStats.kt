@@ -62,4 +62,4 @@ class GameVehicleStats(
 
     @Column(name = "dlc_required", length = 150)
     val dlcRequired: String?
-)
+): BaseEntity()

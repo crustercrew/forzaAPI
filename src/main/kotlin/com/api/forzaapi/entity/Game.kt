@@ -11,4 +11,4 @@ class Game (
     val title:String,
     @Column("release_year")
     val releaseYear:Int? = null
-)
+): BaseEntity()

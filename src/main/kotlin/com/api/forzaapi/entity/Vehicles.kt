@@ -53,4 +53,4 @@ class Vehicles(
     @Column()
     @Lob
     val description:String
-)
+): BaseEntity()
