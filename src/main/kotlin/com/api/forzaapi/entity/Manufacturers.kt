@@ -9,8 +9,8 @@ class Manufacturers(
     val id: Int,
 
     @Column(nullable = false, unique = true, length = 100)
-    val name:String,
+    var name:String,
 
     @Column(length = 100)
-    val country:String
+    var country:String
 ): BaseEntity()

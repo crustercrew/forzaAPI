@@ -12,25 +12,25 @@ class FestivalPlaylist (
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", nullable = false)
-    val game: Game, // Merujuk ke game terkait (contoh: Forza Horizon 6)
+    var game: Game, // Merujuk ke game terkait (contoh: Forza Horizon 6)
 
     @Column(name = "series_number", nullable = false)
-    val seriesNumber: Int, // Misal: Series 32, Series 33
+    var seriesNumber: Int, // Misal: Series 32, Series 33
 
     @Column(name = "season", nullable = false, length = 20)
-    val season: String, // "Summer", "Autumn", "Winter", "Spring", "Series Milestone"
+    var season: String, // "Summer", "Autumn", "Winter", "Spring", "Series Milestone"
 
     @Column(name = "points_required")
-    val pointsRequired: Int?, // Jumlah poin yang dibutuhkan untuk klaim hadiah ini
+    var pointsRequired: Int?, // Jumlah poin yang dibutuhkan untuk klaim hadiah ini
 
     @Column(name = "reward_type", length = 50)
-    val rewardType: String = "Car", // Default 'Car'
+    var rewardType: String = "Car", // Default 'Car'
 
     @Column(name = "start_date")
-    val startDate: LocalDate?,
+    var startDate: LocalDate?,
 
     @Column(name = "end_date")
-    val endDate: LocalDate?,
+    var endDate: LocalDate?,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

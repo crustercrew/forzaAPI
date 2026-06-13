@@ -14,52 +14,52 @@ class GameVehicleStats(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id", nullable = false)
-    val vehicle: Vehicles,
+    var vehicle: Vehicles,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", nullable = false)
-    val game: Game,
+    var game: Game,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "division_id")
-    val division: Divisions?,
+    var division: Divisions?,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rarity", nullable = false)
-    val rarity: Rarity,
+    var rarity: Rarity,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unlock_type", nullable = false)
-    val unlocktype: UniqueUnlock,
+    var unlocktype: UniqueUnlock,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "performance_class", nullable = false)
-    val performanceclass: PerformanceClass,
+    var performanceclass: PerformanceClass,
 
     @Column(name = "performance_rating")
-    val performancerating: Int?,
+    var performancerating: Int?,
 
     @Column(name = "stat_speed")
-    val statSpeed: Double?,
+    var statSpeed: Double?,
 
     @Column(name = "stat_handling")
-    val statHandling: Double?,
+    var statHandling: Double?,
 
     @Column(name = "stat_acceleration")
-    val statAcceleration: Double?,
+    var statAcceleration: Double?,
 
     @Column(name = "stat_launch")
-    val statLaunch: Double?,
+    var statLaunch: Double?,
 
     @Column(name = "stat_braking")
-    val statBraking: Double?,
+    var statBraking: Double?,
 
     @Column(name = "stat_offroad")
-    val statOffroad: Double?,
+    var statOffroad: Double?,
 
     @Column(name = "autoshow_cost")
-    val autoshowCost: Int?,
+    var autoshowCost: Int?,
 
     @Column(name = "dlc_required", length = 150)
-    val dlcRequired: String?
+    var dlcRequired: String?
 ): BaseEntity()

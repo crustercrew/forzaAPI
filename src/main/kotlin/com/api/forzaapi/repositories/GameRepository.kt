@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface GameRepository : JpaRepository<Game,String> {
-    fun findByName(name: String): Game?
+interface GameRepository : JpaRepository<Game, Int> {
+    fun findByTitleContainingIgnoreCase(title: String): Game?
 }
