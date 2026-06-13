@@ -9,5 +9,5 @@ class Divisions(
     val id: Int,
 
     @Column(nullable = false, unique = true, length = 100)
-    val name:String,
+    var name:String,
 ): BaseEntity()

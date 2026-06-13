@@ -8,7 +8,7 @@ class Game (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id:Int,
     @Column(nullable = false, unique = true, length = 100)
-    val title:String,
+    var title:String,
     @Column("release_year")
-    val releaseYear:Int? = null
+    var releaseYear:Int? = null
 ): BaseEntity()

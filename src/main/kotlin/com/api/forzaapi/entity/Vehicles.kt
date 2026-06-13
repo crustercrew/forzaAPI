@@ -15,42 +15,42 @@ class Vehicles(
     val id: Int,
 
     @Column("model_name",nullable = false, length = 100)
-    val modelName: String,
+    var modelName: String,
 
     @Column("production_year",nullable = false)
-    val productionyear: Int,
+    var productionyear: Int,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id", nullable = false)
-    val manufacturer: Manufacturers,
+    var manufacturer: Manufacturers,
 
     @Column("engine_spec",nullable = false, length = 100)
-    val enginespec: String,
+    var enginespec: String,
 
     @Column("horsepower", length = 50)
-    val horsepower:Int,
+    var horsepower:Int,
 
     @Column("torque", length = 50)
-    val torque:Int,
+    var torque:Int,
 
     @Column("drivetype")
     @Enumerated(EnumType.STRING)
-    val driveType: DriveType,
+    var driveType: DriveType,
 
     @Column("drivetrain")
     @Enumerated(EnumType.STRING)
-    val drivetrain: Drivetrain,
+    var drivetrain: Drivetrain,
 
     @Column(length = 50)
-    val transmission:String,
+    var transmission:String,
 
     @Column("weight_kg")
-    val weightkg:Int,
+    var weightkg:Int,
 
     @Column("weight_distribution", length = 20)
-    val weightdistribution:String,
+    var weightdistribution:String,
 
     @Column()
     @Lob
-    val description:String
+    var description:String
 ): BaseEntity()
