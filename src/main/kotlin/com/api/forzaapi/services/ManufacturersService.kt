@@ -60,6 +60,19 @@ class ManufacturersService(
         return manufacturersRepository.save(manufacturers).toResponse()
     }
 
+    // BULK CREATE
+    @Transactional
+    fun bulkCreateManufacturers(requests: List<ManufacturerReq>): List<ManufacturerResp> {
+        val manufacturers = requests.map {
+            Manufacturers(
+                id = 0,
+                name = it.name,
+                country = it.country
+            )
+        }
+        return manufacturersRepository.saveAll(manufacturers).map { it.toResponse() }
+    }
+
     // UPDATE
     @Transactional
     fun updateManufacturers(id: Int, request: ManufacturerReq): ManufacturerResp {

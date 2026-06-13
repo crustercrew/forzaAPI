@@ -44,6 +44,12 @@ class ManufacturerController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PostMapping("/bulkcreate")
+    fun bulkCreateManufacturers(@RequestBody requests: List<ManufacturerReq>): ResponseEntity<List<ManufacturerResp>> {
+        val response = manufacturerService.bulkCreateManufacturers(requests)
+        return ResponseEntity.status(HttpStatus.CREATED).body(response)
+    }
+
     @PutMapping()
     fun updateManufacturer(
         @PathParam("id") id: Int,

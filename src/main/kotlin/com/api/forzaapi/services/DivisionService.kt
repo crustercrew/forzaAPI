@@ -40,6 +40,17 @@ class DivisionService(
         return divisionRepository.save(division).toResponse()
     }
 
+    @Transactional
+    fun bulkCreateDivisions(requests: List<DivisionReq>): List<DivisionResp> {
+        val divisions = requests.map {
+            Divisions(
+                id = 0,
+                name = it.name
+            )
+        }
+        return divisionRepository.saveAll(divisions).map { it.toResponse() }
+    }
+
     // UPDATE
     @Transactional
     fun updateDivisions(id: Int, request: DivisionReq): DivisionResp {
