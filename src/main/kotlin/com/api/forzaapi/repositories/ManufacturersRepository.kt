@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface ManufacturersRepository: JpaRepository<Manufacturers,String> {
-    fun findByName(name:String): Manufacturers?
-    fun findByCountry(country: String): List<Manufacturers>
+interface ManufacturersRepository: JpaRepository<Manufacturers,Int> {
+    fun findByNameContainingIgnoreCase(name:String): Manufacturers?
+    fun findByCountryContainingIgnoreCase(country: String): List<Manufacturers>
 }
