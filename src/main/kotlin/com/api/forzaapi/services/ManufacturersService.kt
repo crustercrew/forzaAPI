@@ -3,9 +3,10 @@ package com.api.forzaapi.services
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.entity.Manufacturers
 import com.api.forzaapi.repositories.ManufacturersRepository
-import com.api.forzaapi.dto.responses.ManufacturerResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.dto.request.ManufacturerReq
-import com.api.forzaapi.dto.responses.ManufacturerListOBJResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerOBJResp
 import com.api.forzaapi.utils.toPageResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -43,7 +44,7 @@ class ManufacturersService(
                 ManufacturerListOBJResp(
                     country = countryName,
                     manufacturers = manufacturerList.map {
-                        com.api.forzaapi.dto.responses.ManufacturerOBJResp(it.id, it.name)
+                        ManufacturerOBJResp(it.id, it.name)
                     }
                 )
             }

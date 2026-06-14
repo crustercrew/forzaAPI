@@ -1,8 +1,8 @@
 package com.api.forzaapi.controllers
 
 import com.api.forzaapi.dto.request.ManufacturerReq
-import com.api.forzaapi.dto.responses.ManufacturerListOBJResp
-import com.api.forzaapi.dto.responses.ManufacturerResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.services.ManufacturersService
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
