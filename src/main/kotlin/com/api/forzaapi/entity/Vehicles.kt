@@ -50,7 +50,6 @@ class Vehicles(
     @Column("weight_distribution", length = 20)
     var weightdistribution:String,
 
-    @Column()
-    @Lob
+    @Column("description", columnDefinition = "TEXT")
     var description:String
 ): BaseEntity()

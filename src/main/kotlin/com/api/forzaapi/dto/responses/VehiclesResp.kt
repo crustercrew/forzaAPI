@@ -1,5 +1,7 @@
 package com.api.forzaapi.dto.responses
 
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+
 data class VehiclesResp (
     val id:Int,
     val modelName: String,
