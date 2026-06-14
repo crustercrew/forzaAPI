@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface FestivalPlaylistRepository: JpaRepository<FestivalPlaylist,String> {
+interface FestivalPlaylistRepository: JpaRepository<FestivalPlaylist,Int> {
     fun findBySeriesNumber(seriesNumber: Int): List<FestivalPlaylist>
     fun findBySeason(season: String): List<FestivalPlaylist>
     fun findByGame_Title(gameTitle: String): List<FestivalPlaylist>

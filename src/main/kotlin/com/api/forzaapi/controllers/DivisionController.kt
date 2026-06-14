@@ -37,6 +37,12 @@ class DivisionController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PostMapping("/bulkcreate")
+    fun bulkCreateDivisions(@RequestBody requests: List<DivisionReq>): ResponseEntity<List<DivisionResp>> {
+        val response = divisionService.bulkCreateDivisions(requests)
+        return ResponseEntity.status(HttpStatus.CREATED).body(response)
+    }
+
     @PutMapping()
     fun updateDivision(
         @PathParam("id") id: Int,
