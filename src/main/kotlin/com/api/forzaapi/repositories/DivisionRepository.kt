@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface DivisionRepository: JpaRepository<Divisions,Int> {
-    fun findByNameContainingIgnoreCase(name: String): Divisions?
+    fun findByNameIgnoreCase(name: String): Divisions?
 }

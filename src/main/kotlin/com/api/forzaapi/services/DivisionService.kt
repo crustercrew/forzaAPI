@@ -24,7 +24,7 @@ class DivisionService(
     }
 
     fun getDivisionByName(name: String): DivisionResp {
-        val division = divisionRepository.findByNameContainingIgnoreCase(name)
+        val division = divisionRepository.findByNameIgnoreCase(name)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Car Type with $name not found")
 
         return division.toResponse();

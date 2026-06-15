@@ -5,4 +5,5 @@ enum class Drivetrain {
     FR,
     MR,
     RR,
+    AWD
 }
