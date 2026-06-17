@@ -9,7 +9,9 @@ data class GameVehicleStatsResp(
     val unlockType: String,
     val performanceProfile: PerformanceProfile,
     val metrics: Map<String, Double?>,
-    val dlcRequired: String?
+    val dlcRequired: String?,
+    val forzathonShopCost: Int?,
+    val isBackstageAvailable: Boolean
 )
 data class PerformanceProfile(
     val className: String,

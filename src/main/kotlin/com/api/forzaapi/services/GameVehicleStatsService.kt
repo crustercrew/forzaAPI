@@ -65,7 +65,9 @@ class GameVehicleStatsService(
             statBraking = request.statBraking,
             statOffroad = request.statOffroad,
             autoshowCost = request.autoshowCost,
-            dlcRequired = request.dlcRequired
+            dlcRequired = request.dlcRequired,
+            forzathonShopCost = request.forzathonShopCost,
+            isBackstageAvailable = request.isBackstageAvailable
         )
 
         // 4. Save dan kembalikan response DTO
@@ -119,7 +121,9 @@ class GameVehicleStatsService(
                 statBraking = it.statBraking,
                 statOffroad = it.statOffroad,
                 autoshowCost = it.autoshowCost,
-                dlcRequired = it.dlcRequired
+                dlcRequired = it.dlcRequired,
+                forzathonShopCost = it.forzathonShopCost,
+                isBackstageAvailable = it.isBackstageAvailable
             )
             validStatsList.add(statsEntity)
         }
@@ -173,6 +177,8 @@ class GameVehicleStatsService(
         currentStats.statOffroad = request.statOffroad
         currentStats.autoshowCost = request.autoshowCost
         currentStats.dlcRequired = request.dlcRequired
+        currentStats.forzathonShopCost = request.forzathonShopCost
+        currentStats.isBackstageAvailable = request.isBackstageAvailable
 
         return gameVehicleStatsRepository.save(currentStats).toResponse()
     }
@@ -210,7 +216,9 @@ class GameVehicleStatsService(
                 "braking" to this.statBraking,
                 "offroad" to this.statOffroad
             ),
-            dlcRequired = this.dlcRequired
+            dlcRequired = this.dlcRequired,
+            forzathonShopCost = this.forzathonShopCost,
+            isBackstageAvailable = this.isBackstageAvailable
         )
     }
 }

@@ -24,5 +24,7 @@ data class GameVehicleStatsReq (
     val statOffroad: Double?,
 
     val autoshowCost: Int?,
-    val dlcRequired: String?
+    val dlcRequired: String?,
+    val forzathonShopCost: Int?,
+    var isBackstageAvailable: Boolean = false
 )
