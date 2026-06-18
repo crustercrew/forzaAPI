@@ -32,6 +32,13 @@ class ManufacturersService(
         return manufacturers.toResponse();
     }
 
+    fun getManufacturerById(id:Int): ManufacturerResp{
+        val manufacturer = manufacturersRepository.findByIdOrNull(id)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Manufacturer with $id not found")
+
+        return manufacturer.toResponse();
+    }
+
     fun getManufacturerByCountry(country: String): List<ManufacturerListOBJResp> {
         val manufacturers = manufacturersRepository.findByCountryContainingIgnoreCase(country)
 

@@ -23,9 +23,16 @@ class GameService(
             .toPageResponse()
     }
 
-    fun getGameByTitle(title: String): GameResp {
-        val game = gameRepository.findByTitleContainingIgnoreCase(title)
+    fun getGameByTitle(title: String, pageable: Pageable): GameResp {
+        val game = gameRepository.findByTitleContainingIgnoreCase(title,pageable)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game with title $title not found")
+
+        return game.toResponse();
+    }
+
+    fun getGameById(id:Int): GameResp{
+        val game = gameRepository.findByIdOrNull(id)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game with id $id not found")
 
         return game.toResponse();
     }

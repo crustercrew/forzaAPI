@@ -23,9 +23,16 @@ class DivisionService(
             .toPageResponse()
     }
 
-    fun getDivisionByName(name: String): DivisionResp {
-        val division = divisionRepository.findByNameIgnoreCase(name)
+    fun getDivisionByName(name: String, pageable: Pageable): DivisionResp {
+        val division = divisionRepository.findByNameContainingIgnoreCase(name,pageable)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Car Type with $name not found")
+
+        return division.toResponse();
+    }
+
+    fun getDivisionById(id:Int): DivisionResp{
+        val division = divisionRepository.findByIdOrNull(id)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Car Type with $id not found")
 
         return division.toResponse();
     }

@@ -23,8 +23,22 @@ class VehiclesService(
     private val vehiclesRepository: VehiclesRepository,
     private val manufacturersRepository: ManufacturersRepository
 ) {
-    fun getAllVehicles(pageable: Pageable): PageResponse<VehiclesResp> {
-        return vehiclesRepository.findAll(pageable)
+    fun getVehiclesWithFilters(
+        manufacturerId:Int?,
+        startYear:Int?,
+        endYear:Int?,
+        driveType: DriveType?,
+        drivetrain: Drivetrain?,
+        pageable: Pageable
+    ): PageResponse<VehiclesResp> {
+        return vehiclesRepository.findVehiclesWithFilters(
+            manufacturerId,
+            startYear,
+            endYear,
+            driveType,
+            drivetrain,
+            pageable
+        )
             .map { it.toResponse() }
             .toPageResponse()
     }
@@ -35,10 +49,8 @@ class VehiclesService(
         return vehicle.toResponse()
     }
 
-    fun getVehicleByModelName(modelName: String):VehiclesResp?{
-        val vehicle = vehiclesRepository.findByModelName(modelName)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"vehicle with model name $modelName not found")
-        return vehicle.toResponse()
+    fun searchVehiclesByModelName(modelName: String, pageable: Pageable): PageResponse<VehiclesResp>?{
+        return vehiclesRepository.findByModelNameContainingIgnoreCase(modelName,pageable).map { it.toResponse() }.toPageResponse();
     }
 
     @Transactional

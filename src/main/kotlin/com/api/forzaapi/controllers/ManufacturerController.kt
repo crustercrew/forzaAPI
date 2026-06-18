@@ -30,6 +30,14 @@ class ManufacturerController(
         return ResponseEntity.ok(response)
     }
 
+    @GetMapping("/{id}")
+    fun getManufacturerById(
+        @PathVariable("id") id: Int
+    ): ResponseEntity<ManufacturerResp> {
+        val manufacturer = manufacturerService.getManufacturerById(id)
+        return ResponseEntity.ok(manufacturer)
+    }
+
     @GetMapping("/by-country")
     fun getManufacturersGroupedByCountry(
         @RequestParam(value = "country") country: String

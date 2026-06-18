@@ -19,18 +19,26 @@ class GameController(
     private val gameService: GameService
 ) {
     @GetMapping
-    fun getAllGames(
+    fun getGames(
         @RequestParam(value = "title", required = false) title: String?,
         @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
     ): ResponseEntity<Any> {
 
-        if (!title.isNullOrBlank()) {
-            val game = gameService.getGameByTitle(title)
-            return ResponseEntity.ok(game)
+        val response = if (!title.isNullOrBlank()) {
+            gameService.getGameByTitle(title, pageable) // Kembalikan Page/List agar konsisten
+        } else {
+            gameService.getAllGames(pageable)
         }
 
-        val response = gameService.getAllGames(pageable)
         return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/{id}")
+    fun getGameById(
+        @PathVariable("id") id: Int
+    ): ResponseEntity<GameResp> {
+        val game = gameService.getGameById(id)
+        return ResponseEntity.ok(game)
     }
 
     @PostMapping

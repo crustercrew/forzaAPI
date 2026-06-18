@@ -3,6 +3,8 @@ package com.api.forzaapi.controllers
 import com.api.forzaapi.dto.request.VehiclesReq
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.VehiclesResp
+import com.api.forzaapi.enumerates.DriveType
+import com.api.forzaapi.enumerates.Drivetrain
 import com.api.forzaapi.services.VehiclesService
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
@@ -18,38 +20,55 @@ class VehiclesController(
     private val vehiclesService: VehiclesService
 ) {
     /**
-     * 1. GET ALL VEHICLES (WITH PAGINATION)
-     * URL: GET http://localhost:8080/api/v1/vehicles
+     * 1. GET ALL VEHICLES & FILTERS (PAGINATED)
+     * Mengakomodasi pencarian berdasarkan Pabrikan, Rentang Tahun, DriveType, dan Drivetrain.
+     * * Contoh Postman / Client Android:
+     * - Semua mobil: GET /api/v1/vehicles
+     * - Cari Nissan: GET /api/v1/vehicles?manufacturerId=12
+     * - Mobil AWD saja: GET /api/v1/vehicles?drivetrain=AWD
+     * - Mobil Tahun 2000-2012: GET /api/v1/vehicles?startYear=2000&endYear=2012
      */
     @GetMapping
-    fun getAllVehicles(
+    fun getVehicles(
+        @RequestParam(value = "manufacturerId", required = false) manufacturerId: Int?,
+        @RequestParam(value = "startYear", required = false) startYear: Int?,
+        @RequestParam(value = "endYear", required = false) endYear: Int?,
+        @RequestParam(value = "driveType", required = false) driveType: DriveType?,
+        @RequestParam(value = "drivetrain", required = false) drivetrain: Drivetrain?,
         @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
     ): ResponseEntity<PageResponse<VehiclesResp>> {
-        val response = vehiclesService.getAllVehicles(pageable)
+
+        // Panggil service yang memproses filter opsional ini
+        val response = vehiclesService.getVehiclesWithFilters(
+            manufacturerId, startYear, endYear, driveType, drivetrain, pageable
+        )
         return ResponseEntity.ok(response)
     }
+
     /**
      * 2. GET VEHICLE BY ID
      * URL: GET http://localhost:8080/api/v1/vehicles/5
      */
     @GetMapping("/{id}")
     fun getVehicleById(
-        @PathVariable("id") id: Int // Koreksi: Diubah dari String ke Int agar sinkron dengan Service
+        @PathVariable("id") id: Int
     ): ResponseEntity<VehiclesResp> {
         val response = vehiclesService.getVehicleById(id)
-        return ResponseEntity.ok(response!!)
+        return ResponseEntity.ok(response)
     }
 
     /**
-     * 3. GET VEHICLE BY MODEL NAME
-     * URL: GET http://localhost:8080/api/v1/vehicles/by-modelname?name=Furai
+     * 3. SEARCH VEHICLE BY MODEL NAME (LIKE QUERY)
+     * Menggunakan Query Param 'name' untuk pencarian teks (misal: "Skyline", "Furai").
+     * URL: GET http://localhost:8080/api/v1/vehicles/search?name=Skyline
      */
-    @GetMapping("/by-modelname")
-    fun getVehicleByModelName(
-        @RequestParam("name") name: String // Koreksi: Diubah dari @PathParam ke @RequestParam
-    ): ResponseEntity<VehiclesResp> {
-        val response = vehiclesService.getVehicleByModelName(name)
-        return ResponseEntity.ok(response!!)
+    @GetMapping("/search")
+    fun searchVehiclesByModelName(
+        @RequestParam("name") name: String,
+        @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
+    ): ResponseEntity<PageResponse<VehiclesResp>> {
+        val response = vehiclesService.searchVehiclesByModelName(name, pageable)
+        return ResponseEntity.ok(response)
     }
 
     /**

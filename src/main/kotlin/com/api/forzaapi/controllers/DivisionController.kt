@@ -23,12 +23,20 @@ class DivisionController(
     ): ResponseEntity<Any> {
 
         if (!name.isNullOrBlank()) {
-            val division = divisionService.getDivisionByName(name)
+            val division = divisionService.getDivisionByName(name,pageable)
             return ResponseEntity.ok(division)
         }
 
         val response = divisionService.getAllDivision(pageable)
         return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/{id}")
+    fun getDivisionById(
+        @PathVariable("id") id: Int
+    ): ResponseEntity<DivisionResp> {
+        val division = divisionService.getDivisionById(id)
+        return ResponseEntity.ok(division)
     }
 
     @PostMapping
