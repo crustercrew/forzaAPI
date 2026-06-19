@@ -24,7 +24,7 @@ class GameService(
     }
 
     fun getGameByTitle(title: String, pageable: Pageable): GameResp {
-        val game = gameRepository.findByTitleContainingIgnoreCase(title,pageable)
+        val game = gameRepository.findByTitleIgnoreCase(title,pageable)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game with title $title not found")
 
         return game.toResponse();

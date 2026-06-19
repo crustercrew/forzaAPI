@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface GameRepository : JpaRepository<Game, Int> {
-    fun findByTitleContainingIgnoreCase(title: String,pageable: Pageable): Game?
+    fun findByTitleIgnoreCase(title: String,pageable: Pageable): Game?
 }

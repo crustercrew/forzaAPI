@@ -56,7 +56,7 @@ class VehiclesService(
     @Transactional
     fun createVehicle(request: VehiclesReq): VehiclesResp {
 
-        val manufacturer = manufacturersRepository.findByNameContainingIgnoreCase(request.manufacturerName)
+        val manufacturer = manufacturersRepository.findByNameIgnoreCase(request.manufacturerName)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer Not Found")
 
         val isVehicleExist = vehiclesRepository.existsByModelNameAndProductionyear(request.modelName, request.productionyear)
@@ -87,7 +87,7 @@ class VehiclesService(
 
         for (it in requests) {
             // 1. Safe Check Manufacturer (Kalau null, kita skip, gak pake throw)
-            val manufacturer = manufacturersRepository.findByNameContainingIgnoreCase(it.manufacturerName)
+            val manufacturer = manufacturersRepository.findByNameIgnoreCase(it.manufacturerName)
             if (manufacturer == null) {
                 println("Skip: Manufacturer ${it.manufacturerName} tidak ditemukan.")
                 continue
@@ -138,7 +138,7 @@ class VehiclesService(
         val vehicle = vehiclesRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle with id $id not found")
 
-        val manufacturer = manufacturersRepository.findByNameContainingIgnoreCase(request.manufacturerName)
+        val manufacturer = manufacturersRepository.findByNameIgnoreCase(request.manufacturerName)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer Not Found")
 
         vehicle.modelName = request.modelName

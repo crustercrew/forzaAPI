@@ -24,8 +24,8 @@ class DivisionService(
     }
 
     fun getDivisionByName(name: String, pageable: Pageable): DivisionResp {
-        val division = divisionRepository.findByNameContainingIgnoreCase(name,pageable)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Car Type with $name not found")
+        val division = divisionRepository.findByNameIgnoreCase(name,pageable)
+            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Resource not found")
 
         return division.toResponse();
     }

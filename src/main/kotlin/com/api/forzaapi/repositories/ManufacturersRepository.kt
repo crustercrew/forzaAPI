@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ManufacturersRepository: JpaRepository<Manufacturers,Int> {
-    fun findByNameContainingIgnoreCase(name:String): Manufacturers?
+    fun findByNameIgnoreCase(name:String): Manufacturers?
     fun findByCountryContainingIgnoreCase(country: String): List<Manufacturers>
 }

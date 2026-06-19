@@ -26,7 +26,7 @@ class ManufacturersService(
     }
 
     fun getManufacturerByName(name: String): ManufacturerResp {
-        val manufacturers = manufacturersRepository.findByNameContainingIgnoreCase(name)
+        val manufacturers = manufacturersRepository.findByNameIgnoreCase(name)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with $name not found")
 
         return manufacturers.toResponse();
