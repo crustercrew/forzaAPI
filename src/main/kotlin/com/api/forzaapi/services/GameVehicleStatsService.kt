@@ -110,6 +110,13 @@ class GameVehicleStatsService(
         )
     }
 
+    fun getStatsById(id: Int): GameVehicleStatsResp =
+        gameVehicleStatsRepository.findByIdOrNull(id)
+            ?.toResponse()
+            ?: throw ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Record statistik dengan ID $id tidak ditemukan"
+            )
 
 
     /**

@@ -3,6 +3,8 @@ package com.api.forzaapi.controllers
 import com.api.forzaapi.dto.request.GameVehicleStatsReq
 import com.api.forzaapi.dto.responses.GameVehicleStatsResp
 import com.api.forzaapi.dto.responses.PageResponse
+import com.api.forzaapi.enumerates.PerformanceClass
+import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.services.GameVehicleStatsService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -29,14 +31,37 @@ class GameVehicleStatsController(
      * URL: GET http://localhost:8080/api/v1/vehicle-stats
      * Example: GET http://localhost:8080/api/v1/vehicle-stats?vehicleId=5
      */
-//    @GetMapping
-//    fun getStats(
-//        @RequestParam(value = "vehicleId", required = false) vehicleId: Int?,
-//        @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
-//    ): ResponseEntity<PageResponse<GameVehicleStatsResp>> {
-//        val response = gameVehicleStatsService.getStats(vehicleId, pageable)
-//        return ResponseEntity.ok(response)
-//    }
+    @GetMapping
+    fun getStats(
+        @RequestParam(value = "vehicleid", required = false) vehicleId: Int?,
+        @RequestParam(value = "manufacturerid", required = false) manufacturerid: Int?,
+        @RequestParam(value = "divisionid", required = false) divisionid: Int?,
+        @RequestParam(value = "gameid", required = false) gameid: Int?,
+        @RequestParam(value = "rarity", required = false) rarities: Rarity?,
+        @RequestParam(value = "drivetype", required = false) drivetype: String?,
+        @RequestParam(value = "performanceclass", required = false) performanceclass: PerformanceClass?,
+        @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
+    ): ResponseEntity<PageResponse<GameVehicleStatsResp>> {
+        val response = gameVehicleStatsService.getStats(
+            vehicleId,
+            manufacturerid,
+            divisionid,
+            gameid,
+            rarities,
+            drivetype,
+            performanceclass,
+            pageable
+        )
+        return ResponseEntity.ok(response)
+    }
+
+    @GetMapping("/{vehiclestatsId}")
+    fun getStatsByVehicleId(
+        @PathVariable("vehiclestatsId")vehiclestatsId: Int
+    ): ResponseEntity<GameVehicleStatsResp> {
+        val resp =  gameVehicleStatsService.getStatsById(vehiclestatsId)
+        return ResponseEntity.ok(resp)
+    }
 
     /**
      * 2. GET SINGLE RECORD STATS BY ID
