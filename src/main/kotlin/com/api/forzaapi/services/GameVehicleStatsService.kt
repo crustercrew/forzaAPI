@@ -1,14 +1,26 @@
 package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.GameVehicleStatsReq
+import com.api.forzaapi.dto.responses.DivisionResp
+import com.api.forzaapi.dto.responses.GameResp
 import com.api.forzaapi.dto.responses.GameVehicleStatsResp
+import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.PerformanceProfile
+import com.api.forzaapi.dto.responses.VehicleAcquisitionResp
+import com.api.forzaapi.dto.responses.VehicleMetricsResp
+import com.api.forzaapi.dto.responses.VehiclesResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.entity.GameVehicleStats
+import com.api.forzaapi.enumerates.DriveType
+import com.api.forzaapi.enumerates.PerformanceClass
+import com.api.forzaapi.enumerates.Rarity
+import com.api.forzaapi.enumerates.UniqueUnlock
 import com.api.forzaapi.repositories.DivisionRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.repositories.VehiclesRepository
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -21,6 +33,90 @@ class GameVehicleStatsService(
     private val gameRepository: GameRepository,
     private val divisionRepository: DivisionRepository
 ) {
+
+    @Transactional()
+    fun getStats(
+        vehicleId: Int?,
+        manufacturerId: Int?,
+        divisionId: Int?,
+        gameId: Int?,
+        rarity: Rarity?,
+        driveType: String?,
+        performanceClass: PerformanceClass?,
+        pageable: Pageable
+    ): PageResponse<GameVehicleStatsResp> {
+
+        // 1. Jalankan kueri filter multi-param gabungan ke database
+        val statsPage = gameVehicleStatsRepository.findWithFilters(
+            vehicleId, manufacturerId, divisionId, gameId, rarity, driveType, performanceClass, pageable
+        )
+
+        val dtoList = statsPage.content.map { entity ->
+            GameVehicleStatsResp(
+                id = entity.id,
+                game = GameResp(
+                    id = entity.game.id,
+                    title = entity.game.title,
+                    releaseYear = entity.game.releaseYear
+                ),
+                division = entity.division?.let {
+                    DivisionResp(id = it.id, name = it.name)
+                },
+                vehicle = VehiclesResp(
+                    id = entity.vehicle.id,
+                    modelName = entity.vehicle.modelName,
+                    productionyear = entity.vehicle.productionyear,
+                    manufacturer = ManufacturerResp(
+                        id = entity.vehicle.manufacturer.id,
+                        name = entity.vehicle.manufacturer.name,
+                        country = entity.vehicle.manufacturer.country
+                    ),
+                    enginespec = entity.vehicle.enginespec,
+                    horsepower = entity.vehicle.horsepower,
+                    torque = entity.vehicle.torque,
+                    driveType = entity.vehicle.driveType.name,
+                    drivetrain = entity.vehicle.drivetrain.name,
+                    transmission = entity.vehicle.transmission,
+                    weightkg = entity.vehicle.weightkg,
+                    weightdistribution = entity.vehicle.weightdistribution
+                ),
+                rarity = entity.rarity,
+                unlockType = entity.unlocktype,
+                performanceClass = entity.performanceclass,
+                performanceRating = entity.performancerating,
+                stats = VehicleMetricsResp(
+                    speed = entity.statSpeed,
+                    handling = entity.statHandling,
+                    acceleration = entity.statAcceleration,
+                    launch = entity.statLaunch,
+                    braking = entity.statBraking,
+                    offroad = entity.statOffroad
+                ),
+                acquisition = VehicleAcquisitionResp(
+                    autoshowCost = entity.autoshowCost,
+                    forzathonShopCost = entity.forzathonShopCost,
+                    isBackstageAvailable = entity.isBackstageAvailable,
+                    dlcRequired = entity.dlcRequired
+                )
+            )
+        }
+
+        return PageResponse(
+            page = statsPage.number,
+            size = statsPage.size,
+            totalElements = statsPage.totalElements,
+            totalPages = statsPage.totalPages,
+            data = dtoList
+        )
+    }
+
+
+
+    /**
+     *
+     *
+     */
+
     /**
      * 1. Create game VehicleStats
      */
@@ -199,26 +295,51 @@ class GameVehicleStatsService(
     private fun GameVehicleStats.toResponse(): GameVehicleStatsResp {
         return GameVehicleStatsResp(
             id = this.id,
-            vehicleModelName = this.vehicle.modelName,
-            gameTitle = this.game.title,
-            divisionName = this.division?.name, // Ambil nama dari objek relasi Division
-            rarity = this.rarity.name,
-            unlockType = this.unlocktype.name,
-            performanceProfile = PerformanceProfile(
-                className = this.performanceclass.name,
-                rating = this.performancerating
+            game = GameResp(
+                id = this.game.id,
+                title = this.game.title,
+                releaseYear = this.game.releaseYear
             ),
-            metrics = mapOf(
-                "speed" to this.statSpeed,
-                "handling" to this.statHandling,
-                "acceleration" to this.statAcceleration,
-                "launch" to this.statLaunch,
-                "braking" to this.statBraking,
-                "offroad" to this.statOffroad
+            division = DivisionResp(
+                id = this.division?.id ?: 0,
+                name = this.division?.name ?: "Unknown"
             ),
-            dlcRequired = this.dlcRequired,
-            forzathonShopCost = this.forzathonShopCost,
-            isBackstageAvailable = this.isBackstageAvailable
+            vehicle = VehiclesResp(
+                id = this.vehicle.id,
+                modelName = this.vehicle.modelName,
+                productionyear = this.vehicle.productionyear,
+                manufacturer = ManufacturerResp(
+                    id = this.vehicle.manufacturer.id,
+                    name = this.vehicle.manufacturer.name,
+                    country = this.vehicle.manufacturer.country
+                ),
+                enginespec = this.vehicle.enginespec,
+                horsepower = this.vehicle.horsepower,
+                torque = this.vehicle.torque,
+                driveType = this.vehicle.driveType.name,
+                drivetrain = this.vehicle.drivetrain.name,
+                transmission = this.vehicle.transmission,
+                weightkg = this.vehicle.weightkg,
+                weightdistribution = this.vehicle.weightdistribution,
+            ),
+            rarity = Rarity.valueOf(this.rarity.name),
+            unlockType = UniqueUnlock.valueOf(this.unlocktype.name),
+            performanceClass = this.performanceclass,
+            performanceRating = this.performancerating,
+            stats = VehicleMetricsResp(
+                speed = this.statSpeed,
+                handling = this.statHandling,
+                acceleration = this.statAcceleration,
+                launch = this.statLaunch,
+                braking = this.statBraking,
+                offroad = this.statOffroad
+            ),
+            acquisition = VehicleAcquisitionResp(
+                autoshowCost = this.autoshowCost,
+                forzathonShopCost = this.forzathonShopCost,
+                dlcRequired = this.dlcRequired,
+                isBackstageAvailable = this.isBackstageAvailable
+            ),
         )
     }
 }
