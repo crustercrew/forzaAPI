@@ -3,6 +3,7 @@ package com.api.forzaapi.repositories
 import com.api.forzaapi.entity.Game
 import com.api.forzaapi.entity.GameVehicleStats
 import com.api.forzaapi.entity.Vehicles
+import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.PerformanceClass
 import com.api.forzaapi.enumerates.Rarity
 import org.springframework.data.domain.Page
@@ -32,7 +33,7 @@ interface GameVehicleStatsRepository: JpaRepository<GameVehicleStats,Int> {
         @Param("divisionId") divisionId: Int?,
         @Param("gameId") gameId: Int?,
         @Param("rarity") rarity: Rarity?,
-        @Param("driveType") driveType: String?,
+        @Param("driveType") driveType: DriveType?,
         @Param("performanceClass") performanceClass: PerformanceClass?,
         pageable: Pageable
     ): Page<GameVehicleStats>

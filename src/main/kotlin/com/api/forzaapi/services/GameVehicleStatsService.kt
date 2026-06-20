@@ -41,7 +41,7 @@ class GameVehicleStatsService(
         divisionId: Int?,
         gameId: Int?,
         rarity: Rarity?,
-        driveType: String?,
+        driveType: DriveType?,
         performanceClass: PerformanceClass?,
         pageable: Pageable
     ): PageResponse<GameVehicleStatsResp> {

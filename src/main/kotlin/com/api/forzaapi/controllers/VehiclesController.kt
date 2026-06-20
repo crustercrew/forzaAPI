@@ -62,9 +62,9 @@ class VehiclesController(
      * Menggunakan Query Param 'name' untuk pencarian teks (misal: "Skyline", "Furai").
      * URL: GET http://localhost:8080/api/v1/vehicles/search?name=Skyline
      */
-    @GetMapping("/search")
+    @GetMapping("/search/{name}")
     fun searchVehiclesByModelName(
-        @RequestParam("name") name: String,
+        @PathVariable("name") name: String,
         @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
     ): ResponseEntity<PageResponse<VehiclesResp>> {
         val response = vehiclesService.searchVehiclesByModelName(name, pageable)
