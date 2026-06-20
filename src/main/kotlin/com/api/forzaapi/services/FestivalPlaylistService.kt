@@ -1,13 +1,23 @@
 package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.FestivalPlaylistReq
+import com.api.forzaapi.dto.responses.DivisionResp
 import com.api.forzaapi.dto.responses.FestivalPlaylistResp
+import com.api.forzaapi.dto.responses.GameResp
+import com.api.forzaapi.dto.responses.GameVehicleStatsResp
+import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.PlaylistRewardVehicle
+import com.api.forzaapi.dto.responses.VehicleAcquisitionResp
+import com.api.forzaapi.dto.responses.VehicleMetricsResp
+import com.api.forzaapi.dto.responses.VehiclesResp
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.entity.FestivalPlaylist
 import com.api.forzaapi.repositories.FestivalPlaylistRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
+import com.api.forzaapi.utils.toPageResponse
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -19,13 +29,53 @@ class FestivalPlaylistService (
     private val gameRepository: GameRepository,
     private val gameVehicleStatsRepository: GameVehicleStatsRepository
 ){
+    @Transactional
+    fun getAllPlaylistsWithFilters(
+        gameId: Int?,
+        seriesNumber: Int?,
+        season: String?,
+        pageable: Pageable
+    ): PageResponse<FestivalPlaylistResp> {
+        val statsPage = when {
+            gameId != null && seriesNumber != null && !season.isNullOrBlank() -> {
+                festivalPlaylistRepository.findByGameIdAndSeriesNumberAndSeasonIgnoreCase(gameId, seriesNumber, season, pageable)
+            }
+            gameId != null && seriesNumber != null -> {
+                festivalPlaylistRepository.findByGameIdAndSeriesNumber(gameId, seriesNumber, pageable)
+            }
+            gameId != null && !season.isNullOrBlank() -> {
+                festivalPlaylistRepository.findByGameIdAndSeasonIgnoreCase(gameId, season, pageable)
+            }
+            gameId != null -> {
+                festivalPlaylistRepository.findByGameId(gameId, pageable)
+            }
+            else -> {
+                festivalPlaylistRepository.findAll(pageable) // Jika semua kosong, tampilkan semua playlist
+            }
+        }
+        return PageResponse(
+            data = statsPage.content.map { it.toResponse() },
+            page = statsPage.number,
+            size = statsPage.size,
+            totalElements = statsPage.totalElements,
+            totalPages = statsPage.totalPages
+        )
+    }
+
+    @Transactional
+    fun getPlaylistById(id: Int): FestivalPlaylistResp? {
+        val playlist = festivalPlaylistRepository.findByIdOrNull(id)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        return playlist.toResponse()
+    }
+
     /**
      * 1. CREATE SINGLE FESTIVAL PLAYLIST
      */
     @Transactional
     fun createPlaylist(request: FestivalPlaylistReq): FestivalPlaylistResp {
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game dengan ID ${request.gameId} tidak ditemukan")
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
         // Cari semua entitas mobil hadiah berdasarkan ID yang dikirim
         val rewardEntities = gameVehicleStatsRepository.findAllById(request.rewardVehicleStatsIds).toMutableSet()
@@ -55,7 +105,7 @@ class FestivalPlaylistService (
         for (it in requests) {
             val game = gameRepository.findByIdOrNull(it.gameId)
             if (game == null) {
-                println("Skip Bulk: Game ID ${it.gameId} tidak eksis.")
+                println("Skip Bulk: Game ID ${it.gameId} not Exist.")
                 continue
             }
 
@@ -85,10 +135,10 @@ class FestivalPlaylistService (
     @Transactional
     fun updatePlaylist(id: Int, request: FestivalPlaylistReq): FestivalPlaylistResp {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist dengan ID $id tidak ditemukan")
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game tidak valid")
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
         val rewardEntities = gameVehicleStatsRepository.findAllById(request.rewardVehicleStatsIds).toMutableSet()
 
@@ -127,7 +177,11 @@ class FestivalPlaylistService (
     private fun FestivalPlaylist.toResponse(): FestivalPlaylistResp {
         return FestivalPlaylistResp(
             id = this.id,
-            gameTitle = this.game.title,
+            game = GameResp(
+                id = this.game.id,
+                title = this.game.title,
+                releaseYear = this.game.releaseYear
+            ),
             seriesNumber = this.seriesNumber,
             season = this.season,
             pointsRequired = this.pointsRequired,
@@ -135,11 +189,55 @@ class FestivalPlaylistService (
             startDate = this.startDate,
             endDate = this.endDate,
             rewards = this.rewards.map {
-                PlaylistRewardVehicle(
-                    gameVehicleStatsId = it.id,
-                    modelName = it.vehicle.modelName,
-                    performanceClass = it.performanceclass.name,
-                    performanceRating = it.performancerating
+                GameVehicleStatsResp(
+                    id = it.id,
+                    game = GameResp(
+                        id = it.game.id,
+                        title = it.game.title,
+                        releaseYear = it.game.releaseYear
+                    ),
+                    division = it.division?.let { div ->
+                        DivisionResp(
+                            id = div.id,
+                            name = div.name
+                        )
+                    }, // Lebih aman pakai safety-call ?.let jika divisi mobil-nya nullable
+                    vehicle = VehiclesResp(
+                        id = it.vehicle.id,
+                        modelName = it.vehicle.modelName,
+                        productionyear = it.vehicle.productionyear,
+                        manufacturer = ManufacturerResp(
+                            id = it.vehicle.manufacturer.id,
+                            name = it.vehicle.manufacturer.name,
+                            country = it.vehicle.manufacturer.country
+                        ),
+                        enginespec = it.vehicle.enginespec,
+                        horsepower = it.vehicle.horsepower,
+                        torque = it.vehicle.torque,
+                        driveType = it.vehicle.driveType.name,
+                        drivetrain = it.vehicle.drivetrain.name,
+                        transmission = it.vehicle.transmission,
+                        weightkg = it.vehicle.weightkg,
+                        weightdistribution = it.vehicle.weightdistribution
+                    ),
+                    rarity = it.rarity,
+                    unlockType = it.unlocktype,
+                    performanceClass = it.performanceclass,
+                    performanceRating = it.performancerating,
+                    stats = VehicleMetricsResp(
+                        speed = it.statSpeed,
+                        handling = it.statHandling,
+                        acceleration = it.statAcceleration,
+                        launch = it.statLaunch,
+                        braking = it.statBraking,
+                        offroad = it.statOffroad
+                    ),
+                    acquisition = VehicleAcquisitionResp(
+                        autoshowCost = it.autoshowCost,
+                        forzathonShopCost = it.forzathonShopCost,
+                        isBackstageAvailable = it.isBackstageAvailable,
+                        dlcRequired = it.dlcRequired
+                    )
                 )
             }
         )
