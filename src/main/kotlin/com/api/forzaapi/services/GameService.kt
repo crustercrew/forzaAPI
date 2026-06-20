@@ -23,8 +23,8 @@ class GameService(
             .toPageResponse()
     }
 
-    fun getGameByTitle(title: String, pageable: Pageable): GameResp {
-        val game = gameRepository.findByTitleIgnoreCase(title,pageable)
+    fun getGameByTitle(title: String): GameResp {
+        val game = gameRepository.findByTitleIgnoreCase(title)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game with title $title not found")
 
         return game.toResponse();

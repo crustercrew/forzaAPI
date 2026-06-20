@@ -1,6 +1,7 @@
 package com.api.forzaapi.controllers
 
 import com.api.forzaapi.dto.request.ManufacturerReq
+import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.services.ManufacturersService
@@ -40,9 +41,10 @@ class ManufacturerController(
 
     @GetMapping("/by-country")
     fun getManufacturersGroupedByCountry(
-        @RequestParam(value = "country") country: String
-    ): ResponseEntity<List<ManufacturerListOBJResp>> {
-        val response = manufacturerService.getManufacturerByCountry(country)
+        @RequestParam(value = "country") country: String,
+        @PageableDefault(page = 0, size = 20, sort = ["country"]) pageable: Pageable
+    ): ResponseEntity<PageResponse<ManufacturerListOBJResp>> {
+        val response = manufacturerService.getManufacturerByCountry(country, pageable)
         return ResponseEntity.ok(response)
     }
 

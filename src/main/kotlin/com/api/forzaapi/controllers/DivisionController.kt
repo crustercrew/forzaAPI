@@ -23,7 +23,7 @@ class DivisionController(
     ): ResponseEntity<Any> {
 
         if (!name.isNullOrBlank()) {
-            val division = divisionService.getDivisionByName(name,pageable)
+            val division = divisionService.getDivisionByName(name)
             return ResponseEntity.ok(division)
         }
 

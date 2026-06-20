@@ -23,8 +23,8 @@ class DivisionService(
             .toPageResponse()
     }
 
-    fun getDivisionByName(name: String, pageable: Pageable): DivisionResp {
-        val division = divisionRepository.findByNameIgnoreCase(name,pageable)
+    fun getDivisionByName(name: String): DivisionResp {
+        val division = divisionRepository.findByNameIgnoreCase(name)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Resource not found")
 
         return division.toResponse();

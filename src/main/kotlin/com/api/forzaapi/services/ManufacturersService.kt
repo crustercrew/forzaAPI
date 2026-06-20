@@ -8,6 +8,7 @@ import com.api.forzaapi.dto.request.ManufacturerReq
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerOBJResp
 import com.api.forzaapi.utils.toPageResponse
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -39,22 +40,31 @@ class ManufacturersService(
         return manufacturer.toResponse();
     }
 
-    fun getManufacturerByCountry(country: String): List<ManufacturerListOBJResp> {
-        val manufacturers = manufacturersRepository.findByCountryContainingIgnoreCase(country)
+    fun getManufacturerByCountry(country: String,pageable: Pageable): PageResponse<ManufacturerListOBJResp> {
+        val manufacturers = manufacturersRepository.findByCountryContainingIgnoreCase(country, pageable)
 
         if (manufacturers.isEmpty()) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with country $country not found")
         }
 
-        return manufacturers.groupBy { it.country }
-            .map { (countryName, manufacturerList) ->
-                ManufacturerListOBJResp(
-                    country = countryName,
-                    manufacturers = manufacturerList.map {
-                        ManufacturerOBJResp(it.id, it.name)
-                    }
-                )
-            }
+        val groupedData = manufacturers.content.groupBy { it.country }
+
+        val mappedList = groupedData.map { (countryName, manufacturerList) ->
+            ManufacturerListOBJResp(
+                country = countryName,
+                manufacturers = manufacturerList.map {
+                    ManufacturerOBJResp(it.id, it.name)
+                }
+            )
+        }
+
+        val mappedPage = PageImpl(
+            mappedList,
+            pageable,
+            manufacturers.size.toLong()
+        )
+
+        return mappedPage.toPageResponse()
     }
 
     // CREATE

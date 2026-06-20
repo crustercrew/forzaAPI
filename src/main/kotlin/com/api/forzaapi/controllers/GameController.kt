@@ -25,7 +25,7 @@ class GameController(
     ): ResponseEntity<Any> {
 
         val response = if (!title.isNullOrBlank()) {
-            gameService.getGameByTitle(title, pageable) // Kembalikan Page/List agar konsisten
+            gameService.getGameByTitle(title)
         } else {
             gameService.getAllGames(pageable)
         }
