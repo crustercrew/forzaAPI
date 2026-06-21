@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -39,18 +40,21 @@ class DivisionController(
         return ResponseEntity.ok(division)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createDivision(@RequestBody request: DivisionReq): ResponseEntity<DivisionResp> {
         val response = divisionService.createDivisions(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulkcreate")
     fun bulkCreateDivisions(@RequestBody requests: List<DivisionReq>): ResponseEntity<List<DivisionResp>> {
         val response = divisionService.bulkCreateDivisions(requests)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     fun updateDivision(
         @PathParam("id") id: Int,
@@ -59,6 +63,7 @@ class DivisionController(
         return ResponseEntity.ok(divisionService.updateDivisions(id, request))
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     fun deleteDivision(@PathParam("id") id: Int): ResponseEntity<Void> {
         divisionService.deleteDivisions(id)

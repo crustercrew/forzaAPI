@@ -26,3 +26,9 @@ spring:
 server:
   servlet:
     context-path: /api/v1
+
+api:
+  version: 1.0.0
+  admin:
+    username: ${AUTH_USERNAME}
+    password: ${AUTH_PASSWORD}

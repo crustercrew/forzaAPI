@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -71,10 +72,7 @@ class VehiclesController(
         return ResponseEntity.ok(response)
     }
 
-    /**
-     * 4. CREATE SINGLE VEHICLE
-     * URL: POST http://localhost:8080/api/v1/vehicles
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createVehicle(
         @RequestBody request: VehiclesReq
@@ -83,10 +81,7 @@ class VehiclesController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    /**
-     * 5. BULK CREATE VEHICLES (INPUT MASSAL)
-     * URL: POST http://localhost:8080/api/v1/vehicles/bulk
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreate(
         @RequestBody requests: List<VehiclesReq>
@@ -95,10 +90,7 @@ class VehiclesController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    /**
-     * 6. UPDATE VEHICLE BY ID
-     * URL: PUT http://localhost:8080/api/v1/vehicles/5
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updateVehicle(
         @PathVariable("id") id: Int,
@@ -108,10 +100,7 @@ class VehiclesController(
         return ResponseEntity.ok(response)
     }
 
-    /**
-     * 7. DELETE VEHICLE BY ID
-     * URL: DELETE http://localhost:8080/api/v1/vehicles/5
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteVehicle(
         @PathVariable("id") id: Int

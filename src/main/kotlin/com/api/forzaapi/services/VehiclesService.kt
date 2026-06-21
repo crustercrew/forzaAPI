@@ -11,9 +11,11 @@ import com.api.forzaapi.enumerates.Drivetrain
 import com.api.forzaapi.repositories.ManufacturersRepository
 import com.api.forzaapi.repositories.VehiclesRepository
 import com.api.forzaapi.utils.toPageResponse
+import jakarta.persistence.criteria.Predicate
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.data.repository.findByIdOrNull
@@ -31,14 +33,20 @@ class VehiclesService(
         drivetrain: Drivetrain?,
         pageable: Pageable
     ): PageResponse<VehiclesResp> {
-        return vehiclesRepository.findVehiclesWithFilters(
-            manufacturerId,
-            startYear,
-            endYear,
-            driveType,
-            drivetrain,
-            pageable
-        )
+        val spec = Specification<Vehicles>{
+            root, query, builder ->
+            val predicates = mutableListOf<Predicate>()
+
+            manufacturerId?.let { predicates.add(builder.equal(root.get<Any>("manufacturer").get<Int>("id"), it)) }
+            startYear?.let { predicates.add(builder.greaterThanOrEqualTo(root.get("productionyear"), it)) }
+            endYear?.let { predicates.add(builder.lessThanOrEqualTo(root.get("productionyear"), it)) }
+            driveType?.let { predicates.add(builder.equal(root.get<DriveType>("driveType"), it)) }
+            drivetrain?.let { predicates.add(builder.equal(root.get<Drivetrain>("drivetrain"), it)) }
+
+            builder.and(*predicates.toTypedArray())
+        }
+
+        return vehiclesRepository.findAll(spec, pageable)
             .map { it.toResponse() }
             .toPageResponse()
     }

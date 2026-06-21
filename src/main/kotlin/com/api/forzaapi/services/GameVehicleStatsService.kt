@@ -19,8 +19,10 @@ import com.api.forzaapi.repositories.DivisionRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.repositories.VehiclesRepository
+import jakarta.persistence.criteria.Predicate
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -45,12 +47,33 @@ class GameVehicleStatsService(
         performanceClass: PerformanceClass?,
         pageable: Pageable
     ): PageResponse<GameVehicleStatsResp> {
+        // Merakit relasi antar tabel (Join) dan filter
+        val spec = Specification<GameVehicleStats> { root, _, cb ->
+            val predicates = mutableListOf<Predicate>()
 
-        // 1. Jalankan kueri filter multi-param gabungan ke database
-        val statsPage = gameVehicleStatsRepository.findWithFilters(
-            vehicleId, manufacturerId, divisionId, gameId, rarity, driveType, performanceClass, pageable
-        )
+            // Langsung menembak ke relasi Vehicle
+            vehicleId?.let { predicates.add(cb.equal(root.get<Any>("vehicle").get<Int>("id"), it)) }
+            driveType?.let { predicates.add(cb.equal(root.get<Any>("vehicle").get<DriveType>("driveType"), it)) }
 
+            // Relasi dua tingkat: Stats -> Vehicle -> Manufacturer
+            manufacturerId?.let {
+                val vehicleJoin = root.join<Any, Any>("vehicle")
+                predicates.add(cb.equal(vehicleJoin.get<Any>("manufacturer").get<Int>("id"), it))
+            }
+
+            // Relasi dasar lainnya
+            divisionId?.let { predicates.add(cb.equal(root.get<Any>("division").get<Int>("id"), it)) }
+            gameId?.let { predicates.add(cb.equal(root.get<Any>("game").get<Int>("id"), it)) }
+            rarity?.let { predicates.add(cb.equal(root.get<Rarity>("rarity"), it)) }
+            performanceClass?.let { predicates.add(cb.equal(root.get<PerformanceClass>("performanceclass"), it)) }
+
+            cb.and(*predicates.toTypedArray())
+        }
+
+        // 1. Jalankan kueri dinamis
+        val statsPage = gameVehicleStatsRepository.findAll(spec, pageable)
+
+        // 2. Map ke DTO (Kode lu yang dtoList di bawahnya biarkan sama persis, tidak perlu diubah)
         val dtoList = statsPage.content.map { entity ->
             GameVehicleStatsResp(
                 id = entity.id,
@@ -102,11 +125,8 @@ class GameVehicleStatsService(
         }
 
         return PageResponse(
-            page = statsPage.number,
-            size = statsPage.size,
-            totalElements = statsPage.totalElements,
-            totalPages = statsPage.totalPages,
-            data = dtoList
+            page = statsPage.number, size = statsPage.size, totalElements = statsPage.totalElements,
+            totalPages = statsPage.totalPages, data = dtoList
         )
     }
 

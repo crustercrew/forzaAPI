@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -33,7 +34,6 @@ class FestivalPlaylistController(
         val response = festivalPlaylistService.getAllPlaylistsWithFilters(gameId, seriesNumber, season, pageable)
         return ResponseEntity.ok(response)
     }
-
     @GetMapping("/{id}")
     fun getPlaylistById(
         @PathVariable id: Int
@@ -42,6 +42,7 @@ class FestivalPlaylistController(
         return ResponseEntity.ok(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createPlaylist(
         @RequestBody request: FestivalPlaylistReq
@@ -50,6 +51,7 @@ class FestivalPlaylistController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreatePlaylists(
         @RequestBody requests: List<FestivalPlaylistReq>
@@ -58,6 +60,7 @@ class FestivalPlaylistController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updatePlaylist(
         @PathVariable id: Int,
@@ -67,6 +70,7 @@ class FestivalPlaylistController(
         return ResponseEntity.ok(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deletePlaylist(
         @PathVariable id: Int

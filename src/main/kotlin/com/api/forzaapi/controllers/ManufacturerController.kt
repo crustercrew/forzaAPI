@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -48,18 +49,21 @@ class ManufacturerController(
         return ResponseEntity.ok(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createManufacturer(@RequestBody request: ManufacturerReq): ResponseEntity<ManufacturerResp> {
         val response = manufacturerService.createManufacturers(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulkcreate")
     fun bulkCreateManufacturers(@RequestBody requests: List<ManufacturerReq>): ResponseEntity<List<ManufacturerResp>> {
         val response = manufacturerService.bulkCreateManufacturers(requests)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     fun updateManufacturer(
         @PathParam("id") id: Int,
@@ -68,10 +72,10 @@ class ManufacturerController(
         return ResponseEntity.ok(manufacturerService.updateManufacturers(id, request))
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     fun deleteManufacturer(@PathParam("id") id: Int): ResponseEntity<Void> {
         manufacturerService.deleteManufacturers(id)
-        // Return 204 No Content kalau berhasil dihapus (standar API)
         return ResponseEntity.noContent().build()
     }
 }

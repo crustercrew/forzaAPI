@@ -7,6 +7,7 @@ import com.api.forzaapi.enumerates.PerformanceClass
 import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.enumerates.UniqueUnlock
 import jakarta.persistence.*
+import org.hibernate.annotations.ColumnDefault
 
 @Entity
 class Vehicles(
@@ -27,10 +28,12 @@ class Vehicles(
     @Column("engine_spec",nullable = false, length = 100)
     var enginespec: String,
 
-    @Column("horsepower", length = 50)
+    @Column("horsepower", length = 50,nullable = false)
+    @ColumnDefault("0")
     var horsepower:Int,
 
-    @Column("torque", length = 50)
+    @Column("torque", length = 50,nullable = false)
+    @ColumnDefault("0")
     var torque:Int,
 
     @Column("drivetype")
@@ -44,7 +47,8 @@ class Vehicles(
     @Column(length = 50)
     var transmission:String,
 
-    @Column("weight_kg")
+    @Column("weight_kg", length = 50,nullable = false)
+    @ColumnDefault("0")
     var weightkg:Int,
 
     @Column("weight_distribution", length = 20)

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -41,12 +42,14 @@ class GameController(
         return ResponseEntity.ok(game)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createGame(@RequestBody request: GameReq): ResponseEntity<GameResp> {
         val response = gameService.createGame(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     fun updateGame(
         @PathParam("id") id: Int,
@@ -55,6 +58,7 @@ class GameController(
         return ResponseEntity.ok(gameService.updateGame(id, request))
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     fun deleteGame(@PathParam("id") id: Int): ResponseEntity<Void> {
         gameService.deleteGame(id)

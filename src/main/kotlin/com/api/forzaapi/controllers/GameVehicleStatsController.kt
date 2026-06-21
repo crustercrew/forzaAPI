@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -82,11 +83,6 @@ class GameVehicleStatsController(
         })
     }
 
-    /**
-     * 1. GET ALL STATS (PAGINATED) & OPTIONAL FILTER BY VEHICLE ID
-     * URL: GET http://localhost:8080/api/v1/vehicle-stats
-     * Example: GET http://localhost:8080/api/v1/vehicle-stats?vehicleId=5
-     */
     @GetMapping
     fun getStats(
         @RequestParam(value = "vehicleid", required = false) vehicleId: Int?,
@@ -118,10 +114,8 @@ class GameVehicleStatsController(
         val resp =  gameVehicleStatsService.getStatsById(vehiclestatsId)
         return ResponseEntity.ok(resp)
     }
-    /**
-     * 6. CREATE SINGLE RECORD STATS
-     * URL: POST http://localhost:8080/api/v1/vehicle-stats
-     */
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createStats(
         @RequestBody request: GameVehicleStatsReq
@@ -130,10 +124,7 @@ class GameVehicleStatsController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    /**
-     * 7. BULK CREATE RECORDS STATS (INPUT MASSAL)
-     * URL: POST http://localhost:8080/api/v1/vehicle-stats/bulk
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreateStats(
         @RequestBody requests: List<GameVehicleStatsReq>
@@ -142,10 +133,7 @@ class GameVehicleStatsController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    /**
-     * 8. UPDATE RECORD STATS BY ID
-     * URL: PUT http://localhost:8080/api/v1/vehicle-stats/5
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updateStats(
         @PathVariable("id") id: Int,
@@ -155,10 +143,7 @@ class GameVehicleStatsController(
         return ResponseEntity.ok(response)
     }
 
-    /**
-     * 9. DELETE RECORD STATS BY ID
-     * URL: DELETE http://localhost:8080/api/v1/vehicle-stats/5
-     */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteStats(
         @PathVariable("id") id: Int
