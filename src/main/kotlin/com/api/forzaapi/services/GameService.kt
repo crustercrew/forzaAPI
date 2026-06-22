@@ -17,12 +17,14 @@ import org.springframework.data.repository.findByIdOrNull
 class GameService(
     private val gameRepository: GameRepository
 ) {
+    @Transactional(readOnly = true)
     fun getAllGames(pageable: Pageable): PageResponse<GameResp> {
         return gameRepository.findAll(pageable)
             .map { it.toResponse() }
             .toPageResponse()
     }
 
+    @Transactional(readOnly = true)
     fun getGameByTitle(title: String): GameResp {
         val game = gameRepository.findByTitleIgnoreCase(title)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game with title $title not found")
@@ -30,6 +32,7 @@ class GameService(
         return game.toResponse();
     }
 
+    @Transactional(readOnly = true)
     fun getGameById(id:Int): GameResp{
         val game = gameRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game with id $id not found")

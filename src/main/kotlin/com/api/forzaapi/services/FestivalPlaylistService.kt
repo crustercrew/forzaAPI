@@ -16,11 +16,11 @@ import com.api.forzaapi.repositories.FestivalPlaylistRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.utils.toPageResponse
-import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
@@ -29,7 +29,7 @@ class FestivalPlaylistService (
     private val gameRepository: GameRepository,
     private val gameVehicleStatsRepository: GameVehicleStatsRepository
 ){
-    @Transactional
+    @Transactional(readOnly = true)
     fun getAllPlaylistsWithFilters(
         gameId: Int?,
         seriesNumber: Int?,
@@ -62,7 +62,7 @@ class FestivalPlaylistService (
         )
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getPlaylistById(id: Int): FestivalPlaylistResp? {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)

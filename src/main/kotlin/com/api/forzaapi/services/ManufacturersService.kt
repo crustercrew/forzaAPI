@@ -20,12 +20,14 @@ import org.springframework.web.server.ResponseStatusException
 class ManufacturersService(
     private val manufacturersRepository: ManufacturersRepository
 ) {
+    @Transactional(readOnly = true)
     fun getAllManufacturers(pageable: Pageable): PageResponse<ManufacturerResp> {
         return manufacturersRepository.findAll(pageable)
             .map { it.toResponse() }
             .toPageResponse()
     }
 
+    @Transactional(readOnly = true)
     fun getManufacturerByName(name: String): ManufacturerResp {
         val manufacturers = manufacturersRepository.findByNameIgnoreCase(name)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with $name not found")
@@ -33,6 +35,7 @@ class ManufacturersService(
         return manufacturers.toResponse();
     }
 
+    @Transactional(readOnly = true)
     fun getManufacturerById(id:Int): ManufacturerResp{
         val manufacturer = manufacturersRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Manufacturer with $id not found")
@@ -40,6 +43,7 @@ class ManufacturersService(
         return manufacturer.toResponse();
     }
 
+    @Transactional(readOnly = true)
     fun getManufacturerByCountry(country: String,pageable: Pageable): PageResponse<ManufacturerListOBJResp> {
         val manufacturers = manufacturersRepository.findByCountryContainingIgnoreCase(country, pageable)
 

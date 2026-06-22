@@ -1,10 +1,9 @@
 package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.VehiclesReq
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.VehiclesResp
-import com.api.forzaapi.entity.Manufacturers
+import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.entity.Vehicles
 import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.Drivetrain
@@ -12,15 +11,13 @@ import com.api.forzaapi.repositories.ManufacturersRepository
 import com.api.forzaapi.repositories.VehiclesRepository
 import com.api.forzaapi.utils.toPageResponse
 import jakarta.persistence.criteria.Predicate
-import jakarta.transaction.Transactional
-import org.springframework.cache.annotation.CacheConfig
-import org.springframework.cache.annotation.Cacheable
-import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.http.HttpStatus
-import org.springframework.web.server.ResponseStatusException
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
+import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class VehiclesService(
@@ -32,6 +29,7 @@ class VehiclesService(
 //        value = ["vehicles"],
 //        key = "{#manufacturerId, #startYear, #endYear, #driveType, #drivetrain, #pageable.pageNumber, #pageable.pageSize}"
 //    )
+    @Transactional(readOnly = true)
     fun getVehiclesWithFilters(
         manufacturerId:Int?,
         startYear:Int?,
@@ -58,6 +56,7 @@ class VehiclesService(
             .toPageResponse()
     }
 
+    @Transactional(readOnly = true)
     fun getVehicleById(id: Int): VehiclesResp? {
         val vehicle = vehiclesRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "vehicle with id $id not found")

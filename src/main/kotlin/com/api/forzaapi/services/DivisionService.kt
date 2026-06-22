@@ -17,12 +17,14 @@ import org.springframework.web.server.ResponseStatusException
 class DivisionService(
     private val divisionRepository: DivisionRepository
 ) {
+    @Transactional(readOnly = true)
     fun getAllDivision(pageable: Pageable): PageResponse<DivisionResp> {
         return divisionRepository.findAll(pageable)
             .map { it.toResponse() }
             .toPageResponse()
     }
 
+    @Transactional(readOnly = true)
     fun getDivisionByName(name: String): DivisionResp {
         val division = divisionRepository.findByNameIgnoreCase(name)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Resource not found")
@@ -30,6 +32,7 @@ class DivisionService(
         return division.toResponse();
     }
 
+    @Transactional(readOnly = true)
     fun getDivisionById(id:Int): DivisionResp{
         val division = divisionRepository.findByIdOrNull(id)
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Car Type with $id not found")

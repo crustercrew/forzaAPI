@@ -23,6 +23,8 @@ class SecurityFilterChainConfig(
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
+            .formLogin { it.disable() }
+            .httpBasic { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
                 // 1. Endpoint Auth (Login) bebas diakses

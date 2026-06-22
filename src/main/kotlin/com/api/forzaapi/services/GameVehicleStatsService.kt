@@ -1,14 +1,7 @@
 package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.GameVehicleStatsReq
-import com.api.forzaapi.dto.responses.DivisionResp
-import com.api.forzaapi.dto.responses.GameResp
-import com.api.forzaapi.dto.responses.GameVehicleStatsResp
-import com.api.forzaapi.dto.responses.PageResponse
-import com.api.forzaapi.dto.responses.PerformanceProfile
-import com.api.forzaapi.dto.responses.VehicleAcquisitionResp
-import com.api.forzaapi.dto.responses.VehicleMetricsResp
-import com.api.forzaapi.dto.responses.VehiclesResp
+import com.api.forzaapi.dto.responses.*
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.entity.GameVehicleStats
 import com.api.forzaapi.enumerates.DriveType
@@ -20,12 +13,12 @@ import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.repositories.VehiclesRepository
 import jakarta.persistence.criteria.Predicate
-import jakarta.transaction.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
@@ -36,7 +29,7 @@ class GameVehicleStatsService(
     private val divisionRepository: DivisionRepository
 ) {
 
-    @Transactional()
+    @Transactional(readOnly = true)
     fun getStats(
         vehicleId: Int?,
         manufacturerId: Int?,
@@ -130,6 +123,7 @@ class GameVehicleStatsService(
         )
     }
 
+    @Transactional(readOnly = true)
     fun getStatsById(id: Int): GameVehicleStatsResp =
         gameVehicleStatsRepository.findByIdOrNull(id)
             ?.toResponse()
@@ -137,12 +131,6 @@ class GameVehicleStatsService(
                 HttpStatus.NOT_FOUND,
                 "Record statistik dengan ID $id tidak ditemukan"
             )
-
-
-    /**
-     *
-     *
-     */
 
     /**
      * 1. Create game VehicleStats

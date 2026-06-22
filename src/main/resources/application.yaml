@@ -15,10 +15,11 @@ spring:
     create-schemas: true
 
   jpa:
+    open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.format_sql: true
       hibernate.default_schema: ${DB_SCHEMA}
@@ -39,6 +40,11 @@ api:
 
 logging:
   level:
+    org.hibernate:
+      orm:
+        core: ERROR
+        connections:
+          pooling: WARN
     org.springframework:
       cache: DEBUG
       data:
