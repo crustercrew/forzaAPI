@@ -7,6 +7,8 @@ import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.Drivetrain
 import com.api.forzaapi.services.VehiclesService
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
+@Tag(name = "Vehicles", description = "Endpoints to access Forza Horizon master data and car specifications")
 @RestController
 @RequestMapping("/vehicles")
 class VehiclesController(
@@ -30,6 +33,10 @@ class VehiclesController(
      * - Mobil AWD saja: GET /api/v1/vehicles?drivetrain=AWD
      * - Mobil Tahun 2000-2012: GET /api/v1/vehicles?startYear=2000&endYear=2012
      */
+    @Operation(
+        summary = "GET ALL VEHICLES & FILTERS (PAGINATED)",
+        description = "Accommodates searches by Manufacturer, Year Range, Drive Type, and Drivetrain."
+    )
     @GetMapping
     fun getVehicles(
         @RequestParam(value = "manufacturerId", required = false) manufacturerId: Int?,
@@ -51,6 +58,10 @@ class VehiclesController(
      * 2. GET VEHICLE BY ID
      * URL: GET http://localhost:8080/api/v1/vehicles/5
      */
+    @Operation(
+        summary = "Get Vehicle by ID",
+        description = "Retrieves detailed specifications of a car based on a unique database ID."
+    )
     @GetMapping("/{id}")
     fun getVehicleById(
         @PathVariable("id") id: Int
@@ -64,6 +75,10 @@ class VehiclesController(
      * Menggunakan Query Param 'name' untuk pencarian teks (misal: "Skyline", "Furai").
      * URL: GET http://localhost:8080/api/v1/vehicles/search?name=Skyline
      */
+    @Operation(
+        summary = "Search Vehicle by Model Name (LIKE QUERY)",
+        description = "Retrieves vehicles based on a partial match of the model name. Example: GET /api/v1/vehicles/search?name=Skyline"
+    )
     @GetMapping("/search/{name}")
     fun searchVehiclesByModelName(
         @PathVariable("name") name: String,

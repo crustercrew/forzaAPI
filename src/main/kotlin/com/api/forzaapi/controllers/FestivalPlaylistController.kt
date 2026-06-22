@@ -5,6 +5,7 @@ import com.api.forzaapi.dto.responses.FestivalPlaylistResp
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.services.FestivalPlaylistService
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
@@ -25,6 +26,10 @@ import org.springframework.web.bind.annotation.RestController
 class FestivalPlaylistController(
     private val festivalPlaylistService: FestivalPlaylistService
 ) {
+    @Operation(
+        summary = "Get all festival playlists",
+        description = "Get all festival playlists"
+    )
     @GetMapping
     fun getAllPlaylists(
         @RequestParam(value = "gameId", required = false) gameId: Int?,
@@ -35,6 +40,11 @@ class FestivalPlaylistController(
         val response = festivalPlaylistService.getAllPlaylistsWithFilters(gameId, seriesNumber, season, pageable)
         return ResponseEntity.ok(response)
     }
+
+    @Operation(
+        summary = "Get festival playlist by id",
+        description = "Get festival playlist by id"
+    )
     @GetMapping("/{id}")
     fun getPlaylistById(
         @PathVariable id: Int

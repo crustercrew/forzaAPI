@@ -8,6 +8,7 @@ import com.api.forzaapi.enumerates.PerformanceClass
 import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.services.GameVehicleStatsService
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
@@ -84,6 +85,10 @@ class GameVehicleStatsController(
         })
     }
 
+    @Operation(
+        summary = "Get all game vehicle stats",
+        description = "Get all game vehicle stats"
+    )
     @GetMapping
     fun getStats(
         @RequestParam(value = "vehicleid", required = false) vehicleId: Int?,
@@ -108,6 +113,10 @@ class GameVehicleStatsController(
         return ResponseEntity.ok(response)
     }
 
+    @Operation(
+        summary = "Get game vehicle stats by id",
+        description = "Get game vehicle stats by id"
+    )
     @GetMapping("/{vehiclestatsId}")
     fun getStatsByVehicleId(
         @PathVariable("vehiclestatsId")vehiclestatsId: Int

@@ -5,6 +5,7 @@ import com.api.forzaapi.dto.request.DivisionReq
 import com.api.forzaapi.dto.responses.DivisionResp
 import com.api.forzaapi.services.DivisionService
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.*
 class DivisionController(
     private val divisionService: DivisionService
 ) {
+    @Operation(
+        summary = "Get all divisions",
+        description = "receive data from database"
+    )
     @GetMapping
     fun getAllDivisions(
         @RequestParam(value = "name", required = false) name: String?,
@@ -33,6 +38,10 @@ class DivisionController(
         return ResponseEntity.ok(response)
     }
 
+    @Operation(
+        summary = "Get division by id",
+        description = "Get division by id"
+    )
     @GetMapping("/{id}")
     fun getDivisionById(
         @PathVariable("id") id: Int

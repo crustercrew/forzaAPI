@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableDefault
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.entity.Game
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -20,6 +21,10 @@ import org.springframework.web.bind.annotation.*
 class GameController(
     private val gameService: GameService
 ) {
+    @Operation(
+        summary = "Get all games",
+        description = "Get all games"
+    )
     @GetMapping
     fun getGames(
         @RequestParam(value = "title", required = false) title: String?,

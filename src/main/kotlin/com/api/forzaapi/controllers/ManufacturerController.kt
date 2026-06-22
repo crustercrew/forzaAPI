@@ -6,6 +6,7 @@ import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.services.ManufacturersService
 import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -19,6 +20,10 @@ import org.springframework.web.bind.annotation.*
 class ManufacturerController(
     private val manufacturerService: ManufacturersService
 ) {
+    @Operation(
+        summary = "Get all manufacturers",
+        description = "Get all manufacturers"
+    )
     @GetMapping
     fun getAllManufacturers(
         @RequestParam(value = "name", required = false) name: String?,
@@ -33,6 +38,10 @@ class ManufacturerController(
         return ResponseEntity.ok(response)
     }
 
+    @Operation(
+        summary = "Get manufacturer by id",
+        description = "Get manufacturer by id"
+    )
     @GetMapping("/{id}")
     fun getManufacturerById(
         @PathVariable("id") id: Int
@@ -41,6 +50,10 @@ class ManufacturerController(
         return ResponseEntity.ok(manufacturer)
     }
 
+    @Operation(
+        summary = "Get manufacturers by country",
+        description = "Get manufacturers by country"
+    )
     @GetMapping("/by-country")
     fun getManufacturersGroupedByCountry(
         @RequestParam(value = "country") country: String,
