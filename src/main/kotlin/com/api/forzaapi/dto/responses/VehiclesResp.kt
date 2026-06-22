@@ -1,6 +1,7 @@
 package com.api.forzaapi.dto.responses
 
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+import tools.jackson.databind.ser.Serializers
 
 data class VehiclesResp (
     val id:Int,
@@ -15,4 +16,4 @@ data class VehiclesResp (
     val transmission:String,
     val weightkg:Int,
     val weightdistribution:String
-)
+): Serializers

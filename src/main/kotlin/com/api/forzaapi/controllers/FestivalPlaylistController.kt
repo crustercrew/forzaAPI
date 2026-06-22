@@ -4,6 +4,7 @@ import com.api.forzaapi.dto.request.FestivalPlaylistReq
 import com.api.forzaapi.dto.responses.FestivalPlaylistResp
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.services.FestivalPlaylistService
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
@@ -42,6 +43,7 @@ class FestivalPlaylistController(
         return ResponseEntity.ok(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createPlaylist(
@@ -51,6 +53,7 @@ class FestivalPlaylistController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreatePlaylists(
@@ -60,6 +63,7 @@ class FestivalPlaylistController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updatePlaylist(
@@ -70,6 +74,7 @@ class FestivalPlaylistController(
         return ResponseEntity.ok(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deletePlaylist(

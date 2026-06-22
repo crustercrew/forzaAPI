@@ -2,6 +2,7 @@ package com.api.forzaapi.controllers
 
 import com.api.forzaapi.dto.responses.AuthResp
 import com.api.forzaapi.services.JwtUtils
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,6 +18,8 @@ class AuthController(
     @Value("\${api.admin.username}") private val adminUsername: String,
     @Value("\${api.admin.password}") private val adminPassword: String
 ) {
+
+    @Hidden
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: Map<String, String>): AuthResp {
         val username = loginRequest["username"]

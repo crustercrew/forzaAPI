@@ -5,6 +5,7 @@ import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.services.ManufacturersService
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -49,6 +50,7 @@ class ManufacturerController(
         return ResponseEntity.ok(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createManufacturer(@RequestBody request: ManufacturerReq): ResponseEntity<ManufacturerResp> {
@@ -56,6 +58,7 @@ class ManufacturerController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulkcreate")
     fun bulkCreateManufacturers(@RequestBody requests: List<ManufacturerReq>): ResponseEntity<List<ManufacturerResp>> {
@@ -63,6 +66,7 @@ class ManufacturerController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     fun updateManufacturer(
@@ -72,6 +76,7 @@ class ManufacturerController(
         return ResponseEntity.ok(manufacturerService.updateManufacturers(id, request))
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     fun deleteManufacturer(@PathParam("id") id: Int): ResponseEntity<Void> {

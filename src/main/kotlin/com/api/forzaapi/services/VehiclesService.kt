@@ -13,6 +13,8 @@ import com.api.forzaapi.repositories.VehiclesRepository
 import com.api.forzaapi.utils.toPageResponse
 import jakarta.persistence.criteria.Predicate
 import jakarta.transaction.Transactional
+import org.springframework.cache.annotation.CacheConfig
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -25,6 +27,11 @@ class VehiclesService(
     private val vehiclesRepository: VehiclesRepository,
     private val manufacturersRepository: ManufacturersRepository
 ) {
+
+//    @Cacheable(
+//        value = ["vehicles"],
+//        key = "{#manufacturerId, #startYear, #endYear, #driveType, #drivetrain, #pageable.pageNumber, #pageable.pageSize}"
+//    )
     fun getVehiclesWithFilters(
         manufacturerId:Int?,
         startYear:Int?,

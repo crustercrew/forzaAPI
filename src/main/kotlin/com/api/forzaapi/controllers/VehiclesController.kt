@@ -6,6 +6,7 @@ import com.api.forzaapi.dto.responses.VehiclesResp
 import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.Drivetrain
 import com.api.forzaapi.services.VehiclesService
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -72,6 +73,7 @@ class VehiclesController(
         return ResponseEntity.ok(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createVehicle(
@@ -81,6 +83,7 @@ class VehiclesController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreate(
@@ -90,6 +93,7 @@ class VehiclesController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updateVehicle(
@@ -100,6 +104,7 @@ class VehiclesController(
         return ResponseEntity.ok(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteVehicle(

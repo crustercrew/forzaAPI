@@ -23,6 +23,10 @@ spring:
       hibernate.format_sql: true
       hibernate.default_schema: ${DB_SCHEMA}
 
+  data:
+    redis:
+      url: ${REDIS_URL}
+
 server:
   servlet:
     context-path: /api/v1
@@ -32,3 +36,14 @@ api:
   admin:
     username: ${AUTH_USERNAME}
     password: ${AUTH_PASSWORD}
+
+logging:
+  level:
+    org.springframework:
+      cache: DEBUG
+      data:
+        redis: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

@@ -6,6 +6,7 @@ import com.api.forzaapi.services.GameService
 import org.springframework.data.web.PageableDefault
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.entity.Game
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -42,6 +43,7 @@ class GameController(
         return ResponseEntity.ok(game)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createGame(@RequestBody request: GameReq): ResponseEntity<GameResp> {
@@ -49,6 +51,7 @@ class GameController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     fun updateGame(
@@ -58,6 +61,7 @@ class GameController(
         return ResponseEntity.ok(gameService.updateGame(id, request))
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     fun deleteGame(@PathParam("id") id: Int): ResponseEntity<Void> {

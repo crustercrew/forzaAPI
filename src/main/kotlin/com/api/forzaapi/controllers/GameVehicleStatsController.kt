@@ -7,6 +7,7 @@ import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.PerformanceClass
 import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.services.GameVehicleStatsService
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
@@ -115,6 +116,7 @@ class GameVehicleStatsController(
         return ResponseEntity.ok(resp)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createStats(
@@ -124,6 +126,7 @@ class GameVehicleStatsController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreateStats(
@@ -133,6 +136,7 @@ class GameVehicleStatsController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updateStats(
@@ -143,6 +147,7 @@ class GameVehicleStatsController(
         return ResponseEntity.ok(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteStats(

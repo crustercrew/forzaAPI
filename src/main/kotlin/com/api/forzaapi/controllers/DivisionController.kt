@@ -4,6 +4,7 @@ package com.api.forzaapi.controllers
 import com.api.forzaapi.dto.request.DivisionReq
 import com.api.forzaapi.dto.responses.DivisionResp
 import com.api.forzaapi.services.DivisionService
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.websocket.server.PathParam
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -40,6 +41,7 @@ class DivisionController(
         return ResponseEntity.ok(division)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createDivision(@RequestBody request: DivisionReq): ResponseEntity<DivisionResp> {
@@ -47,6 +49,7 @@ class DivisionController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulkcreate")
     fun bulkCreateDivisions(@RequestBody requests: List<DivisionReq>): ResponseEntity<List<DivisionResp>> {
@@ -54,6 +57,7 @@ class DivisionController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     fun updateDivision(
@@ -63,6 +67,7 @@ class DivisionController(
         return ResponseEntity.ok(divisionService.updateDivisions(id, request))
     }
 
+    @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     fun deleteDivision(@PathParam("id") id: Int): ResponseEntity<Void> {
