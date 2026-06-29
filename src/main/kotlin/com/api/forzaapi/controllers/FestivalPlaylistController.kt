@@ -6,7 +6,9 @@ import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.services.FestivalPlaylistService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,7 +37,8 @@ class FestivalPlaylistController(
         @RequestParam(value = "gameId", required = false) gameId: Int?,
         @RequestParam(value = "seriesNumber", required = false) seriesNumber: Int?,
         @RequestParam(value = "season", required = false) season: String?,
-        @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
+        @ParameterObject
+        @PageableDefault(page = 0, size = 20, sort = ["id"],direction = Sort.Direction.ASC) pageable: Pageable
     ): ResponseEntity<PageResponse<FestivalPlaylistResp>> {
         val response = festivalPlaylistService.getAllPlaylistsWithFilters(gameId, seriesNumber, season, pageable)
         return ResponseEntity.ok(response)

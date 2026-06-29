@@ -9,6 +9,7 @@ import com.api.forzaapi.entity.Game
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.websocket.server.PathParam
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -28,7 +29,8 @@ class GameController(
     @GetMapping
     fun getGames(
         @RequestParam(value = "title", required = false) title: String?,
-        @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
+        @ParameterObject
+        @PageableDefault(page = 0, size = 20, sort = ["id"],direction = Sort.Direction.ASC) pageable: Pageable
     ): ResponseEntity<Any> {
 
         val response = if (!title.isNullOrBlank()) {

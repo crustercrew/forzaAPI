@@ -9,7 +9,9 @@ import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.services.GameVehicleStatsService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -98,7 +100,8 @@ class GameVehicleStatsController(
         @RequestParam(value = "rarity", required = false) rarities: Rarity?,
         @RequestParam(value = "drivetype", required = false) drivetype: DriveType?,
         @RequestParam(value = "performanceclass", required = false) performanceclass: PerformanceClass?,
-        @PageableDefault(page = 0, size = 20, sort = ["id"]) pageable: Pageable
+        @ParameterObject
+        @PageableDefault(page = 0, size = 20, sort = ["id"],direction = Sort.Direction.ASC) pageable: Pageable
     ): ResponseEntity<PageResponse<GameVehicleStatsResp>> {
         val response = gameVehicleStatsService.getStats(
             vehicleId,
