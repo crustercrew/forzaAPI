@@ -14,7 +14,7 @@ data class VehiclesResp (
     val driveType: String,
     val drivetrain: String,
     val transmission:String,
-    val weightkg:Int,
+    val weightlbs:Int,
     val weightdistribution:String,
     val description: String?,
     val images: List<String>?

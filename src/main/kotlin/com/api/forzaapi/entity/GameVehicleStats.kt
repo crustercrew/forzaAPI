@@ -63,10 +63,6 @@ class GameVehicleStats(
     @Column(name = "dlc_required", length = 150)
     var dlcRequired: String?,
 
-    // Kolom Toko Forzathon (Pakai Nullable Int, karena tidak semua mobil masuk toko ini)
-    @Column(name = "forzathon_shop_cost")
-    var forzathonShopCost: Int?,
-
     // Kolom Horizon Backstage (Pakai Boolean dengan default false) ini digunakan jika forza horizon nya sudah end of service persiapan forza horizon baru
     @Column(name = "is_backstage_available", nullable = false)
     var isBackstageAvailable: Boolean = false

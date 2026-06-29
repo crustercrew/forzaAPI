@@ -217,7 +217,7 @@ class FestivalPlaylistService (
                         driveType = it.vehicle.driveType.name,
                         drivetrain = it.vehicle.drivetrain.name,
                         transmission = it.vehicle.transmission,
-                        weightkg = it.vehicle.weightkg,
+                        weightlbs = it.vehicle.weightlbs,
                         weightdistribution = it.vehicle.weightdistribution,
                         description = it.vehicle.description,
                         images = it.vehicle.images.map { it.imageUrl }
@@ -236,7 +236,6 @@ class FestivalPlaylistService (
                     ),
                     acquisition = VehicleAcquisitionResp(
                         autoshowCost = it.autoshowCost,
-                        forzathonShopCost = it.forzathonShopCost,
                         isBackstageAvailable = it.isBackstageAvailable,
                         dlcRequired = it.dlcRequired
                     )

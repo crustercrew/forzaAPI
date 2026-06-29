@@ -47,9 +47,9 @@ class Vehicles(
     @Column(length = 50)
     var transmission:String,
 
-    @Column("weight_kg", length = 50,nullable = false)
+    @Column("weight_lbs", length = 50,nullable = false)
     @ColumnDefault("0")
-    var weightkg:Int,
+    var weightlbs:Int,
 
     @Column("weight_distribution", length = 20)
     var weightdistribution:String,

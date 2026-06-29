@@ -93,7 +93,7 @@ class GameVehicleStatsService(
                     driveType = entity.vehicle.driveType.name,
                     drivetrain = entity.vehicle.drivetrain.name,
                     transmission = entity.vehicle.transmission,
-                    weightkg = entity.vehicle.weightkg,
+                    weightlbs = entity.vehicle.weightlbs,
                     weightdistribution = entity.vehicle.weightdistribution,
                     description = entity.vehicle.description,
                     images = entity.vehicle.images.map { it.imageUrl }
@@ -112,9 +112,8 @@ class GameVehicleStatsService(
                 ),
                 acquisition = VehicleAcquisitionResp(
                     autoshowCost = entity.autoshowCost,
-                    forzathonShopCost = entity.forzathonShopCost,
                     isBackstageAvailable = entity.isBackstageAvailable,
-                    dlcRequired = entity.dlcRequired
+                    dlcRequired = entity.dlcRequired,
                 )
             )
         }
@@ -179,7 +178,6 @@ class GameVehicleStatsService(
             statOffroad = request.statOffroad,
             autoshowCost = request.autoshowCost,
             dlcRequired = request.dlcRequired,
-            forzathonShopCost = request.forzathonShopCost,
             isBackstageAvailable = request.isBackstageAvailable
         )
 
@@ -235,7 +233,6 @@ class GameVehicleStatsService(
                 statOffroad = it.statOffroad,
                 autoshowCost = it.autoshowCost,
                 dlcRequired = it.dlcRequired,
-                forzathonShopCost = it.forzathonShopCost,
                 isBackstageAvailable = it.isBackstageAvailable
             )
             validStatsList.add(statsEntity)
@@ -290,7 +287,6 @@ class GameVehicleStatsService(
         currentStats.statOffroad = request.statOffroad
         currentStats.autoshowCost = request.autoshowCost
         currentStats.dlcRequired = request.dlcRequired
-        currentStats.forzathonShopCost = request.forzathonShopCost
         currentStats.isBackstageAvailable = request.isBackstageAvailable
 
         return gameVehicleStatsRepository.save(currentStats).toResponse()
@@ -336,7 +332,7 @@ class GameVehicleStatsService(
                 driveType = this.vehicle.driveType.name,
                 drivetrain = this.vehicle.drivetrain.name,
                 transmission = this.vehicle.transmission,
-                weightkg = this.vehicle.weightkg,
+                weightlbs = this.vehicle.weightlbs,
                 weightdistribution = this.vehicle.weightdistribution,
                 description = this.vehicle.description,
                 images = this.vehicle.images.map { it.imageUrl }
@@ -355,7 +351,6 @@ class GameVehicleStatsService(
             ),
             acquisition = VehicleAcquisitionResp(
                 autoshowCost = this.autoshowCost,
-                forzathonShopCost = this.forzathonShopCost,
                 dlcRequired = this.dlcRequired,
                 isBackstageAvailable = this.isBackstageAvailable
             ),

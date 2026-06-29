@@ -64,6 +64,7 @@ class VehiclesService(
         return vehicle.toResponse()
     }
 
+    @Transactional(readOnly = true)
     fun searchVehiclesByModelName(modelName: String, pageable: Pageable): PageResponse<VehiclesResp>?{
         return vehiclesRepository.findByModelNameContainingIgnoreCase(modelName,pageable).map { it.toResponse() }.toPageResponse();
     }
@@ -89,7 +90,7 @@ class VehiclesService(
             driveType = request.driveType,
             drivetrain = request.drivetrain,
             transmission = request.transmission,
-            weightkg = request.weightkg,
+            weightlbs = request.weightlbs,
             weightdistribution = request.weightdistribution,
             description = request.description
         )
@@ -135,7 +136,7 @@ class VehiclesService(
                 driveType = it.driveType,
                 drivetrain = it.drivetrain,
                 transmission = it.transmission,
-                weightkg = it.weightkg,
+                weightlbs = it.weightlbs,
                 weightdistribution = it.weightdistribution,
                 description = it.description
             )
@@ -165,7 +166,7 @@ class VehiclesService(
         vehicle.driveType = request.driveType
         vehicle.drivetrain = request.drivetrain
         vehicle.transmission = request.transmission
-        vehicle.weightkg = request.weightkg
+        vehicle.weightlbs = request.weightlbs
         vehicle.weightdistribution = request.weightdistribution
         vehicle.description = request.description
 
@@ -196,7 +197,7 @@ class VehiclesService(
             driveType = this.driveType.name,
             drivetrain = this.drivetrain.name,
             transmission = this.transmission,
-            weightkg = this.weightkg,
+            weightlbs = this.weightlbs,
             weightdistribution = this.weightdistribution,
             description = this.description,
             images = this.images.map { it.imageUrl }
