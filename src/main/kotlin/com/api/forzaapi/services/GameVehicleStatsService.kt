@@ -94,7 +94,9 @@ class GameVehicleStatsService(
                     drivetrain = entity.vehicle.drivetrain.name,
                     transmission = entity.vehicle.transmission,
                     weightkg = entity.vehicle.weightkg,
-                    weightdistribution = entity.vehicle.weightdistribution
+                    weightdistribution = entity.vehicle.weightdistribution,
+                    description = entity.vehicle.description,
+                    images = entity.vehicle.images.map { it.imageUrl }
                 ),
                 rarity = entity.rarity,
                 unlockType = entity.unlocktype,
@@ -336,6 +338,8 @@ class GameVehicleStatsService(
                 transmission = this.vehicle.transmission,
                 weightkg = this.vehicle.weightkg,
                 weightdistribution = this.vehicle.weightdistribution,
+                description = this.vehicle.description,
+                images = this.vehicle.images.map { it.imageUrl }
             ),
             rarity = Rarity.valueOf(this.rarity.name),
             unlockType = UniqueUnlock.valueOf(this.unlocktype.name),

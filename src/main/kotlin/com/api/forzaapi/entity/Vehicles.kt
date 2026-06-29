@@ -55,5 +55,8 @@ class Vehicles(
     var weightdistribution:String,
 
     @Column("description", columnDefinition = "TEXT")
-    var description:String
+    var description:String,
+
+    @OneToMany(mappedBy = "vehicle", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val images: List<VehicleImages> = mutableListOf()
 ): BaseEntity()

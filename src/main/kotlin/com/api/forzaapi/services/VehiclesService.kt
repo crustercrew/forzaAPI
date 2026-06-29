@@ -2,6 +2,7 @@ package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.VehiclesReq
 import com.api.forzaapi.dto.responses.PageResponse
+import com.api.forzaapi.dto.responses.VehicleImagesResp
 import com.api.forzaapi.dto.responses.VehiclesResp
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import com.api.forzaapi.entity.Vehicles
@@ -185,7 +186,6 @@ class VehiclesService(
             modelName = this.modelName,
             productionyear = this.productionyear,
             manufacturer = ManufacturerResp(
-
                 name = this.manufacturer.name,
                 country = this.manufacturer.country,
                 id = this.manufacturer.id
@@ -197,7 +197,9 @@ class VehiclesService(
             drivetrain = this.drivetrain.name,
             transmission = this.transmission,
             weightkg = this.weightkg,
-            weightdistribution = this.weightdistribution
+            weightdistribution = this.weightdistribution,
+            description = this.description,
+            images = this.images.map { it.imageUrl }
         )
     }
 }

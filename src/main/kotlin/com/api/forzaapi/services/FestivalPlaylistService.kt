@@ -218,7 +218,9 @@ class FestivalPlaylistService (
                         drivetrain = it.vehicle.drivetrain.name,
                         transmission = it.vehicle.transmission,
                         weightkg = it.vehicle.weightkg,
-                        weightdistribution = it.vehicle.weightdistribution
+                        weightdistribution = it.vehicle.weightdistribution,
+                        description = it.vehicle.description,
+                        images = it.vehicle.images.map { it.imageUrl }
                     ),
                     rarity = it.rarity,
                     unlockType = it.unlocktype,

@@ -15,5 +15,7 @@ data class VehiclesResp (
     val drivetrain: String,
     val transmission:String,
     val weightkg:Int,
-    val weightdistribution:String
+    val weightdistribution:String,
+    val description: String?,
+    val images: List<String>?
 ): Serializers

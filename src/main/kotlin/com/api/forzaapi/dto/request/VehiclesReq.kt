@@ -25,5 +25,6 @@ data class VehiclesReq(
     val transmission: String,
     val weightkg: Int,
     val weightdistribution: String,
-    val description: String
+    val description: String,
+    val images: List<String>?
 )
