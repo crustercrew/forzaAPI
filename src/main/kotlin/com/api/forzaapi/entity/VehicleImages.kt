@@ -13,5 +13,8 @@ class VehicleImages (
     val vehicle: Vehicles,
 
     @Column(nullable = false)
-    var imageUrl: String
+    var imageUrl: String,
+
+    @Column(name = "game_series")
+    var gameimageseries:String
 ) : BaseEntity()

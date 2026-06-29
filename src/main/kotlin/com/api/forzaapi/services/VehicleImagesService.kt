@@ -22,7 +22,8 @@ class VehicleImagesService(
         // 2. Buat objek image baru dari entity-mu
         val newImage = VehicleImages(
             vehicle = vehicle,
-            imageUrl = request.imageUrl
+            imageUrl = request.imageUrl,
+            gameimageseries = request.gameimageseries
         )
 
         // 3. Save dan kembalikan response
@@ -39,6 +40,7 @@ class VehicleImagesService(
 
     private fun VehicleImages.toResponse() = VehicleImagesResp(
         id = this.id,
-        images = this.imageUrl
+        images = this.imageUrl,
+        gameseries = this.gameimageseries
     )
 }
