@@ -200,7 +200,13 @@ class VehiclesService(
             weightlbs = this.weightlbs,
             weightdistribution = this.weightdistribution,
             description = this.description,
-            images = this.images.map { it.imageUrl }
+            images = this.images.map {
+                VehicleImagesResp(
+                    id = it.id,
+                    gameseries = it.gameimageseries,
+                    carimage = it.imageUrl
+                )
+            }
         )
     }
 }

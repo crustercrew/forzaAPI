@@ -8,6 +8,7 @@ import com.api.forzaapi.dto.responses.GameVehicleStatsResp
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.PlaylistRewardVehicle
 import com.api.forzaapi.dto.responses.VehicleAcquisitionResp
+import com.api.forzaapi.dto.responses.VehicleImagesResp
 import com.api.forzaapi.dto.responses.VehicleMetricsResp
 import com.api.forzaapi.dto.responses.VehiclesResp
 import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
@@ -220,7 +221,13 @@ class FestivalPlaylistService (
                         weightlbs = it.vehicle.weightlbs,
                         weightdistribution = it.vehicle.weightdistribution,
                         description = it.vehicle.description,
-                        images = it.vehicle.images.map { it.imageUrl }
+                        images = it.vehicle.images.map { images ->
+                            VehicleImagesResp(
+                                id = images.id,
+                                gameseries = images.gameimageseries,
+                                carimage = images.imageUrl
+                            )
+                        }
                     ),
                     rarity = it.rarity,
                     unlockType = it.unlocktype,

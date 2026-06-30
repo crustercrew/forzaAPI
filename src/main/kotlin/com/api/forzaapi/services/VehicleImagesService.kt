@@ -40,7 +40,7 @@ class VehicleImagesService(
 
     private fun VehicleImages.toResponse() = VehicleImagesResp(
         id = this.id,
-        images = this.imageUrl,
-        gameseries = this.gameimageseries
+        gameseries = this.gameimageseries,
+        carimage = this.imageUrl,
     )
 }

@@ -17,5 +17,5 @@ data class VehiclesResp (
     val weightlbs:Int,
     val weightdistribution:String,
     val description: String?,
-    val images: List<String>?
+    val images: List<VehicleImagesResp>?
 ): Serializers
