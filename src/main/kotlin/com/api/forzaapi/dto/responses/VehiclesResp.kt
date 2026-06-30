@@ -1,6 +1,5 @@
 package com.api.forzaapi.dto.responses
 
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
 import tools.jackson.databind.ser.Serializers
 
 data class VehiclesResp (

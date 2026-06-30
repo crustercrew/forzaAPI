@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface FestivalPlaylistRepository: JpaRepository<FestivalPlaylist,Int> {
-
-    // Spring Data otomatis tahu cara membuat WHERE clause dinamis yang aman dari NULL tanpa crash
     fun findByGameIdAndSeriesNumberAndSeasonIgnoreCase(gameId: Int, seriesNumber: Int, season: String, pageable: Pageable): Page<FestivalPlaylist>
     fun findByGameIdAndSeriesNumber(gameId: Int, seriesNumber: Int, pageable: Pageable): Page<FestivalPlaylist>
     fun findByGameIdAndSeasonIgnoreCase(gameId: Int, season: String, pageable: Pageable): Page<FestivalPlaylist>

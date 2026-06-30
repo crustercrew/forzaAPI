@@ -5,6 +5,7 @@ import com.api.forzaapi.dto.responses.VehicleImagesResp
 import com.api.forzaapi.entity.VehicleImages
 import com.api.forzaapi.repositories.VehicleImagesRepository
 import com.api.forzaapi.repositories.VehiclesRepository
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,7 +18,7 @@ class VehicleImagesService(
     fun addImageToVehicle(vehicleId: Int, request: VehicleImagesReq): VehicleImagesResp {
         // 1. Validasi: Pastikan mobilnya ada
         val vehicle = vehicleRepository.findById(vehicleId)
-            .orElseThrow { Exception("Mobil dengan ID $vehicleId tidak ditemukan") } // Ganti dengan custom exception kamu kalau ada
+            .orElseThrow { ResourceNotFoundException("Car with ID $vehicleId not found") }
 
         // 2. Buat objek image baru dari entity-mu
         val newImage = VehicleImages(

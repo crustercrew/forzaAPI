@@ -3,10 +3,11 @@ package com.api.forzaapi.services
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.entity.Manufacturers
 import com.api.forzaapi.repositories.ManufacturersRepository
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+import com.api.forzaapi.dto.responses.ManufacturerResp
 import com.api.forzaapi.dto.request.ManufacturerReq
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerOBJResp
+import com.api.forzaapi.dto.responses.ManufacturerListOBJResp
+import com.api.forzaapi.dto.responses.ManufacturerOBJResp
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -30,7 +31,7 @@ class ManufacturersService(
     @Transactional(readOnly = true)
     fun getManufacturerByName(name: String): ManufacturerResp {
         val manufacturers = manufacturersRepository.findByNameIgnoreCase(name)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with $name not found")
+            ?: throw ResourceNotFoundException( "Manufacturer with $name not found")
 
         return manufacturers.toResponse();
     }
@@ -38,7 +39,7 @@ class ManufacturersService(
     @Transactional(readOnly = true)
     fun getManufacturerById(id:Int): ManufacturerResp{
         val manufacturer = manufacturersRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Manufacturer with $id not found")
+            ?: throw ResourceNotFoundException("Manufacturer with $id not found")
 
         return manufacturer.toResponse();
     }
@@ -48,7 +49,7 @@ class ManufacturersService(
         val manufacturers = manufacturersRepository.findByCountryContainingIgnoreCase(country, pageable)
 
         if (manufacturers.isEmpty()) {
-            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with country $country not found")
+            throw ResourceNotFoundException( "Manufacturer with country $country not found")
         }
 
         val groupedData = manufacturers.content.groupBy { it.country }
@@ -100,7 +101,7 @@ class ManufacturersService(
     fun updateManufacturers(id: Int, request: ManufacturerReq): ManufacturerResp {
         // Cek dulu apakah manufacturers-nya ada?
         val manufacturers = manufacturersRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with id $id not found")
+            ?: throw ResourceNotFoundException( "Manufacturer with id $id not found")
 
         // Timpa data lama dengan data baru
         manufacturers.name = request.name
@@ -113,7 +114,7 @@ class ManufacturersService(
     @Transactional
     fun deleteManufacturers(id: Int) {
         val manufacturers = manufacturersRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer with id $id not found")
+            ?: throw ResourceNotFoundException( "Manufacturer with id $id not found")
 
         manufacturersRepository.delete(manufacturers)
     }

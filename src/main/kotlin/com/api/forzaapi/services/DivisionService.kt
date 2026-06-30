@@ -5,6 +5,7 @@ import com.api.forzaapi.dto.responses.DivisionResp
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.entity.Divisions
 import com.api.forzaapi.repositories.DivisionRepository
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -27,7 +28,9 @@ class DivisionService(
     @Transactional(readOnly = true)
     fun getDivisionByName(name: String): DivisionResp {
         val division = divisionRepository.findByNameIgnoreCase(name)
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Resource not found")
+            ?: throw ResourceNotFoundException(
+                "Division by name $name not found"
+            )
 
         return division.toResponse();
     }
@@ -35,7 +38,9 @@ class DivisionService(
     @Transactional(readOnly = true)
     fun getDivisionById(id:Int): DivisionResp{
         val division = divisionRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND,"Car Type with $id not found")
+            ?: throw ResourceNotFoundException(
+                "Division by id $id not found"
+            )
 
         return division.toResponse();
     }
@@ -66,7 +71,9 @@ class DivisionService(
     fun updateDivisions(id: Int, request: DivisionReq): DivisionResp {
         // Cek dulu apakah division-nya ada?
         val division = divisionRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Car Type with id $id not found")
+            ?: throw ResourceNotFoundException(
+                "Division by id $id not found"
+            )
 
         // Timpa data lama dengan data baru
         division.name = request.name
@@ -78,7 +85,9 @@ class DivisionService(
     @Transactional
     fun deleteDivisions(id: Int) {
         val division = divisionRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Car Type with id $id not found")
+            ?: throw ResourceNotFoundException(
+                "Division by id $id not found"
+            )
 
         divisionRepository.delete(division)
     }

@@ -2,8 +2,8 @@ package com.api.forzaapi.controllers
 
 import com.api.forzaapi.dto.request.ManufacturerReq
 import com.api.forzaapi.dto.responses.PageResponse
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerListOBJResp
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+import com.api.forzaapi.dto.responses.ManufacturerListOBJResp
+import com.api.forzaapi.dto.responses.ManufacturerResp
 import com.api.forzaapi.services.ManufacturersService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation

@@ -30,15 +30,6 @@ class VehiclesController(
     private val vehiclesService: VehiclesService,
     private val vehicleImageService: VehicleImagesService
 ) {
-    /**
-     * 1. GET ALL VEHICLES & FILTERS (PAGINATED)
-     * Mengakomodasi pencarian berdasarkan Pabrikan, Rentang Tahun, DriveType, dan Drivetrain.
-     * * Contoh Postman / Client Android:
-     * - Semua mobil: GET /api/v1/vehicles
-     * - Cari Nissan: GET /api/v1/vehicles?manufacturerId=12
-     * - Mobil AWD saja: GET /api/v1/vehicles?drivetrain=AWD
-     * - Mobil Tahun 2000-2012: GET /api/v1/vehicles?startYear=2000&endYear=2012
-     */
 
     @Operation(
         summary = "Browse global vehicle catalog with dynamic multi-criteria filtering",
@@ -64,10 +55,6 @@ class VehiclesController(
         return ResponseEntity.ok(response)
     }
 
-    /**
-     * 2. GET VEHICLE BY ID
-     * URL: GET http://localhost:8080/api/v1/vehicles/5
-     */
     @Operation(
         summary = "Fetch a standalone vehicle metadata by unique identifier",
         description = "Returns isolated database profile information for a specific vehicle catalog record, including internal mechanical engine metrics, dimensions weight parameters, and attached franchise wide media imagery. Optimized heavily via Redis Single-Key lookups."
@@ -80,11 +67,6 @@ class VehiclesController(
         return ResponseEntity.ok(response)
     }
 
-    /**
-     * 3. SEARCH VEHICLE BY MODEL NAME (LIKE QUERY)
-     * Menggunakan Query Param 'name' untuk pencarian teks (misal: "Skyline", "Furai").
-     * URL: GET http://localhost:8080/api/v1/vehicles/search?name=Skyline
-     */
     @Operation(
         summary = "Perform text-based model wildcard lookup operations",
         description = "Executes a highly responsive, case-insensitive partial name matching routine (SQL LIKE equivalent) on the global index. " +
@@ -138,8 +120,6 @@ class VehiclesController(
         @PathVariable("id") id: Int
     ): ResponseEntity<Map<String, String>> {
         val message = vehiclesService.deleteVehicle(id)
-
-        // Membungkus return String biasa menjadi format JSON { "message": "Success..." } agar rapi di sisi Client/Android
         val response = mapOf("message" to message)
         return ResponseEntity.ok(response)
     }

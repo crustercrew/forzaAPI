@@ -1,4 +1,4 @@
-package com.api.forzaapi.dto.responses.manufacturers
+package com.api.forzaapi.dto.responses
 
 data class ManufacturerOBJResp(
     val id: Int,

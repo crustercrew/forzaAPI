@@ -6,17 +6,16 @@ import com.api.forzaapi.dto.responses.FestivalPlaylistResp
 import com.api.forzaapi.dto.responses.GameResp
 import com.api.forzaapi.dto.responses.GameVehicleStatsResp
 import com.api.forzaapi.dto.responses.PageResponse
-import com.api.forzaapi.dto.responses.PlaylistRewardVehicle
 import com.api.forzaapi.dto.responses.VehicleAcquisitionResp
 import com.api.forzaapi.dto.responses.VehicleImagesResp
 import com.api.forzaapi.dto.responses.VehicleMetricsResp
 import com.api.forzaapi.dto.responses.VehiclesResp
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+import com.api.forzaapi.dto.responses.ManufacturerResp
 import com.api.forzaapi.entity.FestivalPlaylist
 import com.api.forzaapi.repositories.FestivalPlaylistRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
-import com.api.forzaapi.utils.toPageResponse
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -66,17 +65,14 @@ class FestivalPlaylistService (
     @Transactional(readOnly = true)
     fun getPlaylistById(id: Int): FestivalPlaylistResp? {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+            ?: throw ResourceNotFoundException("Playlist with ID $id Not Found")
         return playlist.toResponse()
     }
 
-    /**
-     * 1. CREATE SINGLE FESTIVAL PLAYLIST
-     */
     @Transactional
     fun createPlaylist(request: FestivalPlaylistReq): FestivalPlaylistResp {
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+            ?: throw ResourceNotFoundException("Game with ID ${request.gameId} Not Found")
 
         // Cari semua entitas mobil hadiah berdasarkan ID yang dikirim
         val rewardEntities = gameVehicleStatsRepository.findAllById(request.rewardVehicleStatsIds).toMutableSet()
@@ -96,9 +92,6 @@ class FestivalPlaylistService (
         return festivalPlaylistRepository.save(playlist).toResponse()
     }
 
-    /**
-     * 2. BULK CREATE FESTIVAL PLAYLISTS (SKIP & CONTINUE)
-     */
     @Transactional
     fun bulkCreatePlaylists(requests: List<FestivalPlaylistReq>): List<FestivalPlaylistResp> {
         val validPlaylists = mutableListOf<FestivalPlaylist>()
@@ -130,9 +123,6 @@ class FestivalPlaylistService (
         return savedPlaylists.map { it.toResponse() }
     }
 
-    /**
-     * 3. UPDATE FESTIVAL PLAYLIST BY ID
-     */
     @Transactional
     fun updatePlaylist(id: Int, request: FestivalPlaylistReq): FestivalPlaylistResp {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
@@ -143,7 +133,6 @@ class FestivalPlaylistService (
 
         val rewardEntities = gameVehicleStatsRepository.findAllById(request.rewardVehicleStatsIds).toMutableSet()
 
-        // Timpa data lama
         playlist.game = game
         playlist.seriesNumber = request.seriesNumber
         playlist.season = request.season
@@ -152,22 +141,16 @@ class FestivalPlaylistService (
         playlist.startDate = request.startDate
         playlist.endDate = request.endDate
 
-        // Kosongkan hadiah lama, isi dengan set hadiah yang baru (Sifat ManyToMany Hibernate friendly)
         playlist.rewards.clear()
         playlist.rewards.addAll(rewardEntities)
 
         return festivalPlaylistRepository.save(playlist).toResponse()
     }
 
-    /**
-     * 4. DELETE FESTIVAL PLAYLIST BY ID
-     */
     @Transactional
     fun deletePlaylist(id: Int): String {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist dengan ID $id tidak ditemukan")
-
-        // Hapus kaitan relasi ManyToMany terlebih dahulu di memori agar tabel bridge terhapus mulus
+            ?: throw ResourceNotFoundException("Playlist with ID $id Not Found")
         playlist.rewards.clear()
         festivalPlaylistRepository.delete(playlist)
 

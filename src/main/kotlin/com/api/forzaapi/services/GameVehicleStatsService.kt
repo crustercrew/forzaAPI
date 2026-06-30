@@ -2,7 +2,7 @@ package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.GameVehicleStatsReq
 import com.api.forzaapi.dto.responses.*
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+import com.api.forzaapi.dto.responses.ManufacturerResp
 import com.api.forzaapi.entity.GameVehicleStats
 import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.PerformanceClass
@@ -12,6 +12,8 @@ import com.api.forzaapi.repositories.DivisionRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.repositories.VehiclesRepository
+import com.api.forzaapi.utils.errorhandler.InvalidRequestException
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -134,35 +136,29 @@ class GameVehicleStatsService(
     fun getStatsById(id: Int): GameVehicleStatsResp =
         gameVehicleStatsRepository.findByIdOrNull(id)
             ?.toResponse()
-            ?: throw ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Record statistik dengan ID $id tidak ditemukan"
-            )
+            ?: throw ResourceNotFoundException("Vehicle Stats with ID $id Not Found")
 
-    /**
-     * 1. Create game VehicleStats
-     */
+
     @Transactional
     fun createStats(request: GameVehicleStatsReq): GameVehicleStatsResp {
         // 1. Validasi Keberadaan Relasi Parent
         val vehicle = vehiclesRepository.findByIdOrNull(request.vehicleId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle dengan ID ${request.vehicleId} tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Vehicle dengan ID ${request.vehicleId} tidak ditemukan")
 
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game dengan ID ${request.gameId} tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Game dengan ID ${request.gameId} tidak ditemukan")
 
         // Cari division jika id dikirim (karena di entity field ini nullable)
         val division = request.divisionId?.let {
             divisionRepository.findByIdOrNull(it)
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Division dengan ID $it tidak ditemukan")
+                ?: throw ResourceNotFoundException( "Division dengan ID $it tidak ditemukan")
         }
 
         // 2. Validasi Duplikasi (1 Mobil hanya boleh punya 1 Record Stat per Game)
         val isExist = gameVehicleStatsRepository.existsByVehicleAndGame(vehicle, game)
         if (isExist) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "Statistik untuk mobil '${vehicle.modelName}' di game '${game.title}' sudah terdaftar!"
+            throw InvalidRequestException(
+                "Statistik with Vehicle '${vehicle.modelName}' in game '${game.title}' has already exist!"
             )
         }
 
@@ -211,7 +207,7 @@ class GameVehicleStatsService(
             // 2. Safe Check Duplikasi di Database
             val isExistInDb = gameVehicleStatsRepository.existsByVehicleAndGame(vehicle, game)
             if (isExistInDb) {
-                println("Skip Bulk: Stat untuk mobil '${vehicle.modelName}' di game '${game.title}' sudah ada di database.")
+                println("Skip Bulk: Stat for vehicle '${vehicle.modelName}' in game '${game.title}' has already exist in database.")
                 continue
             }
 
@@ -249,31 +245,28 @@ class GameVehicleStatsService(
         return savedEntities.map { it.toResponse() }
     }
 
-    /**
-     * 3. update game VehicleStats
-     */
     @Transactional
     fun updateStats(id: Int, request: GameVehicleStatsReq): GameVehicleStatsResp {
         // Cek record statistik utama yang mau di-update
         val currentStats = gameVehicleStatsRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Record statistik dengan ID $id tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Record Stats with ID $id not found")
 
         // Cari parent relasi baru jika user ingin mengganti relasi mobil/game/division
         val vehicle = vehiclesRepository.findByIdOrNull(request.vehicleId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle tidak valid")
+            ?: throw ResourceNotFoundException( "Vehicle not valid")
 
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game tidak valid")
+            ?: throw ResourceNotFoundException( "Game not valid")
 
         val division = request.divisionId?.let {
-            divisionRepository.findByIdOrNull(it) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Division tidak valid")
+            divisionRepository.findByIdOrNull(it) ?: throw ResourceNotFoundException( "Division not valid")
         }
 
         // Proteksi: Jika mengganti mobil/game, pastikan kombinasi barunya tidak menabrak record lain yang sudah ada
         if (currentStats.vehicle.id != vehicle.id || currentStats.game.id != game.id) {
             val isViolatingUnique = gameVehicleStatsRepository.existsByVehicleAndGame(vehicle, game)
             if (isViolatingUnique) {
-                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Gagal Update: Kombinasi mobil dan game tersebut sudah ada di record lain!")
+                throw ResourceNotFoundException( "Failed Update: this vehicle and game combination has already in another record!")
             }
         }
 
@@ -298,16 +291,13 @@ class GameVehicleStatsService(
         return gameVehicleStatsRepository.save(currentStats).toResponse()
     }
 
-    /**
-     * 4. delete game VehicleStats
-     */
     @Transactional
     fun deleteStats(id: Int): String {
         val currentStats = gameVehicleStatsRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Record statistik dengan ID $id tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Statistical record with ID $id not found")
 
         gameVehicleStatsRepository.delete(currentStats)
-        return "Success delete statistik ID $id untuk mobil '${currentStats.vehicle.modelName}' di game '${currentStats.game.title}'"
+        return "Successful delete Statistical record with ID $id for car '${currentStats.vehicle.modelName}' in game '${currentStats.game.title}'"
     }
 
     // Extension function mapping dari Entity ke Response DTO

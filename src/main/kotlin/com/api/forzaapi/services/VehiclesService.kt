@@ -4,12 +4,13 @@ import com.api.forzaapi.dto.request.VehiclesReq
 import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.dto.responses.VehicleImagesResp
 import com.api.forzaapi.dto.responses.VehiclesResp
-import com.api.forzaapi.dto.responses.manufacturers.ManufacturerResp
+import com.api.forzaapi.dto.responses.ManufacturerResp
 import com.api.forzaapi.entity.Vehicles
 import com.api.forzaapi.enumerates.DriveType
 import com.api.forzaapi.enumerates.Drivetrain
 import com.api.forzaapi.repositories.ManufacturersRepository
 import com.api.forzaapi.repositories.VehiclesRepository
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
 import jakarta.persistence.criteria.Predicate
 import org.springframework.transaction.annotation.Transactional
@@ -60,7 +61,7 @@ class VehiclesService(
     @Transactional(readOnly = true)
     fun getVehicleById(id: Int): VehiclesResp? {
         val vehicle = vehiclesRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "vehicle with id $id not found")
+            ?: throw ResourceNotFoundException( "vehicle with id $id not found")
         return vehicle.toResponse()
     }
 
@@ -73,11 +74,11 @@ class VehiclesService(
     fun createVehicle(request: VehiclesReq): VehiclesResp {
 
         val manufacturer = manufacturersRepository.findByNameIgnoreCase(request.manufacturerName)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer Not Found")
+            ?: throw ResourceNotFoundException( "Manufacturer Not Found")
 
         val isVehicleExist = vehiclesRepository.existsByModelNameAndProductionyear(request.modelName, request.productionyear)
         if (isVehicleExist) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Mobil ${request.modelName} with Year ${request.productionyear} is Already Exist!")
+            throw ResourceNotFoundException( "Mobil ${request.modelName} with Year ${request.productionyear} is Already Exist!")
         }
         val vehicle = Vehicles(
             id = 0,
@@ -152,10 +153,10 @@ class VehiclesService(
     @Transactional
     fun updateVehicle(id: Int, request: VehiclesReq): VehiclesResp{
         val vehicle = vehiclesRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle with id $id not found")
+            ?: throw ResourceNotFoundException( "Vehicle with id $id not found")
 
         val manufacturer = manufacturersRepository.findByNameIgnoreCase(request.manufacturerName)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Manufacturer Not Found")
+            ?: throw ResourceNotFoundException( "Manufacturer Not Found")
 
         vehicle.modelName = request.modelName
         vehicle.productionyear = request.productionyear

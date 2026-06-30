@@ -38,7 +38,6 @@ import java.util.Locale.getDefault
 class GameVehicleStatsController(
     private val gameVehicleStatsService: GameVehicleStatsService
 ) {
-    // KUNCI PENGAMAN VALIDASI ENUM OTOMATIS
     @InitBinder
     fun initBinder(binder: WebDataBinder) {
         // 1. Pengaman untuk DriveType Enum
