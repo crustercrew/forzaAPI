@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Forza Open API Landing Page</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+            rel="stylesheet" />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500;700&amp;family=Montserrat:wght@700;800&amp;display=swap"
+            rel="stylesheet" />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+            rel="stylesheet" />
+    <script id="tailwind-config" src="tailwind-config.js">
+    </script>
+    <style>
+        .json-key {
+            color: #dbe3ec;
+        }
+
+        .json-string {
+            color: #45f885;
+        }
+
+        .json-number {
+            color: #ffba38;
+        }
+
+        .json-bracket {
+            color: #514532;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar from JSON -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-background/80 backdrop-blur-md border-b border-outline-variant">
+    <div class="flex items-center gap-md">
+        <a href="#" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <img src="forza-logo.webp" alt="Forza API Logo" class="h-8 w-auto object-contain" />
+            <span class="font-headline-lg text-headline-lg font-black text-primary uppercase tracking-tighter hidden sm:inline">
+            FORZA API
+        </span>
+        </a>
+
+        <div class="hidden md:flex gap-xs">
+            <a class="font-label-sm text-label-sm text-primary bg-surface-container-high px-3 py-2 rounded"
+               href="#try-it">
+                Home
+            </a>
+            <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2 rounded"
+               href="about.html">
+                About
+            </a>
+            <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2 rounded"
+               href="documentation.html">
+                Documentation
+            </a>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-sm">
+        <a class="hidden sm:flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2"
+           href="https://github.com/crustercrew/forzaAPI" target="_blank">
+            <span class="material-symbols-outlined text-[18px]">code</span>
+            Source Code
+        </a>
+
+        <a href="/swagger-ui/index.html" target="_blank"
+           class="bg-primary text-on-primary font-label-sm text-label-sm px-4 py-2 rounded font-bold hover:scale-95 duration-100 transition-transform inline-block text-center decoration-none">
+            Explore Swagger UI
+        </a>
+    </div>
+</nav>
+<main class="flex-grow pt-[100px] px-gutter md:px-margin max-w-7xl mx-auto w-full pb-xl">
+    <!-- Hero Section -->
+    <section class="py-xl flex flex-col items-center text-center gap-md max-w-4xl mx-auto">
+        <h1 class="font-headline-xl text-headline-xl text-on-background">The RESTful Forza Automotive API</h1>
+        <p class="font-body-lg text-body-lg text-primary">Serving live data over telemetry-optimized enterprise
+            caching nodes!</p>
+        <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            All the vehicle metrics, performance index classifications, raw drivetrain profiles, and Festival
+            Playlist seasonal logs you'll ever need in one place, easily accessible through a modern free
+            open-source RESTful API.
+        </p>
+        <div class="pt-sm">
+            <a class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded font-label-sm text-label-sm uppercase tracking-wider hover:bg-primary-fixed transition-colors"
+               href="/swagger-ui/index.html">
+                <span class="material-symbols-outlined">api</span>
+                Browse Swagger UI Documentation
+            </a>
+        </div>
+    </section>
+    <!-- Interactive Endpoint Sandbox -->
+    <section class="my-xl">
+        <div
+                class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden flex flex-col md:flex-row shadow-lg">
+            <!-- Input Pane -->
+            <div
+                    class="w-full md:w-1/2 p-md bg-surface-container border-b md:border-b-0 md:border-r border-outline-variant flex flex-col gap-sm">
+                <div
+                        class="flex items-center gap-2 text-primary font-label-sm text-label-sm uppercase tracking-wider mb-2">
+                    <span class="material-symbols-outlined text-[18px]">terminal</span>
+                    Try it now
+                </div>
+                <div class="flex-grow flex flex-col justify-center">
+                    <div
+                            class="flex items-center bg-background border border-outline-variant rounded focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all p-1">
+                            <span class="text-on-surface-variant pl-4 select-none font-code-md text-code-md">GET /api/v1/</span>
+                        <input
+                                class="bg-transparent border-none text-on-background font-code-md text-code-md w-full focus:ring-0 outline-none px-2 py-2"
+                                spellcheck="false" type="text" value="vehicles/search?manufacturerId=12" />
+                    </div>
+                    <p class="font-label-sm text-label-sm text-on-surface-variant mt-3 leading-relaxed">
+                        Need a hint? Try: <br />
+                        <span
+                                class="text-secondary cursor-pointer hover:underline">vehicles/search?manufacturerId=12</span>,
+                        <span
+                                class="text-secondary cursor-pointer hover:underline">festival-playlists/current</span>,
+                        <span class="text-secondary cursor-pointer hover:underline">divisions</span>,
+                        <span class="text-secondary cursor-pointer hover:underline">manufacturers</span>
+                    </p>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <a class="text-on-surface-variant hover:text-primary font-label-sm text-label-sm truncate max-w-[200px] flex items-center gap-1"
+                       href="https://api.forza-api.com/api/v1/vehicles/lamborghini-centenario">
+                        <span class="material-symbols-outlined text-[14px]">link</span>
+                        Direct Link
+                    </a>
+                    <button
+                            class="bg-primary text-on-primary px-4 py-2 rounded font-label-sm text-label-sm hover:scale-95 transition-transform">
+                        Submit Query
+                    </button>
+                </div>
+            </div>
+            <!-- Output Pane (JSON Viewer) -->
+            <div class="w-full md:w-1/2 bg-surface p-md flex flex-col h-[400px]">
+                <div class="flex justify-between items-center mb-3">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Response
+                            Payload</span>
+                    <div class="flex gap-2">
+                        <div class="w-2 h-2 rounded-full bg-error"></div>
+                        <div class="w-2 h-2 rounded-full bg-primary-container"></div>
+                        <div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+                    </div>
+                </div>
+                <div
+                        class="flex-grow overflow-auto bg-surface-container-lowest p-sm rounded border border-outline-variant/50 font-code-md text-code-md leading-relaxed">
+                        <pre><code><span class="json-bracket">{</span>
+  <span class="json-key">"id"</span>: <span class="json-string">"lamborghini-centenario"</span>,
+  <span class="json-key">"name"</span>: <span class="json-string">"Centenario LP 770-4"</span>,
+  <span class="json-key">"manufacturer"</span>: <span class="json-string">"Lamborghini"</span>,
+  <span class="json-key">"year"</span>: <span class="json-number">2016</span>,
+  <span class="json-key">"performance_index"</span>: <span class="json-number">969</span>,
+  <span class="json-key">"class"</span>: <span class="json-string">"S2"</span>,
+  <span class="json-key">"stats"</span>: <span class="json-bracket">{</span>
+    <span class="json-key">"speed"</span>: <span class="json-number">9.1</span>,
+    <span class="json-key">"handling"</span>: <span class="json-number">9.4</span>,
+    <span class="json-key">"acceleration"</span>: <span class="json-number">8.8</span>,
+    <span class="json-key">"launch"</span>: <span class="json-number">9.9</span>,
+    <span class="json-key">"braking"</span>: <span class="json-number">10.0</span>
+  <span class="json-bracket">}</span>,
+  <span class="json-key">"game_vehicle_stats"</span>: <span class="json-bracket">[</span> ... <span class="json-bracket">]</span>,
+  <span class="json-key">"vehicle_images"</span>: <span class="json-bracket">[</span>
+    <span class="json-string">"https://assets.forza-api.com/img/lambo-cent.png"</span>
+  <span class="json-bracket">]</span>
+<span class="json-bracket">}</span></code></pre>
+                </div>
+                <div class="mt-3 text-right">
+                    <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors"
+                       href="#">
+                        View raw JSON (4.21 KB, 120 lines)
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Resource Display Visual -->
+        <div
+                class="mt-sm p-4 bg-surface-container-high rounded border border-outline-variant flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Resource for <span
+                        class="text-primary">lamborghini-centenario</span></span>
+            <div class="w-32 h-16 rounded overflow-hidden border border-outline-variant bg-surface relative">
+                <img class="object-cover w-full h-full opacity-80 mix-blend-luminosity"
+                     data-alt="A highly detailed render of a dark grey Lamborghini Centenario sports car in a sleek, dimly lit studio setting. The car's sharp angles are highlighted by a single overhead rim light, reflecting off the carbon fiber body. The overall mood is aggressive and technical, fitting a high-performance developer aesthetic. Colors are predominantly deep slate and black with subtle festival yellow reflections."
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPwBJlrkCbS-XRKKS_ZIlpG_3u1LicKFExj-UKFnaYD5kS1TlC8ouGsjvfkxI6VNGfbJDuYJBsjiGE106R-xxQjSJuNUe_mMfr92fpjfqW2YvvTZ3-QVayL8HLqrIBEw6bSqnn4hYE4PTep3cZChrplfyGjdtIypOyDusUOqILRsWC_Qn2sNXkyTyRUr2Da8OYbd9E-0xQTcyvGKg_mmuz088noCmOjlu06zvj0kztpEnzd9aOtrdzZss3tTBZqm3sowX3pQanZeA" />
+            </div>
+        </div>
+    </section>
+    <!-- Bento Grid: Features & Developer Gate -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-md my-xl">
+        <!-- Feature Grid -->
+        <div
+                class="md:col-span-2 bg-surface-container-low border border-outline-variant rounded-lg p-lg relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-6 opacity-10 text-primary">
+                <span class="material-symbols-outlined text-[120px]">database</span>
+            </div>
+            <div class="relative z-10">
+                <div
+                        class="flex items-center gap-2 text-primary font-label-sm text-label-sm uppercase tracking-wider mb-4">
+                    <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                    What is this?
+                </div>
+                <h2 class="font-headline-lg text-headline-lg text-on-background mb-4 max-w-lg">Comprehensive
+                    automotive architecture at your fingertips.</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-6 leading-relaxed">
+                    This is a comprehensive public RESTful API linked to an optimized relational database detailing
+                    raw automotive architectures and live-service events from the Forza Horizon &amp; Motorsport
+                    series.
+                </p>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-lg leading-relaxed">
+                    We've covered everything from physical drivetrain profiles to dynamic seasonal milestone
+                    distributions.
+                </p>
+            </div>
+        </div>
+        <!-- Developer Gate -->
+        <div
+                class="bg-surface-container-high border border-outline-variant rounded-lg p-lg flex flex-col justify-between">
+            <div>
+                <div
+                        class="flex items-center gap-2 text-primary font-label-sm text-label-sm uppercase tracking-wider mb-4">
+                    <span class="material-symbols-outlined text-[20px]">api</span>
+                    Where do I start?
+                </div>
+                <p class="font-body-md text-body-md text-on-background mb-4">
+                    We have integrated full Open API specifications out of the box. It takes seconds to target query
+                    states with automated endpoint pagination and enterprise filtering parameters.
+                </p>
+                <p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                    This API acts as an open infrastructure for the global open-source automotive developer
+                    community and will never require tricky credentials for anonymous read transactions.
+                </p>
+            </div>
+            <div class="mt-6 pt-6 border-t border-outline-variant">
+                <label class="block font-label-sm text-label-sm text-on-surface-variant mb-2">Test
+                    Connectivity</label>
+                <div
+                        class="flex items-center bg-background border border-outline-variant rounded p-2 focus-within:border-primary transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant mr-2 text-[18px]">link</span>
+                    <input
+                            class="bg-transparent border-none text-on-surface font-code-md text-code-md w-full focus:ring-0 outline-none cursor-default"
+                            readonly="" type="text" value="ping api.forza-api.com" />
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Footer from JSON -->
+<footer class="w-full py-10 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#070f15] border-t border-outline-variant text-primary mt-auto z-50 relative">
+    <div class="font-headline text-[20px] font-bold text-primary">FORZA API</div>
+    <div class="flex flex-wrap justify-center gap-6 font-body text-[14px]">
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="about.html">About Project</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="documentation.html">API Specs</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="https://github.com/crustercrew/forzaAPI" target="_blank">GitHub</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="swagger-ui/index.html" target="_blank">Swagger UI</a>
+    </div>
+    <div class="font-code text-[12px] text-on-surface-variant">
+        © 2026 FORZA TELEMETRY SYSTEMS. ALL RIGHTS RESERVED.
+    </div>
+</footer>
+</body>
+
+</html>

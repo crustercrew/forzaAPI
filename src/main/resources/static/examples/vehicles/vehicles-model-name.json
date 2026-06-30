@@ -1,0 +1,39 @@
+{
+  "page": 0,
+  "size": 20,
+  "totalElements": 1,
+  "totalPages": 1,
+  "data": [
+    {
+      "id": 361,
+      "modelName": "Furai",
+      "productionyear": 2008,
+      "manufacturer": {
+        "id": 82,
+        "name": "Mazda",
+        "country": "Japan"
+      },
+      "enginespec": "2.0L Naturally-Aspirated 3-Rotor Rotary",
+      "horsepower": 458,
+      "torque": 278,
+      "driveType": "RWD",
+      "drivetrain": "MR",
+      "transmission": "6-speed Transmission",
+      "weightlbs": 1488,
+      "weightdistribution": "45%F / 55%R",
+      "description": "The Furai, whose name means \"sound of the wind\", was the last of the Nagare line of concept cars made by Mazda from 2006. Unlike other Mazda concept cars, the Furai was fully functional and tested at various tracks, like Mazda Raceway Laguna Seca.\n\nThe Mazda Furai used a chassis based on the Courage Compétition C65 LMP race car last used by Mazda in the American Le Mans Series, two seasons previously. The Furai was also designed to make use of E100 ethanol fuel. It wore the number 55, the same as that of its 1991 24 Hours of Le Mans-winning ancestor, the Mazda #55 Mazda 787B.\n\nA mid-engined car, the Furai was powered by a heavily modified 2.0L 3-rotor rotary engine, named the R20B RENESIS 3 Rotor Engine, with and of torque. Power was sent to the rear wheels via a six-speed X-trac semi-automatic transmission.\n\nThe Furai had a weight of , yielding a power-to-weight ratio of per tonne.\n\nThe Furai would never move past concept stage, however, as in September 2013, it was revealed that the Furai was incinerated because of a fire during road tests by Top Gear in 2008, 6 months after its reveal and a year before its inclusion in Forza Motorsport 3.",
+      "images": [
+        {
+          "id": 592,
+          "gameseries": "Horizon",
+          "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Mazda_Furai.png"
+        },
+        {
+          "id": 593,
+          "gameseries": "Motorsport",
+          "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FM23_Mazda_Furai.png"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": 706,
+  "game": {
+    "id": 6,
+    "title": "Forza Horizon 6",
+    "releaseYear": 2026
+  },
+  "seriesNumber": 1,
+  "season": "series_milestone",
+  "pointsRequired": 180,
+  "rewardType": "VEHICLE_REWARD",
+  "startDate": "2026-05-21",
+  "endDate": "2026-06-18",
+  "rewards": [
+    {
+      "id": 2691,
+      "game": {
+        "id": 6,
+        "title": "Forza Horizon 6",
+        "releaseYear": 2026
+      },
+      "division": {
+        "id": 136,
+        "name": "Modern Sports Cars"
+      },
+      "vehicle": {
+        "id": 405,
+        "modelName": "370Z",
+        "productionyear": 2010,
+        "manufacturer": {
+          "id": 95,
+          "name": "Nissan",
+          "country": "Japan"
+        },
+        "enginespec": "3.7L Naturally-Aspirated V6",
+        "horsepower": 332,
+        "torque": 270,
+        "driveType": "RWD",
+        "drivetrain": "FR",
+        "transmission": "6-speed Transmission",
+        "weightlbs": 3267,
+        "weightdistribution": "53%F / 47%R",
+        "description": "Succeeding the 350Z, the Nissan 370Z (also called Fairlady Z in Japan) is the sixth generation of the Nissan Z line, produced from 2008 until 2020.\n\nUnveiled a the 2008 Los Angeles Auto Show, the Nissan 370Z was offered in coupe and convertible body styles. Powering both of these variants is the 3,696 cc (3.7L) VQ37VHR naturally-aspirated V6 making at 7,000 rpm and at 5,200 rpm. Coupled to a 6-speed FS6R31A manual transmission (includes SynchroRev Match system with sport package) or a 7-speed Jatco automatic transmission, the 370Z coupe accelerates from 0- in 4.6 seconds with the automatic and 4.7 seconds with the manual transmission, with a quarter mile time of 13.3 seconds at .\n\nIn the U.S., the 370Z was available in a base, sport, sport touring and high-performance NISMO trim. Standard and optional equipment includes 19-inch RAYS wheels, Bluetooth, Sirius/XM satellite radio, heated electric seats, viscous limited-slip differential, Bose sound system with dual subwoofers and 6-CD changer, and automatic climate control.\n\nThe 370Z was facelifted in 2013, with a new front fascia including vertical daytime running lights and a Sport Tech package with an upgraded touch screen. It was succeeded in 2023 by the Nissan Z (RZ34).",
+        "images": [
+          {
+            "id": 669,
+            "gameseries": "Global",
+            "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Nissan_370Z.png"
+          }
+        ]
+      },
+      "rarity": "COMMON",
+      "unlockType": "HARD_TO_FIND",
+      "performanceClass": "B",
+      "performanceRating": 568,
+      "stats": {
+        "speed": 66.0,
+        "handling": 51.0,
+        "acceleration": 48.0,
+        "launch": 46.0,
+        "braking": 39.0,
+        "offroad": 53.0
+      },
+      "acquisition": {
+        "autoshowCost": 250000,
+        "isBackstageAvailable": false,
+        "dlcRequired": ""
+      }
+    },
+    {
+      "id": 2368,
+      "game": {
+        "id": 6,
+        "title": "Forza Horizon 6",
+        "releaseYear": 2026
+      },
+      "division": {
+        "id": 49,
+        "name": "Extreme Track Toys"
+      },
+      "vehicle": {
+        "id": 361,
+        "modelName": "Furai",
+        "productionyear": 2008,
+        "manufacturer": {
+          "id": 82,
+          "name": "Mazda",
+          "country": "Japan"
+        },
+        "enginespec": "2.0L Naturally-Aspirated 3-Rotor Rotary",
+        "horsepower": 458,
+        "torque": 278,
+        "driveType": "RWD",
+        "drivetrain": "MR",
+        "transmission": "6-speed Transmission",
+        "weightlbs": 1488,
+        "weightdistribution": "45%F / 55%R",
+        "description": "The Furai, whose name means \"sound of the wind\", was the last of the Nagare line of concept cars made by Mazda from 2006. Unlike other Mazda concept cars, the Furai was fully functional and tested at various tracks, like Mazda Raceway Laguna Seca.\n\nThe Mazda Furai used a chassis based on the Courage Compétition C65 LMP race car last used by Mazda in the American Le Mans Series, two seasons previously. The Furai was also designed to make use of E100 ethanol fuel. It wore the number 55, the same as that of its 1991 24 Hours of Le Mans-winning ancestor, the Mazda #55 Mazda 787B.\n\nA mid-engined car, the Furai was powered by a heavily modified 2.0L 3-rotor rotary engine, named the R20B RENESIS 3 Rotor Engine, with and of torque. Power was sent to the rear wheels via a six-speed X-trac semi-automatic transmission.\n\nThe Furai had a weight of , yielding a power-to-weight ratio of per tonne.\n\nThe Furai would never move past concept stage, however, as in September 2013, it was revealed that the Furai was incinerated because of a fire during road tests by Top Gear in 2008, 6 months after its reveal and a year before its inclusion in Forza Motorsport 3.",
+        "images": [
+          {
+            "id": 592,
+            "gameseries": "Horizon",
+            "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Mazda_Furai.png"
+          },
+          {
+            "id": 593,
+            "gameseries": "Motorsport",
+            "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FM23_Mazda_Furai.png"
+          }
+        ]
+      },
+      "rarity": "LEGENDARY",
+      "unlockType": "HARD_TO_FIND",
+      "performanceClass": "R",
+      "performanceRating": 926,
+      "stats": {
+        "speed": 68.0,
+        "handling": 96.0,
+        "acceleration": 76.0,
+        "launch": 77.0,
+        "braking": 10.0,
+        "offroad": 47.0
+      },
+      "acquisition": {
+        "autoshowCost": 353000,
+        "isBackstageAvailable": false,
+        "dlcRequired": ""
+      }
+    }
+  ]
+}

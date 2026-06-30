@@ -1,0 +1,55 @@
+{
+  "id": 16,
+  "game": {
+    "id": 5,
+    "title": "Forza Horizon 5",
+    "releaseYear": 2021
+  },
+  "division": {
+    "id": 226,
+    "name": "Unlimited Buggies"
+  },
+  "vehicle": {
+    "id": 3,
+    "modelName": "Nomad",
+    "productionyear": 2016,
+    "manufacturer": {
+      "id": 6,
+      "name": "Ariel",
+      "country": "United Kingdom"
+    },
+    "enginespec": "2.4L Naturally-Aspirated I4",
+    "horsepower": 235,
+    "torque": 221,
+    "driveType": "RWD",
+    "drivetrain": "RR",
+    "transmission": "6-speed Transmission",
+    "weightlbs": 1477,
+    "weightdistribution": "38%F / 62%R",
+    "description": "The Ariel Nomad is an off-road buggy produced from 2016 until 2022 by Ariel Motor Company, a low-volume manufacturer based in Crewkerne, in Somerset, England.\n\nBuilt on an Ariel Atom steel-tube chassis, the Nomad is powered by a Honda-sourced 2.4L (2,354 cc) K24Z7 iVTEC four-cylinder engine with power and torque rated at and ( and in Forza) respectively. Coupled to a 6-speed manual gearbox with a limited-slip differential, the Nomad weighs only ( in Forza) and features a double unequal length fabricated wishbone suspension setup.\n\nIt was succeeded by the Ariel Nomad 2 in 2024.",
+    "images": [
+      {
+        "id": 5,
+        "gameseries": "Global",
+        "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Ariel_Nomad.png"
+      }
+    ]
+  },
+  "rarity": "RARE",
+  "unlockType": "NONE",
+  "performanceClass": "A",
+  "performanceRating": 711,
+  "stats": {
+    "speed": 52.0,
+    "handling": 47.0,
+    "acceleration": 65.0,
+    "launch": 72.0,
+    "braking": 42.0,
+    "offroad": 81.0
+  },
+  "acquisition": {
+    "autoshowCost": 93000,
+    "isBackstageAvailable": false,
+    "dlcRequired": ""
+  }
+}

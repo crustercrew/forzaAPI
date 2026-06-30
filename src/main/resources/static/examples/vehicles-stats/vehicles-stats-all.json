@@ -1,0 +1,68 @@
+{
+  "page": 0,
+  "size": 1,
+  "totalElements": 3773,
+  "totalPages": 3773,
+  "data": [
+    {
+      "id": 1,
+      "game": {
+        "id": 7,
+        "title": "Forza Motorsport (2023)",
+        "releaseYear": 2023
+      },
+      "division": {
+        "id": 132,
+        "name": "Modern Sport GT"
+      },
+      "vehicle": {
+        "id": 1,
+        "modelName": "NSX Type S",
+        "productionyear": 2022,
+        "manufacturer": {
+          "id": 2,
+          "name": "Acura",
+          "country": "Japan"
+        },
+        "enginespec": "3.5L Twin-Turbo Hybrid V6",
+        "horsepower": 600,
+        "torque": 492,
+        "driveType": "RWD",
+        "drivetrain": "MA",
+        "transmission": "9-speed Transmission",
+        "weightlbs": 3903,
+        "weightdistribution": "42%F / 58%R",
+        "description": "The 2022 Acura NSX Type S is an upgraded version of the base 2nd generation NSX that was created to celebrate the 2nd generation NSX's final year of production. Production was limited to 350 units produced in the 2022 model year.\n\nThe NSX features upgrades to its powertrain, including enhanced turbochargers from the NSX GT3 Evo and retuned electric motors that bring up the power to and , an increase of and over prior models. The transmission has also been reprogrammed in the Sport and Sport+ mode for 50% faster upshifts, and in Track mode, the transmission allows for sooner downshifts. A new nose design and larger rear diffuser give the car improved aerodynamics over prior models.\n\nThe NSX Type S also features various design and interior upgrades, such as Gloss Berlina Black outside mirrors, door handles, a dark exhaust finisher, Alcantara headliner and a new color option: Gotham Gray matte metallic. This makes the Type S the first Acura product to be available in a matte finish.",
+        "images": [
+          {
+            "id": 1,
+            "gameseries": "Horizon",
+            "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Acura_NSX_Type-S.png"
+          },
+          {
+            "id": 2,
+            "gameseries": "Motorsport",
+            "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FM23_Acura_NSX_Type_S.png"
+          }
+        ]
+      },
+      "rarity": "NONE",
+      "unlockType": "NONE",
+      "performanceClass": "S",
+      "performanceRating": 737,
+      "stats": {
+        "speed": 61.0,
+        "handling": 37.0,
+        "acceleration": 33.0,
+        "launch": 0.0,
+        "braking": 63.0,
+        "offroad": 0.0
+      },
+      "acquisition": {
+        "autoshowCost": 256000,
+        "isBackstageAvailable": false,
+        "dlcRequired": ""
+      }
+    }
+  ]
+}

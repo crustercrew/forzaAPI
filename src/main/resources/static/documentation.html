@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Documentation - Forza Open API</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config" src="tailwind-config.js">
+    </script>
+    <style>
+        .json-key {
+            color: #dbe3ec;
+        }
+
+        .json-string {
+            color: #45f885;
+        }
+
+        .json-number {
+            color: #ffba38;
+        }
+
+        .json-bracket {
+            color: #514532;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
+
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-background/90 backdrop-blur-md border-b border-outline-variant">
+    <div class="flex items-center gap-6">
+        <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <img src="forza-logo.webp" alt="Forza API Logo" class="h-8 w-auto object-contain" onerror="this.src='https://via.placeholder.com/32x32?text=F'"/>
+            <span class="font-headline text-[24px] font-black text-primary uppercase tracking-tighter hidden sm:inline">
+                    FORZA API
+                </span>
+        </a>
+        <div class="hidden md:flex gap-2">
+            <a class="text-[13px] text-on-surface-variant hover:text-primary transition-colors px-3 py-2 rounded font-code font-medium" href="index.html">Home</a>
+            <a class="text-[13px] text-on-surface-variant hover:text-primary transition-colors px-3 py-2 rounded font-code font-medium" href="about.html">About</a>
+            <a class="text-[13px] text-primary bg-surface-container-high px-3 py-2 rounded font-code font-medium" href="documentation.html">Documentation</a>
+        </div>
+    </div>
+    <div class="flex items-center gap-4">
+        <a href="/swagger-ui/index.html" target="_blank" class="bg-primary text-[#432c00] text-[13px] px-4 py-2 rounded font-bold hover:scale-95 transition-transform inline-block font-code">
+            Explore Swagger UI
+        </a>
+    </div>
+</nav>
+
+<div class="flex flex-grow pt-16 max-w-[1400px] mx-auto w-full">
+
+    <aside class="w-64 flex-shrink-0 hidden lg:block border-r border-outline-variant h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto py-8 px-4">
+        <div class="flex flex-col gap-6">
+
+            <div>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Getting Started</h4>
+                <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                    <li><a href="#information" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Information</a></li>
+                    <li><a href="#fair-use" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Fair Use Policy</a></li>
+                    <li><a href="#pagination" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Pagination & Sorting</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Vehicles (Group)</h4>
+                <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                    <li><a href="#vehicles" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Vehicles</a></li>
+                    <li><a href="#vehicle-stats" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Game Vehicle Stats</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Master Data (Group)</h4>
+                <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                    <li><a href="#manufacturers" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Manufacturers</a></li>
+                    <li><a href="#divisions" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Divisions</a></li>
+                    <li><a href="#games" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Games</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Live Service (Group)</h4>
+                <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                    <li><a href="#festival-playlists" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Festival Playlists</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </aside>
+
+    <main class="flex-grow p-6 md:p-12 lg:px-16 overflow-y-auto">
+        <h1 class="font-headline text-[36px] font-black text-on-background mb-4">API Documentation</h1>
+        <p class="text-on-surface-variant text-[16px] leading-relaxed mb-10">
+            Welcome to the official Forza Open API documentation. Use this page to understand our endpoints, response structures, and querying parameters.
+        </p>
+
+        <section id="information" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">Information</h2>
+            <p class="text-on-surface-variant leading-relaxed">
+                This is a <strong>consumption-only</strong> API — only the HTTP <code class="bg-surface-container font-code text-secondary px-1.5 py-0.5 rounded text-[13px]">GET</code> method is available on public resources.
+            </p>
+            <p class="text-on-surface-variant leading-relaxed mt-2">
+                No authentication is required to access this API, and all resources are fully open. We utilize robust caching via Redis Upstash to guarantee rapid response times across our globally distributed nodes.
+            </p>
+        </section>
+
+        <section id="fair-use" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">Fair Use Policy</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-3">
+                Forza API is free and open to use. Because of this, we ask every developer to abide by our fair use policy. People not complying with the fair use policy will be subjected to rate-limiting or IP bans.
+            </p>
+            <ul class="list-disc list-inside text-on-surface-variant space-y-2 ml-2">
+                <li>Locally cache resources in your own mobile app or web client whenever you request them.</li>
+                <li>Avoid spamming heavy complex filtering endpoints in loops.</li>
+                <li>If you spot data inaccuracies, please contribute via our official GitHub repository.</li>
+            </ul>
+        </section>
+
+        <section id="pagination" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">Pagination & Sorting</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                Calling any list endpoint without a specific resource ID will return a paginated list of available resources. By default, a list "page" will contain up to 20 resources.
+            </p>
+            <div class="bg-surface-container-low border border-outline-variant rounded p-4 mb-4">
+                <code class="font-code text-primary text-[14px]">GET https://api.forza-api.com/api/v1/vehicles?page=0&size=20&sort=modelName,desc</code>
+            </div>
+            <table class="w-full text-left border-collapse text-[14px]">
+                <thead>
+                <tr class="border-b border-outline-variant">
+                    <th class="py-2 text-primary font-code font-normal">Parameter</th>
+                    <th class="py-2 text-primary font-code font-normal">Description</th>
+                </tr>
+                </thead>
+                <tbody class="text-on-surface-variant">
+                <tr class="border-b border-outline-variant/30">
+                    <td class="py-3 font-code">page</td>
+                    <td class="py-3">The page index you want to retrieve. Starts at <code>0</code>.</td>
+                </tr>
+                <tr class="border-b border-outline-variant/30">
+                    <td class="py-3 font-code">size</td>
+                    <td class="py-3">Number of items per page. Default is <code>20</code>.</td>
+                </tr>
+                <tr>
+                    <td class="py-3 font-code">sort</td>
+                    <td class="py-3">Field to sort by, followed by a comma and direction (e.g., <code>id,asc</code> or <code>modelName,desc</code>).</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="vehicles" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Vehicles</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                Vehicles are the core physical entities representing cars from the real world. They contain base attributes like engine type, chassis origin, and default drive types before game-specific tuning is applied.
+            </p>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/vehicles/vehicles-all.json">Mengambil data dari server...</code></pre>
+                </div>
+            </div>
+            <br>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/{id}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/vehicles/vehicles-id.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/search/{model_name}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/vehicles/vehicles-model-name.json"></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="vehicle-stats" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Game Vehicles Stats</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                lorem ipsum dolor sit amet
+            </p>
+            <!--get all vehicle stats-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/vehicles-stats/vehicles-stats-all.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <!--get by id-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats/{id}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/vehicles-stats/vehicles-stats-id.json"></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="manufacturers" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Manufacturers</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                lorem ipsum dolor sit amet
+            </p>
+            <!--get all manufacturers-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto"
+                ><pre><code class="auto-json" data-src="examples/manufacturers/manufacturers-all.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <!--get by id-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/{id}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/manufacturers/manufacturers-id.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/by-country/{country_name}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/manufacturers/manufacturers-country-name.json"></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="divisions" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Divisions</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                lorem ipsum dolor sit amet
+            </p>
+            <!--get all divisions-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/divisions</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto"
+                ><pre><code class="auto-json" data-src="examples/divisions/divisions-all.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <!--get by id-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/divisions/{id}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/divisions/divisions-id.json"></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="games" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Games</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                lorem ipsum dolor sit amet
+            </p>
+            <!--get all divisions-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/games</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto"
+                ><pre><code class="auto-json" data-src="examples/games/games-all.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <!--get by id-->
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/games/{id}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/games/games-id.json"></code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="festival-playlists" class="mb-12 scroll-mt-24">
+            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Festival Playlists</h2>
+            <p class="text-on-surface-variant leading-relaxed mb-4">
+                Playlists dictate the live-service dynamic events that rotate weekly in the Horizon series (Summer, Autumn, Winter, Spring).
+            </p>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist</code>
+                </div>
+                    <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                        <pre><code class="auto-json" data-src="examples/festival-playlist/festival-playlist-all.json"></code></pre>
+                    </div>
+            </div>
+            <br>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/{id}</code>
+                </div>
+                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
+                    <pre><code class="auto-json" data-src="examples/festival-playlist/festival-playlist-id.json"></code></pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<footer class="w-full py-10 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#070f15] border-t border-outline-variant text-primary mt-auto z-50 relative">
+    <div class="font-headline text-[20px] font-bold text-primary">FORZA API</div>
+    <div class="flex flex-wrap justify-center gap-6 font-body text-[14px]">
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="about.html">About Project</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="documentation.html">API Specs</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="https://github.com/crustercrew/forzaAPI" target="_blank">GitHub</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="swagger-ui/index.html" target="_blank">Swagger UI</a>
+    </div>
+    <div class="font-code text-[12px] text-on-surface-variant">
+        © 2026 FORZA TELEMETRY SYSTEMS. ALL RIGHTS RESERVED.
+    </div>
+</footer>
+<script src="JSONFormatter.js"></script>
+</body>
+</html>
