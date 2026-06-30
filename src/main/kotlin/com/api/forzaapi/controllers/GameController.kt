@@ -4,10 +4,9 @@ import com.api.forzaapi.dto.request.GameReq
 import com.api.forzaapi.dto.responses.GameResp
 import com.api.forzaapi.services.GameService
 import org.springframework.data.web.PageableDefault
-import com.api.forzaapi.dto.responses.PageResponse
-import com.api.forzaapi.entity.Game
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.websocket.server.PathParam
 import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
@@ -17,14 +16,17 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
+@Tag(name = "Games", description = "Endpoints to fetch target game editions, launch metadata tracking, and franchise title directories")
 @RestController
 @RequestMapping("/games")
 class GameController(
     private val gameService: GameService
 ) {
     @Operation(
-        summary = "Get all games",
-        description = "Get all games"
+        summary = "Browse global game ecosystem catalog or filter by explicit title match",
+        description = "Provides a unified lookup gate. By default, returns a paginated dataset of all franchise releases (Horizon & Motorsport series) mapped with their respective historical release years. " +
+                "If the optional 'title' query parameter is attached, it targets a singular exact entry from the database. " +
+                "Backed up efficiently by a top-tier Redis caching layer."
     )
     @GetMapping
     fun getGames(
@@ -42,6 +44,10 @@ class GameController(
         return ResponseEntity.ok(response)
     }
 
+    @Operation(
+        summary = "Fetch a standalone game franchise profile by precise key constraint",
+        description = "Retrieves structural index profile metadata for a specific game installment (e.g., 'Forza Horizon 5') via its unique primary database id. Highly optimized with immediate Redis key-value memory retrieval."
+    )
     @GetMapping("/{id}")
     fun getGameById(
         @PathVariable("id") id: Int

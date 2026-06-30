@@ -6,6 +6,7 @@ import com.api.forzaapi.dto.responses.PageResponse
 import com.api.forzaapi.services.FestivalPlaylistService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -23,14 +24,17 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "Festival Playlists", description = "Endpoints to query dynamic seasonal campaigns, series rotations, and live-service event rewards")
 @RestController
 @RequestMapping("/festival-playlist")
 class FestivalPlaylistController(
     private val festivalPlaylistService: FestivalPlaylistService
 ) {
     @Operation(
-        summary = "Get all festival playlists",
-        description = "Get all festival playlists"
+        summary = "Browse or filter live-service seasonal festival playlists",
+        description = "Returns a paginated log of festival playlists across multiple franchise iterations. " +
+                "Accepts optional filters to narrow down operations by a specific Game Edition, Series Number, and Target Season Group (e.g., 'series_milestone', 'Summer'). " +
+                "The output fully embeds attached dynamic junction reward arrays containing mapped vehicle telemetry stats."
     )
     @GetMapping
     fun getAllPlaylists(
@@ -45,8 +49,9 @@ class FestivalPlaylistController(
     }
 
     @Operation(
-        summary = "Get festival playlist by id",
-        description = "Get festival playlist by id"
+        summary = "Fetch an isolated festival playlist campaign timeline by ID",
+        description = "Retrieves structural database profile metrics for a precise live-service weekly or series milestone record block. " +
+                "Returns flat payload properties indicating point eligibility structures, validation dates, and comprehensive nested milestone unlock rewards."
     )
     @GetMapping("/{id}")
     fun getPlaylistById(

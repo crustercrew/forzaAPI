@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
-@Tag(name = "Vehicles", description = "Endpoints to access Forza Horizon master data and car specifications")
+@Tag(name = "Vehicles", description = "sEndpoints to access Forza Horizon & Motorsport master data and car specifications")
 @RestController
 @RequestMapping("/vehicles")
 class VehiclesController(
@@ -39,9 +39,12 @@ class VehiclesController(
      * - Mobil AWD saja: GET /api/v1/vehicles?drivetrain=AWD
      * - Mobil Tahun 2000-2012: GET /api/v1/vehicles?startYear=2000&endYear=2012
      */
+
     @Operation(
-        summary = "GET ALL VEHICLES & FILTERS (PAGINATED)",
-        description = "Accommodates searches by Manufacturer, Year Range, Drive Type, and Drivetrain."
+        summary = "Browse global vehicle catalog with dynamic multi-criteria filtering",
+        description = "Retrieve a paginated collection of vehicle entries containing factory specifications, nested manufacturer details, and contextual media URLs. " +
+                "Supports high-performance relational filtering using optional matrix parameters such as vehicle age groups, layout configurations, and drivetrains. " +
+                "Results are globally throttled and cached via an absolute Redis layer."
     )
     @GetMapping
     fun getVehicles(
@@ -66,8 +69,8 @@ class VehiclesController(
      * URL: GET http://localhost:8080/api/v1/vehicles/5
      */
     @Operation(
-        summary = "Get Vehicle by ID",
-        description = "Retrieves detailed specifications of a car based on a unique database ID."
+        summary = "Fetch a standalone vehicle metadata by unique identifier",
+        description = "Returns isolated database profile information for a specific vehicle catalog record, including internal mechanical engine metrics, dimensions weight parameters, and attached franchise wide media imagery. Optimized heavily via Redis Single-Key lookups."
     )
     @GetMapping("/{id}")
     fun getVehicleById(
@@ -83,8 +86,9 @@ class VehiclesController(
      * URL: GET http://localhost:8080/api/v1/vehicles/search?name=Skyline
      */
     @Operation(
-        summary = "Search Vehicle by Model Name (LIKE QUERY)",
-        description = "Retrieves vehicles based on a partial match of the model name. Example: GET /api/v1/vehicles/search?name=Skyline"
+        summary = "Perform text-based model wildcard lookup operations",
+        description = "Executes a highly responsive, case-insensitive partial name matching routine (SQL LIKE equivalent) on the global index. " +
+                "Designed primarily to power real-time UI autocomplete fields or full-text application dashboard lookups (e.g., matching 'Civic' or 'Skyline')."
     )
     @GetMapping("/search/{name}")
     fun searchVehiclesByModelName(

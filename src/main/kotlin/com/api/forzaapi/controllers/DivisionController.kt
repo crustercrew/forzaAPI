@@ -6,6 +6,7 @@ import com.api.forzaapi.dto.responses.DivisionResp
 import com.api.forzaapi.services.DivisionService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.websocket.server.PathParam
 import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
@@ -16,14 +17,17 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
+@Tag(name = "Divisions", description = "Endpoints to fetch car divisions and Horizon-specific car type metadata categories")
 @RestController
 @RequestMapping("/divisions")
 class DivisionController(
     private val divisionService: DivisionService
 ) {
     @Operation(
-        summary = "Get all divisions",
-        description = "receive data from database"
+        summary = "Browse global division directory or fetch by strict lookup name",
+        description = "Serves a dual-purpose endpoint. By default, it returns a full paginated roster of registered racing divisions. " +
+                "If the optional 'name' query parameter is specified, it executes a strict criteria lookup on the global divisions database directory. " +
+                "Results are accelerated using an active Redis distributed caching layer."
     )
     @GetMapping
     fun getAllDivisions(
@@ -42,8 +46,8 @@ class DivisionController(
     }
 
     @Operation(
-        summary = "Get division by id",
-        description = "Get division by id"
+        summary = "Fetch an isolated racing division registry profile by ID",
+        description = "Retrieves discrete profile records for a targeted automotive class group constraint (e.g., 'Classic Muscle') using its strict database primary key. Optimized with internal Redis Single-Key serializations."
     )
     @GetMapping("/{id}")
     fun getDivisionById(

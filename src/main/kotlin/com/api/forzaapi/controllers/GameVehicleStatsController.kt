@@ -9,6 +9,7 @@ import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.services.GameVehicleStatsService
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -31,6 +32,7 @@ import java.beans.PropertyEditorSupport
 import java.util.Locale
 import java.util.Locale.getDefault
 
+@Tag(name = "Vehicle Performance Stats", description = "Endpoints to query game-specific performance index (PI) matrices, rarity flags, and telemetry stats breakdown")
 @RestController
 @RequestMapping("/vehicle-stats")
 class GameVehicleStatsController(
@@ -88,8 +90,10 @@ class GameVehicleStatsController(
     }
 
     @Operation(
-        summary = "Get all game vehicle stats",
-        description = "Get all game vehicle stats"
+        summary = "Query game-specific vehicle performance profiles via multi-tier parameters",
+        description = "Provides an advanced, paginated search layer to look up a vehicle's specific profile inside a targeted game title. " +
+                "Accepts fine-grained filter properties including explicit Vehicle IDs, Manufacturer origins, Game Editions, Rarity tiers, layouts, and Performance Classes. " +
+                "Essential for cross-game benchmarking. Balanced and accelerated via the global Redis distributed memory structure."
     )
     @GetMapping
     fun getStats(
@@ -117,8 +121,10 @@ class GameVehicleStatsController(
     }
 
     @Operation(
-        summary = "Get game vehicle stats by id",
-        description = "Get game vehicle stats by id"
+        summary = "Retrieve strict standalone game telemetry profile by record key",
+        description = "Fetches a singular flat statistics entry mapping a unique parent car to its internal in-game performance rating. " +
+                "Exposes nested telemetry maps (Speed, Handling, Acceleration, Braking, Offroad) and cost acquisition metadata structures. " +
+                "Optimized heavily using Redis Single-Key lookups."
     )
     @GetMapping("/{vehiclestatsId}")
     fun getStatsByVehicleId(
