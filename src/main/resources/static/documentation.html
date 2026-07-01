@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
-    <script id="tailwind-config" src="tailwind-config.js">
+    <script id="tailwind-config" src="js/tailwind-config.js">
     </script>
     <style>
         .json-key {
@@ -24,6 +24,26 @@
 
         .json-bracket {
             color: #514532;
+        }
+
+        .json-box-wrapper{
+            max-height: 380px;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+        }
+        .json-box-wrapper::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .json-box-wrapper::-webkit-scrollbar-thumb {
+            background-color: #2e363c;
+            border-radius: 4px;
+        }
+        .json-box-wrapper::-webkit-scrollbar-thumb:hover {
+            background-color: #514532;
         }
     </style>
 </head>
@@ -161,8 +181,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/vehicles/vehicles-all.json">Mengambil data dari server...</code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-all.json">Mengambil data dari server...</code></pre>
                 </div>
             </div>
             <br>
@@ -171,8 +191,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/{id}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/vehicles/vehicles-id.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-id.json"></code></pre>
                 </div>
             </div>
             <br>
@@ -181,8 +201,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/search/{model_name}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/vehicles/vehicles-model-name.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-model-name.json"></code></pre>
                 </div>
             </div>
         </section>
@@ -198,8 +218,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/vehicles-stats/vehicles-stats-all.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles-stats/vehicles-stats-all.json"></code></pre>
                 </div>
             </div>
             <br>
@@ -209,8 +229,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats/{id}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/vehicles-stats/vehicles-stats-id.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles-stats/vehicles-stats-id.json"></code></pre>
                 </div>
             </div>
         </section>
@@ -226,8 +246,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto"
-                ><pre><code class="auto-json" data-src="examples/manufacturers/manufacturers-all.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant"
+                ><pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-all.json"></code></pre>
                 </div>
             </div>
             <br>
@@ -237,8 +257,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/{id}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/manufacturers/manufacturers-id.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-id.json"></code></pre>
                 </div>
             </div>
             <br>
@@ -247,8 +267,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/by-country/{country_name}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/manufacturers/manufacturers-country-name.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-country-name.json"></code></pre>
                 </div>
             </div>
         </section>
@@ -264,8 +284,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/divisions</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto"
-                ><pre><code class="auto-json" data-src="examples/divisions/divisions-all.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant"
+                ><pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/divisions/divisions-all.json"></code></pre>
                 </div>
             </div>
             <br>
@@ -275,8 +295,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/divisions/{id}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/divisions/divisions-id.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/divisions/divisions-id.json"></code></pre>
                 </div>
             </div>
         </section>
@@ -292,8 +312,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/games</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto"
-                ><pre><code class="auto-json" data-src="examples/games/games-all.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant"
+                ><pre class="w-full block"><code class="auto-json w-full max-w-full block m-0" data-src="examples/games/games-all.json"></code></pre>
                 </div>
             </div>
             <br>
@@ -303,8 +323,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/games/{id}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/games/games-id.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full block"><code class="auto-json w-full max-w-full block m-0" data-src="examples/games/games-id.json"></code></pre>
                 </div>
             </div>
         </section>
@@ -317,10 +337,20 @@
             <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
                 <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                    <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/current</code>
+                </div>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-current.json"></code></pre>
+                </div>
+            </div>
+            <br>
+            <div class="bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                    <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist</code>
                 </div>
-                    <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                        <pre><code class="auto-json" data-src="examples/festival-playlist/festival-playlist-all.json"></code></pre>
+                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-all.json"></code></pre>
                     </div>
             </div>
             <br>
@@ -329,8 +359,8 @@
                     <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
                     <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/{id}</code>
                 </div>
-                <div class="p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant overflow-x-auto">
-                    <pre><code class="auto-json" data-src="examples/festival-playlist/festival-playlist-id.json"></code></pre>
+                <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                    <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-id.json"></code></pre>
                 </div>
             </div>
         </section>
@@ -350,6 +380,6 @@
         © 2026 FORZA TELEMETRY SYSTEMS. ALL RIGHTS RESERVED.
     </div>
 </footer>
-<script src="JSONFormatter.js"></script>
+<script src="js/JSONFormatter.js"></script>
 </body>
 </html>

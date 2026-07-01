@@ -1,0 +1,265 @@
+{
+  "page": 0,
+  "size": 20,
+  "totalElements": 2,
+  "totalPages": 1,
+  "data": [
+    {
+      "id": 711,
+      "game": {
+        "id": 6,
+        "title": "Forza Horizon 6",
+        "releaseYear": 2026
+      },
+      "seriesNumber": 2,
+      "season": "series_milestone",
+      "pointsRequired": 200,
+      "rewardType": "VEHICLE_REWARD",
+      "startDate": "2026-06-18",
+      "endDate": "2026-07-16",
+      "rewards": [
+        {
+          "id": 3670,
+          "game": {
+            "id": 6,
+            "title": "Forza Horizon 6",
+            "releaseYear": 2026
+          },
+          "division": {
+            "id": 170,
+            "name": "Retro Sports Cars"
+          },
+          "vehicle": {
+            "id": 572,
+            "modelName": "911 Turbo S Leichtbau",
+            "productionyear": 1993,
+            "manufacturer": {
+              "id": 105,
+              "name": "Porsche",
+              "country": "Germany"
+            },
+            "enginespec": "3.3L Turbocharged F6",
+            "horsepower": 381,
+            "torque": 347,
+            "driveType": "RWD",
+            "drivetrain": "RR",
+            "transmission": "5-speed Transmission",
+            "weightlbs": 2844,
+            "weightdistribution": "39%F / 61%R",
+            "description": "The 964-codenamed 911 Turbo S Leichtbau is one of the rarest Porsche 911 models ever made, with only 86 units created. \"Leichtbau\" is German for lightweight, and refers to the car's weight loss of almost compared to the standard Turbo S.",
+            "images": [
+              {
+                "id": 939,
+                "gameseries": "Horizon",
+                "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Porsche_911_Turbo_S_Leichtbau.png"
+              },
+              {
+                "id": 940,
+                "gameseries": "Motorsport",
+                "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FM23_Porsche_911_Turbo_S_Leichtbau.png"
+              }
+            ]
+          },
+          "rarity": "LEGENDARY",
+          "unlockType": "HARD_TO_FIND",
+          "performanceClass": "A",
+          "performanceRating": 652,
+          "stats": {
+            "speed": 7.0,
+            "handling": 54.0,
+            "acceleration": 66.0,
+            "launch": 35.0,
+            "braking": 5.0,
+            "offroad": 52.0
+          },
+          "acquisition": {
+            "autoshowCost": 600000,
+            "isBackstageAvailable": false,
+            "dlcRequired": ""
+          }
+        },
+        {
+          "id": 2346,
+          "game": {
+            "id": 6,
+            "title": "Forza Horizon 6",
+            "releaseYear": 2026
+          },
+          "division": {
+            "id": 215,
+            "name": "Track Toys"
+          },
+          "vehicle": {
+            "id": 357,
+            "modelName": "Lotus Exige Cup 430",
+            "productionyear": 2018,
+            "manufacturer": {
+              "id": 78,
+              "name": "Lotus",
+              "country": "United Kingdom"
+            },
+            "enginespec": "3.5L Supercharged V6",
+            "horsepower": 430,
+            "torque": 324,
+            "driveType": "RWD",
+            "drivetrain": "MR",
+            "transmission": "6-speed Transmission",
+            "weightlbs": 2410,
+            "weightdistribution": "37%F / 63%R",
+            "description": "The Lotus Exige Cup 430 is an upgraded variant of the Lotus Exige Cup 380, which is based on the Lotus Exige S, that was unveiled on November 9, 2017. Rather than being a limited production of 60 units like the Cup 380, the Cup 430 was in full production.\n\nThe Exige Cup 430 comes with the same powertrain as the Lotus Evora GT430, being a 2GR-FE 3.5L Supercharged V6 manufactured by Toyota that produces a power output of .\n\nOther upgrades over the Exige Cup 380 are titanium exhaust, and additional carbon fiber in body panels and interior, which bring the Cup 430's weight down to , less than the Cup 380. It also is only offered with a 6-speed manual transmission, with no automatic transmission being offered.\n\nThe Exige Cup 430 was produced until 2021, with a celebratory 'Final Edition' being produced.",
+            "images": [
+              {
+                "id": 585,
+                "gameseries": "Global",
+                "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Lotus_Exige_Cup_430.png"
+              }
+            ]
+          },
+          "rarity": "EPIC",
+          "unlockType": "HARD_TO_FIND",
+          "performanceClass": "S1",
+          "performanceRating": 732,
+          "stats": {
+            "speed": 67.0,
+            "handling": 73.0,
+            "acceleration": 77.0,
+            "launch": 85.0,
+            "braking": 68.0,
+            "offroad": 48.0
+          },
+          "acquisition": {
+            "autoshowCost": 250000,
+            "isBackstageAvailable": false,
+            "dlcRequired": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": 713,
+      "game": {
+        "id": 6,
+        "title": "Forza Horizon 6",
+        "releaseYear": 2026
+      },
+      "seriesNumber": 2,
+      "season": "autumn",
+      "pointsRequired": 50,
+      "rewardType": "VEHICLE_REWARD",
+      "startDate": "2026-06-25",
+      "endDate": "2026-07-02",
+      "rewards": [
+        {
+          "id": 3683,
+          "game": {
+            "id": 6,
+            "title": "Forza Horizon 6",
+            "releaseYear": 2026
+          },
+          "division": {
+            "id": 171,
+            "name": "Retro Super Cars"
+          },
+          "vehicle": {
+            "id": 574,
+            "modelName": "TVR Cerbera Speed 12",
+            "productionyear": 1998,
+            "manufacturer": {
+              "id": 134,
+              "name": "TVR",
+              "country": "United Kingdom"
+            },
+            "enginespec": "7.7L Naturally-Aspirated V12",
+            "horsepower": 800,
+            "torque": 649,
+            "driveType": "RWD",
+            "drivetrain": "FR",
+            "transmission": "6-speed Transmission",
+            "weightlbs": 2150,
+            "weightdistribution": "53%F / 47%R",
+            "description": "The Cerbera Speed 12 can reach a top speed of . Thanks to a engine, it can reach in 3.5 seconds.",
+            "images": [
+              {
+                "id": 942,
+                "gameseries": "Global",
+                "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_TVR_Cerbera_Speed_12.png"
+              }
+            ]
+          },
+          "rarity": "EPIC",
+          "unlockType": "HARD_TO_FIND",
+          "performanceClass": "S1",
+          "performanceRating": 770,
+          "stats": {
+            "speed": 87.0,
+            "handling": 63.0,
+            "acceleration": 54.0,
+            "launch": 57.0,
+            "braking": 66.0,
+            "offroad": 38.0
+          },
+          "acquisition": {
+            "autoshowCost": 750000,
+            "isBackstageAvailable": false,
+            "dlcRequired": ""
+          }
+        },
+        {
+          "id": 2983,
+          "game": {
+            "id": 6,
+            "title": "Forza Horizon 6",
+            "releaseYear": 2026
+          },
+          "division": {
+            "id": 171,
+            "name": "Retro Super Cars"
+          },
+          "vehicle": {
+            "id": 451,
+            "modelName": "962CR",
+            "productionyear": 1993,
+            "manufacturer": {
+              "id": 117,
+              "name": "Schuppan",
+              "country": "Australia"
+            },
+            "enginespec": "3.3L TT F6",
+            "horsepower": 600,
+            "torque": 479,
+            "driveType": "RWD",
+            "drivetrain": "MR",
+            "transmission": "5-speed Transmission",
+            "weightlbs": 2315,
+            "weightdistribution": "45%F / 55%R",
+            "description": "The 962CR is a British limited-production sports car produced from 1992 to 1994 by Vern Schuppan Ltd., a low-volume car manufacturer based in the United Kingdom operated by Australian racing driver Vern Schuppan.\n\nIt features a unique bodyshell, penned by Mike Simcoe of General Motors, and is based on the Porsche 962 in both appearance and mechanicals. It was one of the most expensive cars sold when new, priced at well over USD$1.5 million, through its extensive use of carbon fiber and titanium fasteners.\n\nIt is powered by a 3.3L twin-turbocharged Type 935 flat-6, also taken from the 962. Its carbon monocoque was manufactured by Reynard Motorsport, with final assembly taking place in Buckinghamshire, England; funding was provided by Japanese investors financing Schuppan's race team: Team Schuppan.\n\nWith two Japanese owners failing to pay for two cars, an economic recession, and the car's high cost of production, Schuppan ultimately declared bankruptcy in 1994.\n\nOnly six cars were produced before the company shut down.",
+            "images": [
+              {
+                "id": 744,
+                "gameseries": "Global",
+                "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Schuppan_962CR.png"
+              }
+            ]
+          },
+          "rarity": "EPIC",
+          "unlockType": "HARD_TO_FIND",
+          "performanceClass": "S1",
+          "performanceRating": 764,
+          "stats": {
+            "speed": 83.0,
+            "handling": 74.0,
+            "acceleration": 49.0,
+            "launch": 28.0,
+            "braking": 68.0,
+            "offroad": 5.0
+          },
+          "acquisition": {
+            "autoshowCost": 1950000,
+            "isBackstageAvailable": false,
+            "dlcRequired": ""
+          }
+        }
+      ]
+    }
+  ]
+}
