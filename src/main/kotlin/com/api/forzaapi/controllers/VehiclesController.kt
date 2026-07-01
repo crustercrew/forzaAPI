@@ -39,10 +39,11 @@ class VehiclesController(
     )
     @GetMapping
     fun getVehicles(
-        @RequestParam(value = "manufacturerId", required = false) manufacturerId: Int?,
-        @RequestParam(value = "startYear", required = false) startYear: Int?,
-        @RequestParam(value = "endYear", required = false) endYear: Int?,
-        @RequestParam(value = "driveType", required = false) driveType: DriveType?,
+        @RequestParam(value = "manufacturerid", required = false) manufacturerId: Int?,
+        @RequestParam(value = "manufacturername", required = false) manufacturerName:String?,
+        @RequestParam(value = "startyear", required = false) startYear: Int?,
+        @RequestParam(value = "endyear", required = false) endYear: Int?,
+        @RequestParam(value = "drivetype", required = false) driveType: DriveType?,
         @RequestParam(value = "drivetrain", required = false) drivetrain: Drivetrain?,
         @ParameterObject
         @PageableDefault(page = 0, size = 20, sort = ["id"], direction = Sort.Direction.ASC) pageable: Pageable
@@ -50,7 +51,7 @@ class VehiclesController(
 
         // Panggil service yang memproses filter opsional ini
         val response = vehiclesService.getVehiclesWithFilters(
-            manufacturerId, startYear, endYear, driveType, drivetrain, pageable
+            manufacturerId,manufacturerName, startYear, endYear, driveType, drivetrain, pageable
         )
         return ResponseEntity.ok(response)
     }

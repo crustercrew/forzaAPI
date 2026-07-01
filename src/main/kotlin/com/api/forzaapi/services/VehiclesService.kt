@@ -34,6 +34,7 @@ class VehiclesService(
     @Transactional(readOnly = true)
     fun getVehiclesWithFilters(
         manufacturerId:Int?,
+        manufacturerName:String?,
         startYear:Int?,
         endYear:Int?,
         driveType: DriveType?,
@@ -45,6 +46,10 @@ class VehiclesService(
             val predicates = mutableListOf<Predicate>()
 
             manufacturerId?.let { predicates.add(builder.equal(root.get<Any>("manufacturer").get<Int>("id"), it)) }
+            manufacturerName?.let {
+                val path = root.get<Any>("manufacturer").get<String>("name")
+                predicates.add(builder.like(builder.lower(path), "%${it.lowercase()}%"))
+            }
             startYear?.let { predicates.add(builder.greaterThanOrEqualTo(root.get("productionyear"), it)) }
             endYear?.let { predicates.add(builder.lessThanOrEqualTo(root.get("productionyear"), it)) }
             driveType?.let { predicates.add(builder.equal(root.get<DriveType>("driveType"), it)) }

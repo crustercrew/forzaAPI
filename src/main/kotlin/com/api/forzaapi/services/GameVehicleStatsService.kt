@@ -34,8 +34,11 @@ class GameVehicleStatsService(
     @Transactional(readOnly = true)
     fun getStats(
         vehicleId: Int?,
+        vehicleName: String?,
         manufacturerId: Int?,
+        manufacturername: String?,
         divisionId: Int?,
+        divisionName: String?,
         gameId: Int?,
         rarity: Rarity?,
         driveType: DriveType?,
@@ -48,12 +51,24 @@ class GameVehicleStatsService(
 
             // Langsung menembak ke relasi Vehicle
             vehicleId?.let { predicates.add(cb.equal(root.get<Any>("vehicle").get<Int>("id"), it)) }
+            vehicleName?.let {
+                val path = root.get<Any>("vehicle").get<String>("modelName")
+                predicates.add(cb.like(cb.lower(path), "%${it.lowercase()}%"))
+            }
             driveType?.let { predicates.add(cb.equal(root.get<Any>("vehicle").get<DriveType>("driveType"), it)) }
 
             // Relasi dua tingkat: Stats -> Vehicle -> Manufacturer
             manufacturerId?.let {
                 val vehicleJoin = root.join<Any, Any>("vehicle")
                 predicates.add(cb.equal(vehicleJoin.get<Any>("manufacturer").get<Int>("id"), it))
+            }
+            manufacturername?.let {
+                val path = root.get<Any>("vehicle").get<Any>("manufacturer").get<String>("name")
+                predicates.add(cb.like(cb.lower(path), "%${it.lowercase()}%"))
+            }
+            divisionName?.let {
+                val path = root.get<Any>("division").get<String>("name")
+                predicates.add(cb.like(cb.lower(path), "%${it.lowercase()}%"))
             }
 
             // Relasi dasar lainnya

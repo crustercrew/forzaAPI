@@ -97,8 +97,11 @@ class GameVehicleStatsController(
     @GetMapping
     fun getStats(
         @RequestParam(value = "vehicleid", required = false) vehicleId: Int?,
+        @RequestParam(value = "vehiclename", required = false)vehicleName: String?,
         @RequestParam(value = "manufacturerid", required = false) manufacturerid: Int?,
+        @RequestParam(value = "manufacturername", required = false) manufacturername: String?,
         @RequestParam(value = "divisionid", required = false) divisionid: Int?,
+        @RequestParam(value = "divisionname", required = false) divisionname: String?,
         @RequestParam(value = "gameid", required = false) gameid: Int?,
         @RequestParam(value = "rarity", required = false) rarities: Rarity?,
         @RequestParam(value = "drivetype", required = false) drivetype: DriveType?,
@@ -108,8 +111,11 @@ class GameVehicleStatsController(
     ): ResponseEntity<PageResponse<GameVehicleStatsResp>> {
         val response = gameVehicleStatsService.getStats(
             vehicleId,
+            vehicleName,
             manufacturerid,
+            manufacturername,
             divisionid,
+            divisionname,
             gameid,
             rarities,
             drivetype,
