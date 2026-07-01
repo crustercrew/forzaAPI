@@ -16,12 +16,14 @@ import com.api.forzaapi.repositories.FestivalPlaylistRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
+import com.api.forzaapi.utils.toPageResponse
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 
 @Service
 class FestivalPlaylistService (
@@ -67,6 +69,26 @@ class FestivalPlaylistService (
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
             ?: throw ResourceNotFoundException("Playlist with ID $id Not Found")
         return playlist.toResponse()
+    }
+
+    @Transactional(readOnly = true)
+    fun getCurrentPlaylist(gameId: Int,pageable: Pageable): PageResponse<FestivalPlaylistResp>{
+        val today = LocalDate.now()
+
+        val activePlaylists = festivalPlaylistRepository.
+        findByGameIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(gameId,today,today,pageable)
+
+        if(!activePlaylists.isEmpty){
+            return activePlaylists.map { it.toResponse() }.toPageResponse()
+        }
+
+        val lastKnownPlaylist = festivalPlaylistRepository.findTopByGameIdOrderByEndDateDesc(gameId)
+            ?: throw ResourceNotFoundException( "There is no playlist data at all for this game")
+
+        val finalSeriesPlaylists = festivalPlaylistRepository
+            .findByGameIdAndSeriesNumber(gameId, lastKnownPlaylist.seriesNumber,pageable)
+
+        return finalSeriesPlaylists.map { it.toResponse() }.toPageResponse()
     }
 
     @Transactional

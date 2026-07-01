@@ -61,6 +61,21 @@ class FestivalPlaylistController(
         return ResponseEntity.ok(response)
     }
 
+    @Operation(
+        summary = "GET CURRENT / ACTIVE PLAYLIST",
+        description = "Gets the current playlist. If the game has reached EOL (End of Life), it will return the playlist from the most recent series."
+    )
+        @GetMapping("/current")
+    fun getCurrentPlaylist(
+        @RequestParam(value = "gameId", required = true) gameId: Int,
+        @ParameterObject
+        @PageableDefault(page = 0, size = 20, sort = ["id"],direction = Sort.Direction.ASC) pageable: Pageable
+    ): ResponseEntity<PageResponse<FestivalPlaylistResp>> {
+
+        val response = festivalPlaylistService.getCurrentPlaylist(gameId,pageable)
+        return ResponseEntity.ok(response)
+    }
+
     @Hidden
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
