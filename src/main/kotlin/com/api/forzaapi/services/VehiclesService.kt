@@ -13,6 +13,8 @@ import com.api.forzaapi.repositories.VehiclesRepository
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
 import jakarta.persistence.criteria.Predicate
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -27,10 +29,10 @@ class VehiclesService(
     private val manufacturersRepository: ManufacturersRepository
 ) {
 
-//    @Cacheable(
-//        value = ["vehicles"],
-//        key = "{#manufacturerId, #startYear, #endYear, #driveType, #drivetrain, #pageable.pageNumber, #pageable.pageSize}"
-//    )
+    @Cacheable(
+        value = ["vehicles"],
+        key = "{#manufacturerId, #startYear, #endYear, #driveType, #drivetrain, #pageable.pageNumber, #pageable.pageSize,#pageable.sort}"
+    )
     @Transactional(readOnly = true)
     fun getVehiclesWithFilters(
         manufacturerId:Int?,
@@ -63,6 +65,7 @@ class VehiclesService(
             .toPageResponse()
     }
 
+    @Cacheable(value = ["vehicle"], key = "#id")
     @Transactional(readOnly = true)
     fun getVehicleById(id: Int): VehiclesResp? {
         val vehicle = vehiclesRepository.findByIdOrNull(id)
@@ -70,11 +73,13 @@ class VehiclesService(
         return vehicle.toResponse()
     }
 
+    @Cacheable(value = ["vehicle"], key = "{#modelName, #pageable.pageNumber, #pageable.pageSize,#pageable.sort}")
     @Transactional(readOnly = true)
     fun searchVehiclesByModelName(modelName: String, pageable: Pageable): PageResponse<VehiclesResp>?{
         return vehiclesRepository.findByModelNameContainingIgnoreCase(modelName,pageable).map { it.toResponse() }.toPageResponse();
     }
 
+    @CacheEvict(value = ["vehicles"], allEntries = true)
     @Transactional
     fun createVehicle(request: VehiclesReq): VehiclesResp {
 
@@ -103,6 +108,7 @@ class VehiclesService(
         return vehiclesRepository.save(vehicle).toResponse()
     }
 
+    @CacheEvict(value = ["vehicles"], allEntries = true)
     @Transactional
     fun bulkCreate(requests: List<VehiclesReq>): List<VehiclesResp> {
         val validVehicles = mutableListOf<Vehicles>()
@@ -155,6 +161,7 @@ class VehiclesService(
         return savedVehicles.map { it.toResponse() }
     }
 
+    @CacheEvict(value = ["vehicles"], allEntries = true)
     @Transactional
     fun updateVehicle(id: Int, request: VehiclesReq): VehiclesResp{
         val vehicle = vehiclesRepository.findByIdOrNull(id)
@@ -179,6 +186,7 @@ class VehiclesService(
         return vehiclesRepository.save(vehicle).toResponse()
     }
 
+    @CacheEvict(value = ["vehicles"], allEntries = true)
     @Transactional
     fun deleteVehicle(id: Int):String {
         val vehicle = vehiclesRepository.findByIdOrNull(id)

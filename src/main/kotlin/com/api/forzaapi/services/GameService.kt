@@ -7,6 +7,8 @@ import com.api.forzaapi.entity.Game
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -18,6 +20,7 @@ import org.springframework.data.repository.findByIdOrNull
 class GameService(
     private val gameRepository: GameRepository
 ) {
+    @Cacheable(value = ["games"], key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getAllGames(pageable: Pageable): PageResponse<GameResp> {
         return gameRepository.findAll(pageable)
@@ -25,6 +28,7 @@ class GameService(
             .toPageResponse()
     }
 
+    @Cacheable(value = ["games"], key = "{#title,#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getGameByTitle(title: String): GameResp {
         val game = gameRepository.findByTitleIgnoreCase(title)
@@ -33,6 +37,7 @@ class GameService(
         return game.toResponse();
     }
 
+    @Cacheable(value = ["games"], key = "#id")
     @Transactional(readOnly = true)
     fun getGameById(id:Int): GameResp{
         val game = gameRepository.findByIdOrNull(id)
@@ -42,6 +47,7 @@ class GameService(
     }
 
     // CREATE
+    @CacheEvict(value = ["games"], allEntries = true)
     @Transactional
     fun createGame(request: GameReq): GameResp {
         val game = Game(
@@ -53,6 +59,7 @@ class GameService(
     }
 
     // UPDATE
+    @CacheEvict(value = ["games"], allEntries = true)
     @Transactional
     fun updateGame(id: Int, request: GameReq): GameResp {
         val game = gameRepository.findByIdOrNull(id)
@@ -64,6 +71,7 @@ class GameService(
     }
 
     // DELETE
+    @CacheEvict(value = ["games"], allEntries = true)
     @Transactional
     fun deleteGame(id: Int) {
         val game = gameRepository.findByIdOrNull(id)

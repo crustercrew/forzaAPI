@@ -28,9 +28,14 @@ spring:
     redis:
       url: ${REDIS_URL}
 
-server:
-  servlet:
-    context-path: /api/v1
+  web:
+    resources:
+      cache:
+        period: 0
+
+  devtools:
+    restart:
+      exclude: static/**,public/**,resources/**
 
 api:
   version: 1.0.0

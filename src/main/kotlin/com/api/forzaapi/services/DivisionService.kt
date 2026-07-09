@@ -7,6 +7,8 @@ import com.api.forzaapi.entity.Divisions
 import com.api.forzaapi.repositories.DivisionRepository
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -18,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException
 class DivisionService(
     private val divisionRepository: DivisionRepository
 ) {
+    @Cacheable(value = ["divisions"], key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getAllDivision(pageable: Pageable): PageResponse<DivisionResp> {
         return divisionRepository.findAll(pageable)
@@ -25,6 +28,7 @@ class DivisionService(
             .toPageResponse()
     }
 
+    @Cacheable(value = ["divisions"], key = "{#name}")
     @Transactional(readOnly = true)
     fun getDivisionByName(name: String): DivisionResp {
         val division = divisionRepository.findByNameIgnoreCase(name)
@@ -35,6 +39,7 @@ class DivisionService(
         return division.toResponse();
     }
 
+    @Cacheable(value = ["divisions"], key = "#id")
     @Transactional(readOnly = true)
     fun getDivisionById(id:Int): DivisionResp{
         val division = divisionRepository.findByIdOrNull(id)
@@ -46,6 +51,7 @@ class DivisionService(
     }
 
     // CREATE
+    @CacheEvict(value = ["divisions"], allEntries = true)
     @Transactional
     fun createDivisions(request: DivisionReq): DivisionResp {
         val division = Divisions(
@@ -55,6 +61,7 @@ class DivisionService(
         return divisionRepository.save(division).toResponse()
     }
 
+    @CacheEvict(value = ["divisions"], allEntries = true)
     @Transactional
     fun bulkCreateDivisions(requests: List<DivisionReq>): List<DivisionResp> {
         val divisions = requests.map {
@@ -67,6 +74,7 @@ class DivisionService(
     }
 
     // UPDATE
+    @CacheEvict(value = ["divisions"], allEntries = true)
     @Transactional
     fun updateDivisions(id: Int, request: DivisionReq): DivisionResp {
         // Cek dulu apakah division-nya ada?
@@ -82,6 +90,7 @@ class DivisionService(
     }
 
     // DELETE
+    @CacheEvict(value = ["divisions"], allEntries = true)
     @Transactional
     fun deleteDivisions(id: Int) {
         val division = divisionRepository.findByIdOrNull(id)

@@ -17,6 +17,8 @@ import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -31,6 +33,7 @@ class FestivalPlaylistService (
     private val gameRepository: GameRepository,
     private val gameVehicleStatsRepository: GameVehicleStatsRepository
 ){
+    @Cacheable(value = ["festivalplaylists"], key = "{#gameId, #seriesNumber, #season, #pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getAllPlaylistsWithFilters(
         gameId: Int?,
@@ -64,6 +67,7 @@ class FestivalPlaylistService (
         )
     }
 
+    @Cacheable(value = ["festivalplaylists"], key = "{#id}")
     @Transactional(readOnly = true)
     fun getPlaylistById(id: Int): FestivalPlaylistResp? {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
@@ -71,6 +75,7 @@ class FestivalPlaylistService (
         return playlist.toResponse()
     }
 
+    @Cacheable(value = ["festivalplaylists"], key = "{#gameId, #pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getCurrentPlaylist(gameId: Int,pageable: Pageable): PageResponse<FestivalPlaylistResp>{
         val today = LocalDate.now()
@@ -91,6 +96,7 @@ class FestivalPlaylistService (
         return finalSeriesPlaylists.map { it.toResponse() }.toPageResponse()
     }
 
+    @CacheEvict(value = ["festivalplaylists"], allEntries = true)
     @Transactional
     fun createPlaylist(request: FestivalPlaylistReq): FestivalPlaylistResp {
         val game = gameRepository.findByIdOrNull(request.gameId)
@@ -114,6 +120,7 @@ class FestivalPlaylistService (
         return festivalPlaylistRepository.save(playlist).toResponse()
     }
 
+    @CacheEvict(value = ["festivalplaylists"], allEntries = true)
     @Transactional
     fun bulkCreatePlaylists(requests: List<FestivalPlaylistReq>): List<FestivalPlaylistResp> {
         val validPlaylists = mutableListOf<FestivalPlaylist>()
@@ -145,6 +152,7 @@ class FestivalPlaylistService (
         return savedPlaylists.map { it.toResponse() }
     }
 
+    @CacheEvict(value = ["festivalplaylists"], allEntries = true)
     @Transactional
     fun updatePlaylist(id: Int, request: FestivalPlaylistReq): FestivalPlaylistResp {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)
@@ -169,6 +177,7 @@ class FestivalPlaylistService (
         return festivalPlaylistRepository.save(playlist).toResponse()
     }
 
+    @CacheEvict(value = ["festivalplaylists"], allEntries = true)
     @Transactional
     fun deletePlaylist(id: Int): String {
         val playlist = festivalPlaylistRepository.findByIdOrNull(id)

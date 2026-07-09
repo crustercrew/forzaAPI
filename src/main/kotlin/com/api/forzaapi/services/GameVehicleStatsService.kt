@@ -15,6 +15,8 @@ import com.api.forzaapi.repositories.VehiclesRepository
 import com.api.forzaapi.utils.errorhandler.InvalidRequestException
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import jakarta.persistence.criteria.Predicate
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
@@ -30,7 +32,23 @@ class GameVehicleStatsService(
     private val gameRepository: GameRepository,
     private val divisionRepository: DivisionRepository
 ) {
-
+    @Cacheable(value = ["vehiclestats"],
+        key = "{" +
+                "#vehicleId," +
+                "#vehicleName," +
+                "#manufacturerId," +
+                "#manufacturername," +
+                "#divisionId," +
+                "#divisionName,"+
+                "#gameId,"+
+                "#rarity,"+
+                "#driveType,"+
+                "#performanceClass,"+
+                "#driveType,"+
+                "#pageable.pageNumber," +
+                "#pageable.pageSize," +
+                "#pageable.sort" +
+                "}")
     @Transactional(readOnly = true)
     fun getStats(
         vehicleId: Int?,
@@ -147,6 +165,7 @@ class GameVehicleStatsService(
         )
     }
 
+    @Cacheable(value = ["vehiclestats"], key = "#id")
     @Transactional(readOnly = true)
     fun getStatsById(id: Int): GameVehicleStatsResp =
         gameVehicleStatsRepository.findByIdOrNull(id)
@@ -154,6 +173,7 @@ class GameVehicleStatsService(
             ?: throw ResourceNotFoundException("Vehicle Stats with ID $id Not Found")
 
 
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun createStats(request: GameVehicleStatsReq): GameVehicleStatsResp {
         // 1. Validasi Keberadaan Relasi Parent
@@ -206,6 +226,7 @@ class GameVehicleStatsService(
     /**
      * 2. Bulk Create game VehicleStats
      */
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun bulkCreateStats(requests: List<GameVehicleStatsReq>): List<GameVehicleStatsResp> {
         val validStatsList = mutableListOf<GameVehicleStats>()
@@ -259,7 +280,7 @@ class GameVehicleStatsService(
         val savedEntities = gameVehicleStatsRepository.saveAll(validStatsList)
         return savedEntities.map { it.toResponse() }
     }
-
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun updateStats(id: Int, request: GameVehicleStatsReq): GameVehicleStatsResp {
         // Cek record statistik utama yang mau di-update
@@ -306,6 +327,7 @@ class GameVehicleStatsService(
         return gameVehicleStatsRepository.save(currentStats).toResponse()
     }
 
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun deleteStats(id: Int): String {
         val currentStats = gameVehicleStatsRepository.findByIdOrNull(id)

@@ -9,6 +9,8 @@ import com.api.forzaapi.dto.responses.ManufacturerListOBJResp
 import com.api.forzaapi.dto.responses.ManufacturerOBJResp
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
 import com.api.forzaapi.utils.toPageResponse
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -21,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException
 class ManufacturersService(
     private val manufacturersRepository: ManufacturersRepository
 ) {
+    @Cacheable(value = ["manufacturers"], key = "{#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getAllManufacturers(pageable: Pageable): PageResponse<ManufacturerResp> {
         return manufacturersRepository.findAll(pageable)
@@ -28,6 +31,7 @@ class ManufacturersService(
             .toPageResponse()
     }
 
+    @Cacheable(value = ["manufacturers"], key = "#name")
     @Transactional(readOnly = true)
     fun getManufacturerByName(name: String): ManufacturerResp {
         val manufacturers = manufacturersRepository.findByNameIgnoreCase(name)
@@ -36,6 +40,7 @@ class ManufacturersService(
         return manufacturers.toResponse();
     }
 
+    @Cacheable(value = ["manufacturers"], key = "#id")
     @Transactional(readOnly = true)
     fun getManufacturerById(id:Int): ManufacturerResp{
         val manufacturer = manufacturersRepository.findByIdOrNull(id)
@@ -44,6 +49,7 @@ class ManufacturersService(
         return manufacturer.toResponse();
     }
 
+    @Cacheable(value = ["manufacturers"], key = "{#country,#pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     fun getManufacturerByCountry(country: String,pageable: Pageable): PageResponse<ManufacturerListOBJResp> {
         val manufacturers = manufacturersRepository.findByCountryContainingIgnoreCase(country, pageable)
@@ -73,6 +79,7 @@ class ManufacturersService(
     }
 
     // CREATE
+    @CacheEvict(value = ["manufacturers"], allEntries = true)
     @Transactional
     fun createManufacturers(request: ManufacturerReq): ManufacturerResp {
         val manufacturers = Manufacturers(
@@ -84,6 +91,7 @@ class ManufacturersService(
     }
 
     // BULK CREATE
+    @CacheEvict(value = ["manufacturers"], allEntries = true)
     @Transactional
     fun bulkCreateManufacturers(requests: List<ManufacturerReq>): List<ManufacturerResp> {
         val manufacturers = requests.map {
@@ -97,6 +105,7 @@ class ManufacturersService(
     }
 
     // UPDATE
+    @CacheEvict(value = ["manufacturers"], allEntries = true)
     @Transactional
     fun updateManufacturers(id: Int, request: ManufacturerReq): ManufacturerResp {
         // Cek dulu apakah manufacturers-nya ada?
@@ -111,6 +120,7 @@ class ManufacturersService(
     }
 
     // DELETE
+    @CacheEvict(value = ["manufacturers"], allEntries = true)
     @Transactional
     fun deleteManufacturers(id: Int) {
         val manufacturers = manufacturersRepository.findByIdOrNull(id)

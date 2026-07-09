@@ -6,6 +6,7 @@ import com.api.forzaapi.entity.VehicleImages
 import com.api.forzaapi.repositories.VehicleImagesRepository
 import com.api.forzaapi.repositories.VehiclesRepository
 import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,6 +15,7 @@ class VehicleImagesService(
     private val vehicleImagesRepository: VehicleImagesRepository,
     private val vehicleRepository: VehiclesRepository
 ) {
+    @CacheEvict(value = ["vehicles"], allEntries = true)
     @Transactional
     fun addImageToVehicle(vehicleId: Int, request: VehicleImagesReq): VehicleImagesResp {
         // 1. Validasi: Pastikan mobilnya ada
@@ -33,6 +35,7 @@ class VehicleImagesService(
     }
 
     // Fungsi tambahan untuk ngambil semua gambar dari 1 mobil
+    @CacheEvict(value = ["vehicles"], allEntries = true)
     @Transactional(readOnly = true)
     fun getImagesByVehicle(vehicleId: Int): List<VehicleImagesResp> {
         return vehicleImagesRepository.findByVehicleId(vehicleId)
