@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Documentation - Forza Open API</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@700;800&display=swap"
+        rel="stylesheet" />
     <script id="tailwind-config" src="js/tailwind-config.js">
     </script>
     <style>
@@ -26,7 +30,7 @@
             color: #514532;
         }
 
-        .json-box-wrapper{
+        .json-box-wrapper {
             max-height: 380px;
             overflow-y: auto;
             overflow-x: auto;
@@ -34,14 +38,17 @@
             max-width: 100%;
             display: block;
         }
+
         .json-box-wrapper::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
+
         .json-box-wrapper::-webkit-scrollbar-thumb {
             background-color: #2e363c;
             border-radius: 4px;
         }
+
         .json-box-wrapper::-webkit-scrollbar-thumb:hover {
             background-color: #514532;
         }
@@ -53,928 +60,1513 @@
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
             opacity: 1;
         }
+
         .submenu.collapsed {
             max-height: 0;
             opacity: 0;
             margin-top: 0 !important;
         }
+
         .submenu-toggle .material-symbols-outlined {
             transition: transform 0.3s ease;
         }
+
         .submenu-toggle.collapsed .material-symbols-outlined {
             transform: rotate(-90deg);
         }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        #mobile-menu.hidden {
+            display: none;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+
+        #mobile-menu:not(.hidden) {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Mobile Sidebar Overlay */
+        #sidebar-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #sidebar-overlay.hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        #sidebar-overlay:not(.hidden) {
+            display: block;
+            opacity: 1;
+        }
+
+        #mobile-sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #mobile-sidebar.sidebar-closed {
+            transform: translateX(-100%);
+        }
+
+        #mobile-sidebar:not(.sidebar-closed) {
+            transform: translateX(0);
+        }
+
+        /* Responsive table wrapper */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
+
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
 
-<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-background/90 backdrop-blur-md border-b border-outline-variant">
-    <div class="flex items-center gap-6">
-        <a href="index.html" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <img src="forza-logo.webp" alt="Forza API Logo" class="h-8 w-auto object-contain" onerror="this.src='https://via.placeholder.com/32x32?text=F'"/>
-            <span class="font-headline text-[24px] font-black text-primary uppercase tracking-tighter hidden sm:inline">
-                    FORZA API
-                </span>
-        </a>
-        <div class="hidden md:flex gap-2">
-            <a class="text-[13px] text-on-surface-variant hover:text-primary transition-colors px-3 py-2 rounded font-code font-medium" href="index.html">Home</a>
-            <a class="text-[13px] text-on-surface-variant hover:text-primary transition-colors px-3 py-2 rounded font-code font-medium" href="about.html">About</a>
-            <a class="text-[13px] text-primary bg-surface-container-high px-3 py-2 rounded font-code font-medium" href="documentation.html">Documentation</a>
+    <nav class="fixed top-0 left-0 w-full z-50 bg-background/90 backdrop-blur-md border-b border-outline-variant">
+        <div class="flex justify-between items-center px-4 md:px-6 h-16">
+            <div class="flex items-center gap-2 md:gap-6">
+                <a href="index.html" class="flex items-center gap-1 md:gap-2 hover:opacity-90 transition-opacity">
+                    <img src="forza-logo.webp" alt="Forza API Logo" class="h-6 md:h-8 w-auto object-contain"
+                        onerror="this.src='https://via.placeholder.com/32x32?text=F'" />
+                    <span
+                        class="font-headline text-base md:text-[24px] font-black text-primary uppercase tracking-tighter hidden sm:inline">
+                        FORZA API
+                    </span>
+                </a>
+                <div class="hidden md:flex gap-2">
+                    <a class="text-[13px] text-on-surface-variant hover:text-primary transition-colors px-3 py-2 rounded font-code font-medium"
+                        href="index.html">Home</a>
+                    <a class="text-[13px] text-on-surface-variant hover:text-primary transition-colors px-3 py-2 rounded font-code font-medium"
+                        href="about.html">About</a>
+                    <a class="text-[13px] text-primary bg-surface-container-high px-3 py-2 rounded font-code font-medium"
+                        href="documentation.html">Documentation</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-1 md:gap-4">
+                <a class="hidden lg:flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2"
+                    href="https://github.com/crustercrew/forzaAPI" target="_blank">
+                    <span class="material-symbols-outlined text-[18px]">code</span>
+                    Source Code
+                </a>
+
+                <a href="/swagger-ui/index.html" target="_blank"
+                    class="bg-primary text-on-primary font-label-sm text-xs md:text-label-sm px-2 md:px-4 py-2 rounded font-bold hover:scale-95 duration-100 transition-transform inline-block text-center decoration-none whitespace-nowrap">
+                    <span class="hidden sm:inline">Explore </span>Swagger<span class="hidden sm:inline"> UI</span>
+                </a>
+
+                <!-- Sidebar toggle for mobile (docs only) -->
+                <button id="sidebar-toggle" class="lg:hidden text-primary p-2" title="Toggle sidebar navigation">
+                    <span class="material-symbols-outlined">menu_book</span>
+                </button>
+
+                <button id="menu-toggle" class="md:hidden text-primary p-2">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="flex items-center gap-4">
-        <a href="/swagger-ui/index.html" target="_blank" class="bg-primary text-[#432c00] text-[13px] px-4 py-2 rounded font-bold hover:scale-95 transition-transform inline-block font-code">
-            Explore Swagger UI
-        </a>
-    </div>
-</nav>
 
-<div class="flex flex-grow pt-16 max-w-[1400px] mx-auto w-full">
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden flex-col bg-background border-b border-outline-variant md:hidden">
+            <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-6 py-4 border-b border-outline-variant/30"
+                href="index.html">
+                Home
+            </a>
+            <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-6 py-4 border-b border-outline-variant/30"
+                href="about.html">
+                About
+            </a>
+            <a class="font-label-sm text-label-sm text-primary bg-surface-container-high px-6 py-4 border-b border-outline-variant/30"
+                href="documentation.html">
+                Documentation
+            </a>
+            <a class="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-6 py-4"
+                href="https://github.com/crustercrew/forzaAPI" target="_blank">
+                <span class="material-symbols-outlined text-[18px]">code</span>
+                Source Code
+            </a>
+        </div>
+    </nav>
 
-    <aside class="w-64 flex-shrink-0 hidden lg:block border-r border-outline-variant h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto py-8 px-4">
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden"></div>
+    <aside id="mobile-sidebar"
+        class="sidebar-closed fixed top-16 left-0 z-40 w-72 bg-background border-r border-outline-variant h-[calc(100vh-4rem)] overflow-y-auto py-6 px-4 lg:hidden">
+
+        <!-- Mobile sidebar content (duplicated for mobile overlay) -->
         <div class="flex flex-col gap-6">
 
             <div>
-                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Getting Started</h4>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Getting
+                    Started</h4>
                 <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
-                    <li><a href="#information" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Information</a></li>
-                    <li><a href="#fair-use" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Fair Use Policy</a></li>
-                    <li><a href="#pagination" class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Pagination & Sorting</a></li>
+                    <li><a href="#information"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Information</a>
+                    </li>
+                    <li><a href="#fair-use"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Fair
+                            Use Policy</a></li>
+                    <li><a href="#pagination"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Pagination
+                            & Sorting</a></li>
                 </ul>
             </div>
 
             <div>
-                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Vehicles (Group)</h4>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Vehicles
+                    (Group)</h4>
                 <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
-                    <li>
-                        <div class="flex items-center justify-between group">
-                            <a href="#vehicles" class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Vehicles</a>
-                            <button class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity" data-target="submenu-vehicles">
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-                            </button>
-                        </div>
-                        <ul id="submenu-vehicles" class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
-                            <li><a href="#vehicles-all" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get All Vehicles</a></li>
-                            <li><a href="#vehicles-by-id" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get Vehicle by ID</a></li>
-                            <li><a href="#vehicles-by-name" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Search by Model Name</a></li>
-                        </ul>
+                    <li><a href="#vehicles"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Vehicles</a>
                     </li>
-                    <li class="mt-2">
-                        <div class="flex items-center justify-between group">
-                            <a href="#vehicle-stats" class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Game Vehicle Stats</a>
-                            <button class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity" data-target="submenu-vehicle-stats">
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-                            </button>
-                        </div>
-                        <ul id="submenu-vehicle-stats" class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
-                            <li><a href="#vehicle-stats-all" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get All Vehicle Stats</a></li>
-                            <li><a href="#vehicle-stats-by-id" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get Stats by ID</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="#vehicle-stats"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Game
+                            Vehicle Stats</a></li>
                 </ul>
             </div>
 
             <div>
-                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Master Data (Group)</h4>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Master Data
+                    (Group)</h4>
                 <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
-                    <li>
-                        <div class="flex items-center justify-between group">
-                            <a href="#manufacturers" class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Manufacturers</a>
-                            <button class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity" data-target="submenu-manufacturers">
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-                            </button>
-                        </div>
-                        <ul id="submenu-manufacturers" class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
-                            <li><a href="#manufacturers-all" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get All Manufacturers</a></li>
-                            <li><a href="#manufacturers-by-id" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get by ID</a></li>
-                            <li><a href="#manufacturers-by-country" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get by Country</a></li>
-                        </ul>
+                    <li><a href="#manufacturers"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Manufacturers</a>
                     </li>
-                    <li class="mt-2">
-                        <div class="flex items-center justify-between group">
-                            <a href="#divisions" class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Divisions</a>
-                            <button class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity" data-target="submenu-divisions">
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-                            </button>
-                        </div>
-                        <ul id="submenu-divisions" class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
-                            <li><a href="#divisions-all" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get All Divisions</a></li>
-                            <li><a href="#divisions-by-id" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get by ID</a></li>
-                        </ul>
+                    <li><a href="#divisions"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Divisions</a>
                     </li>
-                    <li class="mt-2">
-                        <div class="flex items-center justify-between group">
-                            <a href="#games" class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Games</a>
-                            <button class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity" data-target="submenu-games">
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-                            </button>
-                        </div>
-                        <ul id="submenu-games" class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
-                            <li><a href="#games-all" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get All Games</a></li>
-                            <li><a href="#games-by-id" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get by ID</a></li>
-                        </ul>
+                    <li><a href="#games"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Games</a>
                     </li>
                 </ul>
             </div>
 
             <div>
-                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Live Service (Group)</h4>
+                <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Live
+                    Service (Group)</h4>
                 <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
-                    <li>
-                        <div class="flex items-center justify-between group">
-                            <a href="#festival-playlists" class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Festival Playlists</a>
-                            <button class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity" data-target="submenu-festival-playlists">
-                                <span class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
-                            </button>
-                        </div>
-                        <ul id="submenu-festival-playlists" class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
-                            <li><a href="#festival-playlists-current" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get Current Playlist</a></li>
-                            <li><a href="#festival-playlists-all" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get All Playlists</a></li>
-                            <li><a href="#festival-playlists-by-id" class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get by ID</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="#festival-playlists"
+                            class="mobile-sidebar-link block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Festival
+                            Playlists</a></li>
                 </ul>
             </div>
 
         </div>
     </aside>
 
-    <main class="flex-grow p-6 md:p-12 lg:px-16 overflow-y-auto">
-        <h1 class="font-headline text-[36px] font-black text-on-background mb-4">API Documentation</h1>
-        <p class="text-on-surface-variant text-[16px] leading-relaxed mb-10">
-            Welcome to the official Forza Open API documentation. Use this page to understand our endpoints, response structures, and querying parameters.
-        </p>
+    <div class="flex flex-grow pt-16 max-w-[1400px] mx-auto w-full">
 
-        <section id="information" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">Information</h2>
-            <p class="text-on-surface-variant leading-relaxed">
-                This is a <strong>consumption-only</strong> API — only the HTTP <code class="bg-surface-container font-code text-secondary px-1.5 py-0.5 rounded text-[13px]">GET</code> method is available on public resources.
-            </p>
-            <p class="text-on-surface-variant leading-relaxed mt-2">
-                No authentication is required to access this API, and all resources are fully open. We utilize robust caching via Redis Upstash to guarantee rapid response times across our globally distributed nodes.
-            </p>
-        </section>
+        <aside
+            class="w-64 flex-shrink-0 hidden lg:block border-r border-outline-variant h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto py-8 px-4">
+            <div class="flex flex-col gap-6">
 
-        <section id="fair-use" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">Fair Use Policy</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-3">
-                Forza API is free and open to use. Because of this, we ask every developer to abide by our fair use policy. People not complying with the fair use policy will be subjected to rate-limiting or IP bans.
-            </p>
-            <ul class="list-disc list-inside text-on-surface-variant space-y-2 ml-2">
-                <li>Locally cache resources in your own mobile app or web client whenever you request them.</li>
-                <li>Avoid spamming heavy complex filtering endpoints in loops.</li>
-                <li>If you spot data inaccuracies, please contribute via our official GitHub repository.</li>
-            </ul>
-        </section>
-
-        <section id="pagination" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">Pagination & Sorting</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Calling any list endpoint without a specific resource ID will return a paginated list of available resources. By default, a list "page" will contain up to 20 resources.
-            </p>
-            <div class="bg-surface-container-low border border-outline-variant rounded p-4 mb-4">
-                <code class="font-code text-primary text-[14px]">GET https://api.forza-api.com/api/v1/vehicles?page=0&size=20&sort=modelName,desc</code>
-            </div>
-            <!-- Query Parameters Table -->
-            <div class="mt-6">
-                <h3 class="font-code text-primary text-[13px] uppercase tracking-wider font-bold mb-3 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[16px]">tune</span>
-                    Query Parameters
-                </h3>
-                <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                    <table class="w-full text-left border-collapse text-[14px]">
-                        <thead>
-                        <tr class="border-b border-outline-variant bg-surface-container">
-                            <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
-                            <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
-                            <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
-                        </tr>
-                        </thead>
-                        <tbody class="text-on-surface-variant">
-                        <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                            <td class="py-3 px-4 font-code text-secondary">page</td>
-                            <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
-                            <td class="py-3 px-4">The page index you want to retrieve. Starts at <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">0</code>.</td>
-                        </tr>
-                        <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                            <td class="py-3 px-4 font-code text-secondary">size</td>
-                            <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
-                            <td class="py-3 px-4">Number of items per page. Default is <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">20</code>.</td>
-                        </tr>
-                        <tr class="hover:bg-surface-container/30 transition-colors">
-                            <td class="py-3 px-4 font-code text-secondary">sort</td>
-                            <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string</td>
-                            <td class="py-3 px-4">Field to sort by, followed by a comma and direction (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">id,asc</code> or <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">modelName,desc</code>).</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="vehicles" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Vehicles</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Vehicles are the core physical entities representing cars from the real world. They contain base attributes like engine type, chassis origin, and default drive types before game-specific tuning is applied.
-            </p>
-
-            <div id="vehicle-get-all" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Vehicles</h3>
-                <div id="vehicles-all" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-all.json">Mengambil data dari server...</code></pre>
-                    </div>
+                <div>
+                    <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Getting
+                        Started</h4>
+                    <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                        <li><a href="#information"
+                                class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Information</a>
+                        </li>
+                        <li><a href="#fair-use"
+                                class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Fair
+                                Use Policy</a></li>
+                        <li><a href="#pagination"
+                                class="block w-full px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Pagination
+                                & Sorting</a></li>
+                    </ul>
                 </div>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
+                <div>
+                    <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">
+                        Vehicles (Group)</h4>
+                    <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                        <li>
+                            <div class="flex items-center justify-between group">
+                                <a href="#vehicles"
+                                    class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Vehicles</a>
+                                <button
+                                    class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity"
+                                    data-target="submenu-vehicles">
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+                                </button>
+                            </div>
+                            <ul id="submenu-vehicles"
+                                class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
+                                <li><a href="#vehicles-all"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        All Vehicles</a></li>
+                                <li><a href="#vehicles-by-id"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        Vehicle by ID</a></li>
+                                <li><a href="#vehicles-by-name"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Search
+                                        by Model Name</a></li>
+                            </ul>
+                        </li>
+                        <li class="mt-2">
+                            <div class="flex items-center justify-between group">
+                                <a href="#vehicle-stats"
+                                    class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Game
+                                    Vehicle Stats</a>
+                                <button
+                                    class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity"
+                                    data-target="submenu-vehicle-stats">
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+                                </button>
+                            </div>
+                            <ul id="submenu-vehicle-stats"
+                                class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
+                                <li><a href="#vehicle-stats-all"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        All Vehicle Stats</a></li>
+                                <li><a href="#vehicle-stats-by-id"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        Stats by ID</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Master
+                        Data (Group)</h4>
+                    <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                        <li>
+                            <div class="flex items-center justify-between group">
+                                <a href="#manufacturers"
+                                    class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Manufacturers</a>
+                                <button
+                                    class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity"
+                                    data-target="submenu-manufacturers">
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+                                </button>
+                            </div>
+                            <ul id="submenu-manufacturers"
+                                class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
+                                <li><a href="#manufacturers-all"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        All Manufacturers</a></li>
+                                <li><a href="#manufacturers-by-id"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        by ID</a></li>
+                                <li><a href="#manufacturers-by-country"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        by Country</a></li>
+                            </ul>
+                        </li>
+                        <li class="mt-2">
+                            <div class="flex items-center justify-between group">
+                                <a href="#divisions"
+                                    class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Divisions</a>
+                                <button
+                                    class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity"
+                                    data-target="submenu-divisions">
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+                                </button>
+                            </div>
+                            <ul id="submenu-divisions"
+                                class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
+                                <li><a href="#divisions-all"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        All Divisions</a></li>
+                                <li><a href="#divisions-by-id"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        by ID</a></li>
+                            </ul>
+                        </li>
+                        <li class="mt-2">
+                            <div class="flex items-center justify-between group">
+                                <a href="#games"
+                                    class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Games</a>
+                                <button
+                                    class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity"
+                                    data-target="submenu-games">
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+                                </button>
+                            </div>
+                            <ul id="submenu-games"
+                                class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
+                                <li><a href="#games-all"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        All Games</a></li>
+                                <li><a href="#games-by-id"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        by ID</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-code text-primary text-[11px] uppercase tracking-widest font-bold mb-2 px-3">Live
+                        Service (Group)</h4>
+                    <ul class="flex flex-col gap-1 text-[13px] text-on-surface-variant font-code">
+                        <li>
+                            <div class="flex items-center justify-between group">
+                                <a href="#festival-playlists"
+                                    class="flex-grow px-3 py-1.5 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200">Festival
+                                    Playlists</a>
+                                <button
+                                    class="submenu-toggle collapsed px-2 opacity-70 hover:opacity-100 transition-opacity"
+                                    data-target="submenu-festival-playlists">
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-200">expand_more</span>
+                                </button>
+                            </div>
+                            <ul id="submenu-festival-playlists"
+                                class="submenu collapsed flex flex-col gap-0.5 ml-4 mt-1 text-[12px] border-l-2 border-outline-variant/30 pl-2">
+                                <li><a href="#festival-playlists-current"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        Current Playlist</a></li>
+                                <li><a href="#festival-playlists-all"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        All Playlists</a></li>
+                                <li><a href="#festival-playlists-by-id"
+                                        class="block w-full px-2 py-1 rounded-md hover:bg-surface-container-high hover:text-secondary transition-all duration-200 text-on-surface-variant/70">Get
+                                        by ID</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </aside>
+
+        <main class="flex-grow p-4 md:p-8 lg:p-12 lg:px-16 overflow-y-auto">
+            <h1 class="font-headline text-[28px] md:text-[36px] font-black text-on-background mb-4">API Documentation
+            </h1>
+            <p class="text-on-surface-variant text-[14px] md:text-[16px] leading-relaxed mb-10">
+                Welcome to the official Forza Open API documentation. Use this page to understand our endpoints,
+                response structures, and querying parameters.
+            </p>
+
+            <section id="information" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">
+                    Information</h2>
+                <p class="text-on-surface-variant leading-relaxed">
+                    This is a <strong>consumption-only</strong> API — only the HTTP <code
+                        class="bg-surface-container font-code text-secondary px-1.5 py-0.5 rounded text-[13px]">GET</code>
+                    method is available on public resources.
+                </p>
+                <p class="text-on-surface-variant leading-relaxed mt-2">
+                    No authentication is required to access this API, and all resources are fully open. We utilize
+                    robust caching via Redis Upstash to guarantee rapid response times across our globally distributed
+                    nodes.
+                </p>
+            </section>
+
+            <section id="fair-use" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">
+                    Fair Use Policy</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-3">
+                    Forza API is free and open to use. Because of this, we ask every developer to abide by our fair use
+                    policy. People not complying with the fair use policy will be subjected to rate-limiting or IP bans.
+                </p>
+                <ul class="list-disc list-inside text-on-surface-variant space-y-2 ml-2">
+                    <li>Locally cache resources in your own mobile app or web client whenever you request them.</li>
+                    <li>Avoid spamming heavy complex filtering endpoints in loops.</li>
+                    <li>If you spot data inaccuracies, please contribute via our official GitHub repository.</li>
+                </ul>
+            </section>
+
+            <section id="pagination" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-on-background border-b border-outline-variant pb-2 mb-4">
+                    Pagination & Sorting</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Calling any list endpoint without a specific resource ID will return a paginated list of available
+                    resources. By default, a list "page" will contain up to 20 resources.
+                </p>
+                <div class="bg-surface-container-low border border-outline-variant rounded p-4 mb-4">
+                    <code
+                        class="font-code text-primary text-[14px]">GET https://api.forza-api.com/api/v1/vehicles?page=0&size=20&sort=modelName,desc</code>
+                </div>
+                <!-- Query Parameters Table -->
+                <div class="mt-6">
+                    <h3
+                        class="font-code text-primary text-[13px] uppercase tracking-wider font-bold mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">tune</span>
                         Query Parameters
-                    </h4>
+                    </h3>
                     <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
                         <table class="w-full text-left border-collapse text-[14px]">
                             <thead>
-                            <tr class="border-b border-outline-variant bg-surface-container">
-                                <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
-                                <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
-                                <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
-                            </tr>
+                                <tr class="border-b border-outline-variant bg-surface-container">
+                                    <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
+                                    <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
+                                    <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
+                                </tr>
                             </thead>
                             <tbody class="text-on-surface-variant">
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">manufacturerId</td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters vehicles by the unique identifier of the manufacturer (e.g., id: <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">54</code> for Honda).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">manufacturerName</td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Performs a case-insensitive partial match search on the manufacturer name (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">porsche</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">startYear</td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The minimum production year boundary for the dynamic search range (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">1990</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">endYear</td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The maximum production year boundary for the dynamic search range (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">2025</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">driveType</td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string (enum)</td>
-                                <td class="py-3 px-4">Filters vehicles by layout configuration. Valid case-insensitive values: <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">FR</code>, <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">MR</code>, <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">RR</code>.</td>
-                            </tr>
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">drivetrain</td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string (enum)</td>
-                                <td class="py-3 px-4">Filters vehicles by drive system layout. Valid case-insensitive values: <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">AWD</code>, <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">RWD</code>, <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">FWD</code>.</td>
-                            </tr>
+                                <tr
+                                    class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                    <td class="py-3 px-4 font-code text-secondary">page</td>
+                                    <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
+                                    <td class="py-3 px-4">The page index you want to retrieve. Starts at <code
+                                            class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">0</code>.
+                                    </td>
+                                </tr>
+                                <tr
+                                    class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                    <td class="py-3 px-4 font-code text-secondary">size</td>
+                                    <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
+                                    <td class="py-3 px-4">Number of items per page. Default is <code
+                                            class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">20</code>.
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container/30 transition-colors">
+                                    <td class="py-3 px-4 font-code text-secondary">sort</td>
+                                    <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string</td>
+                                    <td class="py-3 px-4">Field to sort by, followed by a comma and direction (e.g.,
+                                        <code
+                                            class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">id,asc</code>
+                                        or <code
+                                            class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">modelName,desc</code>).
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="vehicle-get-by-id" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Vehicle by ID</h3>
-                <div id="vehicles-by-id" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/{id}</code>
+            <section id="vehicles" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">
+                    Vehicles</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Vehicles are the core physical entities representing cars from the real world. They contain base
+                    attributes like engine type, chassis origin, and default drive types before game-specific tuning is
+                    applied.
+                </p>
+
+                <div id="vehicle-get-all" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All
+                        Vehicles</h3>
+                    <div id="vehicles-all"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-all.json">Mengambil data dari server...</code></pre>
+                        </div>
                     </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-id.json"></code></pre>
+
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[14px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant bg-surface-container">
+                                        <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
+                                        <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
+                                        <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">manufacturerId</td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters vehicles by the unique identifier of the
+                                            manufacturer (e.g., id: <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">54</code>
+                                            for Honda).</td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">manufacturerName</td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Performs a case-insensitive partial match search on the
+                                            manufacturer name (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">porsche</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">startYear</td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The minimum production year boundary for the dynamic
+                                            search range (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">1990</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">endYear</td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The maximum production year boundary for the dynamic
+                                            search range (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">2025</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">driveType</td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string
+                                            (enum)</td>
+                                        <td class="py-3 px-4">Filters vehicles by layout configuration. Valid
+                                            case-insensitive values: <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">FR</code>,
+                                            <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">MR</code>,
+                                            <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">RR</code>.
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">drivetrain</td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string
+                                            (enum)</td>
+                                        <td class="py-3 px-4">Filters vehicles by drive system layout. Valid
+                                            case-insensitive values: <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">AWD</code>,
+                                            <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">RWD</code>,
+                                            <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">FWD</code>.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[14px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant bg-surface-container">
-                                <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
-                                <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
-                                <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">id <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Unique identifier of the vehicle (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">28</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div id="vehicle-get-by-id" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Vehicle by
+                        ID</h3>
+                    <div id="vehicles-by-id"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/{id}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-id.json"></code></pre>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div id="vehicle-search-by-model-name">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Search Vehicles by Model Name</h3>
-                <div id="vehicles-by-name" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/vehicles/search/{model_name}</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-model-name.json"></code></pre>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[14px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant bg-surface-container">
-                                <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
-                                <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
-                                <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">model_name<span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Performs a case-insensitive partial match search on the vehicle's model name (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">furai</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="vehicle-stats" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Game Vehicles Stats</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Game-specific vehicle statistics including performance ratings, handling characteristics, and classification data for each vehicle across different Forza titles.
-            </p>
-
-            <div id="get-all-vehicle-stats" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Vehicle Stats</h3>
-                <div id="vehicle-stats-all" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles-stats/vehicles-stats-all.json"></code></pre>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[14px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant bg-surface-container">
+                                        <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
+                                        <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
+                                        <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">id <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Unique identifier of the vehicle (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">28</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">vehicleid</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters statistics by the global real-world vehicle ID (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">12</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">vehiclename</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Performs a case-insensitive partial match search on the car's model name (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">trueno</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">manufacturerid</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters records by the specific car manufacturer's ID.</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">manufacturername</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Filters by manufacturer name via partial query match (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Ferrari</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">divisionid</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters by the vehicle division category ID.</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">divisionname</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Filters by division/car group names (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Hypercars</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">gameid</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters stats isolated to a specific game title (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">2</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">rarity</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string (enum)</td>
-                                <td class="py-3 px-4">Filters by in-game acquisition rarity (<code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">LEGENDARY</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">drivetype</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string (enum)</td>
-                                <td class="py-3 px-4">Filters by engine layout and placement matrix (<code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">MR</code>).</td>
-                            </tr>
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">performanceclass</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string (enum)</td>
-                                <td class="py-3 px-4">Filters by Performance Index (PI) Tier (<code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">S1</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div id="vehicle-search-by-model-name">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Search
+                        Vehicles by Model Name</h3>
+                    <div id="vehicles-by-name"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code
+                                class="font-code text-on-surface text-[14px]">/api/v1/vehicles/search/{model_name}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles/vehicles-model-name.json"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[14px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant bg-surface-container">
+                                        <th class="py-3 px-4 text-primary font-code font-semibold w-32">Parameter</th>
+                                        <th class="py-3 px-4 text-primary font-code font-semibold w-24">Type</th>
+                                        <th class="py-3 px-4 text-primary font-code font-semibold">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">model_name<span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[13px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Performs a case-insensitive partial match search on the
+                                            vehicle's model name (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">furai</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="get-vehicle-stats-by-id">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Vehicle Stats by ID</h3>
-                <div id="vehicle-stats-by-id" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats/{id}</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles-stats/vehicles-stats-id.json"></code></pre>
-                    </div>
-                </div>
+            <section id="vehicle-stats" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">
+                    Game Vehicles Stats</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Game-specific vehicle statistics including performance ratings, handling characteristics, and
+                    classification data for each vehicle across different Forza titles.
+                </p>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">id <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The unique identifier mapping a specific car's metrics directly to a targeted game instance (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">16</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div id="get-all-vehicle-stats" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All
+                        Vehicle Stats</h3>
+                    <div id="vehicle-stats-all"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles-stats/vehicles-stats-all.json"></code></pre>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <section id="manufacturers" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Manufacturers</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Automotive manufacturers and brands represented in the Forza series, including their country of origin and brand information.
-            </p>
-
-            <div id="get-manufacturers-all" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Manufacturers</h3>
-                <div id="manufacturers-all" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant"
-                    ><pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-all.json"></code></pre>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">name</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Performs a case-insensitive partial search match for the manufacturer brand name (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">mitsubishi</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="get-manufacturer-by-id" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Manufacturer by ID</h3>
-                <div id="manufacturers-by-id" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/{id}</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-id.json"></code></pre>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">id <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The unique identifier of the target automotive manufacturer record (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">17</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="get-manufacturer-by-country">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Manufacturers by Country</h3>
-                <div id="manufacturers-by-country" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/by-country</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-country-name.json"></code></pre>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">vehicleid</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters statistics by the global real-world vehicle ID
+                                            (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">12</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">vehiclename</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Performs a case-insensitive partial match search on the
+                                            car's model name (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">trueno</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">manufacturerid</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters records by the specific car manufacturer's ID.
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">manufacturername</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Filters by manufacturer name via partial query match
+                                            (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Ferrari</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">divisionid</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters by the vehicle division category ID.</td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">divisionname</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Filters by division/car group names (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Hypercars</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">gameid</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters stats isolated to a specific game title (e.g.,
+                                            <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">2</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">rarity</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                            (enum)</td>
+                                        <td class="py-3 px-4">Filters by in-game acquisition rarity (<code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">LEGENDARY</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">drivetype</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                            (enum)</td>
+                                        <td class="py-3 px-4">Filters by engine layout and placement matrix (<code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">MR</code>).
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">performanceclass</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                            (enum)</td>
+                                        <td class="py-3 px-4">Filters by Performance Index (PI) Tier (<code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">S1</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">country <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Filters and aggregates manufacturer brand profiles based on their official country of origin (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Japan</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div id="get-vehicle-stats-by-id">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Vehicle
+                        Stats by ID</h3>
+                    <div id="vehicle-stats-by-id"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/vehicle-stats/{id}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/vehicles-stats/vehicles-stats-id.json"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">id <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The unique identifier mapping a specific car's metrics
+                                            directly to a targeted game instance (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">16</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="divisions" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Divisions</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Vehicle classification divisions used in Forza games to categorize vehicles by type, era, and performance characteristics.
-            </p>
+            <section id="manufacturers" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">
+                    Manufacturers</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Automotive manufacturers and brands represented in the Forza series, including their country of
+                    origin and brand information.
+                </p>
 
-            <div id="get-all-divisions" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Divisions</h3>
-                <div id="divisions-all" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/divisions</code>
+                <div id="get-manufacturers-all" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All
+                        Manufacturers</h3>
+                    <div id="manufacturers-all"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-all.json"></code></pre>
+                        </div>
                     </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant"
-                    ><pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/divisions/divisions-all.json"></code></pre>
-                    </div>
-                </div>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">name</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Performs a case-insensitive partial match search for the division category name (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">hypercars</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="get-division-by-id">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Division by ID</h3>
-                <div id="divisions-by-id" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/divisions/{id}</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/divisions/divisions-id.json"></code></pre>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">id <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The unique identifier of the target vehicle division archetype group (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">16</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="games" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Games</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Information about Forza game titles in the Horizon and Motorsport series, including release dates and version information.
-            </p>
-
-            <div id="get-all-games" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Games</h3>
-                <div id="games-all" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/games</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant"
-                    ><pre class="w-full block"><code class="auto-json w-full max-w-full block m-0" data-src="examples/games/games-all.json"></code></pre>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">title</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Performs a case-insensitive partial search match for the game title (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">horizon 5</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="get-game-by-id">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Game by ID</h3>
-                <div id="games-by-id" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/games/{id}</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full block"><code class="auto-json w-full max-w-full block m-0" data-src="examples/games/games-id.json"></code></pre>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">name</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Performs a case-insensitive partial search match for the
+                                            manufacturer brand name (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">mitsubishi</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">id <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The unique identifier of the target game Title edition registry within the database (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">6</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div id="get-manufacturer-by-id" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get
+                        Manufacturer by ID</h3>
+                    <div id="manufacturers-by-id"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/{id}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-id.json"></code></pre>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <section id="festival-playlists" class="mb-12 scroll-mt-24">
-            <h2 class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">Festival Playlists</h2>
-            <p class="text-on-surface-variant leading-relaxed mb-4">
-                Playlists dictate the live-service dynamic events that rotate weekly in the Horizon series (Summer, Autumn, Winter, Spring).
-            </p>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">id <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The unique identifier of the target automotive
+                                            manufacturer record (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">17</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-            <div id="get-current-playlist" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Current Playlist</h3>
-                <div id="festival-playlists-current" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/current</code>
+                <div id="get-manufacturer-by-country">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get
+                        Manufacturers by Country</h3>
+                    <div id="manufacturers-by-country"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/manufacturers/by-country</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/manufacturers/manufacturers-country-name.json"></code></pre>
+                        </div>
                     </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-current.json"></code></pre>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">gameId <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Fetches the live active timeline profile filtered strictly by the target game title context (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">6</code> for Forza Horizon 6).</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
 
-            <div id="get-all-playlist" class="mb-8">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Playlists</h3>
-                <div id="festival-playlists-all" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist</code>
-                    </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-all.json"></code></pre>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Query Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">gameId</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters playlist history by a specific game title instance ID (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">2</code>).</td>
-                            </tr>
-                            <tr class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">seriesNumber</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">Filters by the chronological live-service series index tracker group (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">32</code>).</td>
-                            </tr>
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">season</td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string</td>
-                                <td class="py-3 px-4">Filters by specific in-game rotating weather seasons (<code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Summer</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">country <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Filters and aggregates manufacturer brand profiles based
+                                            on their official country of origin (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Japan</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="get-festival-playlist-by-id">
-                <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Festival Playlist by ID</h3>
-                <div id="festival-playlists-by-id" class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
-                    <div class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
-                        <span class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
-                        <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/{id}</code>
+            <section id="divisions" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">
+                    Divisions</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Vehicle classification divisions used in Forza games to categorize vehicles by type, era, and
+                    performance characteristics.
+                </p>
+
+                <div id="get-all-divisions" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All
+                        Divisions</h3>
+                    <div id="divisions-all"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/divisions</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/divisions/divisions-all.json"></code></pre>
+                        </div>
                     </div>
-                    <div class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
-                        <pre class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-id.json"></code></pre>
+
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">name</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Performs a case-insensitive partial match search for the
+                                            division category name (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">hypercars</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <h4 class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[15px]">tune</span>
-                        Path Parameters
-                    </h4>
-                    <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
-                        <table class="w-full text-left border-collapse text-[13px]">
-                            <thead>
-                            <tr class="border-b border-outline-variant text-on-surface font-semibold">
-                                <th class="py-2 px-4 w-[25%]">Parameter</th>
-                                <th class="py-2 px-4 w-[15%]">Type</th>
-                                <th class="py-2 px-4">Description</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-on-surface-variant">
-                            <tr class="hover:bg-surface-container/30 transition-colors">
-                                <td class="py-3 px-4 font-code text-secondary">id <span class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span></td>
-                                <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer</td>
-                                <td class="py-3 px-4">The unique identifier of the target historical milestone festival event registry (e.g., <code class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">706</code>).</td>
-                            </tr>
-                            </tbody>
-                        </table>
+
+                <div id="get-division-by-id">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Division
+                        by ID</h3>
+                    <div id="divisions-by-id"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/divisions/{id}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/divisions/divisions-id.json"></code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">id <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The unique identifier of the target vehicle division
+                                            archetype group (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">16</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-    </main>
-</div>
+            <section id="games" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">
+                    Games</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Information about Forza game titles in the Horizon and Motorsport series, including release dates
+                    and version information.
+                </p>
 
-<footer class="w-full py-10 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#070f15] border-t border-outline-variant text-primary mt-auto z-50 relative">
-    <div class="font-headline text-[20px] font-bold text-primary">FORZA API</div>
-    <div class="flex flex-wrap justify-center gap-6 font-body text-[14px]">
-        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="about.html">About Project</a>
-        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="documentation.html">API Specs</a>
-        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="https://github.com/crustercrew/forzaAPI" target="_blank">GitHub</a>
-        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="swagger-ui/index.html" target="_blank">Swagger UI</a>
+                <div id="get-all-games" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All Games
+                    </h3>
+                    <div id="games-all"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/games</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full block"><code class="auto-json w-full max-w-full block m-0" data-src="examples/games/games-all.json"></code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">title</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Performs a case-insensitive partial search match for the
+                                            game title (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">horizon 5</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="get-game-by-id">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Game by ID
+                    </h3>
+                    <div id="games-by-id"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/games/{id}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full block"><code class="auto-json w-full max-w-full block m-0" data-src="examples/games/games-id.json"></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">id <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The unique identifier of the target game Title edition
+                                            registry within the database (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">6</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="festival-playlists" class="mb-12 scroll-mt-24">
+                <h2
+                    class="font-headline text-[24px] font-bold text-primary border-b border-outline-variant pb-2 mb-4 mt-8">
+                    Festival Playlists</h2>
+                <p class="text-on-surface-variant leading-relaxed mb-4">
+                    Playlists dictate the live-service dynamic events that rotate weekly in the Horizon series (Summer,
+                    Autumn, Winter, Spring).
+                </p>
+
+                <div id="get-current-playlist" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Current
+                        Playlist</h3>
+                    <div id="festival-playlists-current"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/current</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-current.json"></code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">gameId <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Fetches the live active timeline profile filtered strictly
+                                            by the target game title context (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">6</code>
+                                            for Forza Horizon 6).</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="get-all-playlist" class="mb-8">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get All
+                        Playlists</h3>
+                    <div id="festival-playlists-all"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-all.json"></code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Query Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">gameId</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters playlist history by a specific game title instance
+                                            ID (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">2</code>).
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-outline-variant/30 hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">seriesNumber</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">Filters by the chronological live-service series index
+                                            tracker group (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">32</code>).
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">season</td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">string
+                                        </td>
+                                        <td class="py-3 px-4">Filters by specific in-game rotating weather seasons
+                                            (<code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">Summer</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="get-festival-playlist-by-id">
+                    <h3 class="font-headline text-[15px] font-bold text-on-background mb-2 tracking-wide">Get Festival
+                        Playlist by ID</h3>
+                    <div id="festival-playlists-by-id"
+                        class="scroll-mt-24 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                        <div
+                            class="bg-surface-container border-b border-outline-variant px-4 py-3 flex gap-2 items-center">
+                            <span
+                                class="bg-secondary/20 text-secondary font-code text-[12px] px-2 py-0.5 rounded font-bold">GET</span>
+                            <code class="font-code text-on-surface text-[14px]">/api/v1/festival-playlist/{id}</code>
+                        </div>
+                        <div
+                            class="json-box-wrapper w-full max-w-full block p-4 bg-[#070f15] font-code text-[13px] text-on-surface-variant">
+                            <pre
+                                class="w-full max-w-full block m-0"><code class="auto-json w-full block" data-src="examples/festival-playlist/festival-playlist-id.json"></code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4
+                            class="font-code text-primary text-[12px] uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[15px]">tune</span>
+                            Path Parameters
+                        </h4>
+                        <div class="bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden">
+                            <table class="w-full text-left border-collapse text-[13px]">
+                                <thead>
+                                    <tr class="border-b border-outline-variant text-on-surface font-semibold">
+                                        <th class="py-2 px-4 w-[25%]">Parameter</th>
+                                        <th class="py-2 px-4 w-[15%]">Type</th>
+                                        <th class="py-2 px-4">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-on-surface-variant">
+                                    <tr class="hover:bg-surface-container/30 transition-colors">
+                                        <td class="py-3 px-4 font-code text-secondary">id <span
+                                                class="text-error font-sans text-[11px] font-bold ml-1">REQUIRED</span>
+                                        </td>
+                                        <td class="py-3 px-4 font-code text-[12px] text-on-surface-variant/70">integer
+                                        </td>
+                                        <td class="py-3 px-4">The unique identifier of the target historical milestone
+                                            festival event registry (e.g., <code
+                                                class="bg-surface-container text-secondary px-1.5 py-0.5 rounded text-[12px]">706</code>).
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </div>
-    <div class="font-code text-[12px] text-on-surface-variant">
-        © 2026 FORZA TELEMETRY SYSTEMS. ALL RIGHTS RESERVED.
-    </div>
-</footer>
-<script src="js/JSONFormatter.js"></script>
-<script src="js/documentation.js"></script>
+
+    <footer
+        class="w-full py-10 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#070f15] border-t border-outline-variant text-primary mt-auto z-50 relative">
+        <div class="font-headline text-[20px] font-bold text-primary">FORZA API</div>
+        <div class="flex flex-wrap justify-center gap-6 font-body text-[14px]">
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="about.html">About
+                Project</a>
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="documentation.html">API
+                Specs</a>
+            <a class="text-on-surface-variant hover:text-secondary transition-colors"
+                href="https://github.com/crustercrew/forzaAPI" target="_blank">GitHub</a>
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="swagger-ui/index.html"
+                target="_blank">Swagger UI</a>
+        </div>
+        <div class="font-code text-[12px] text-on-surface-variant">
+            © 2026 FORZA TELEMETRY SYSTEMS. ALL RIGHTS RESERVED.
+        </div>
+    </footer>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/JSONFormatter.js"></script>
+    <script src="js/documentation.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Mobile nav menu toggle
+            $('#menu-toggle').click(function () {
+                $('#mobile-menu').toggleClass('hidden');
+            });
+
+            // Close mobile menu when clicking a link
+            $('#mobile-menu a').click(function () {
+                $('#mobile-menu').addClass('hidden');
+            });
+
+            // Mobile sidebar toggle
+            $('#sidebar-toggle').click(function () {
+                $('#mobile-sidebar').toggleClass('sidebar-closed');
+                $('#sidebar-overlay').toggleClass('hidden');
+            });
+
+            // Close sidebar when clicking overlay
+            $('#sidebar-overlay').click(function () {
+                $('#mobile-sidebar').addClass('sidebar-closed');
+                $('#sidebar-overlay').addClass('hidden');
+            });
+
+            // Close sidebar when clicking a link inside it
+            $('.mobile-sidebar-link').click(function () {
+                $('#mobile-sidebar').addClass('sidebar-closed');
+                $('#sidebar-overlay').addClass('hidden');
+            });
+        });
+    </script>
 </body>
+
 </html>
