@@ -7,6 +7,7 @@ import com.api.forzaapi.enumerates.PerformanceClass
 import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.enumerates.UniqueUnlock
 import jakarta.persistence.*
+import org.hibernate.annotations.ColumnDefault
 
 @Entity
 class Vehicles(
@@ -27,10 +28,12 @@ class Vehicles(
     @Column("engine_spec",nullable = false, length = 100)
     var enginespec: String,
 
-    @Column("horsepower", length = 50)
+    @Column("horsepower", length = 50,nullable = false)
+    @ColumnDefault("0")
     var horsepower:Int,
 
-    @Column("torque", length = 50)
+    @Column("torque", length = 50,nullable = false)
+    @ColumnDefault("0")
     var torque:Int,
 
     @Column("drivetype")
@@ -44,12 +47,16 @@ class Vehicles(
     @Column(length = 50)
     var transmission:String,
 
-    @Column("weight_kg")
-    var weightkg:Int,
+    @Column("weight_lbs", length = 50,nullable = false)
+    @ColumnDefault("0")
+    var weightlbs:Int,
 
     @Column("weight_distribution", length = 20)
     var weightdistribution:String,
 
     @Column("description", columnDefinition = "TEXT")
-    var description:String
+    var description:String,
+
+    @OneToMany(mappedBy = "vehicle", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val images: List<VehicleImages> = mutableListOf()
 ): BaseEntity()

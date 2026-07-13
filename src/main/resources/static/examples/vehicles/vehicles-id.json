@@ -1,0 +1,26 @@
+{
+  "id": 28,
+  "modelName": "Lamborghini Huracán Sterrato",
+  "productionyear": 2023,
+  "manufacturer": {
+    "id": 72,
+    "name": "Lamborghini",
+    "country": "Italy"
+  },
+  "enginespec": "5.2L Naturally-Aspirated V10",
+  "horsepower": 602,
+  "torque": 413,
+  "driveType": "AWD",
+  "drivetrain": "M4",
+  "transmission": "7-speed Transmission",
+  "weightlbs": 3593,
+  "weightdistribution": "43%F / 57%R",
+  "description": "Unveiled in November 2022, the Lamborghini Huracán Sterrato is an off-road variant of the Lamborghini Huracán LP 610-4.\n\nWhile featuring the same engine as the Lamborghini Huracán EVO, it has numerous upgrades to make the car off-road ready. These include a 1.7 inch increase in ground clearance, a suspension lift, roof rails to attach a roof rack, softer springs and anti roll bars, integrated skidpads and front fog lights. Its new Rally mode optimizes the suspension and all-wheel drive system for off-road use.\n\nThe Huracán Sterrato was produced for the 2023 and 2024 model years, with 1,499 examples being produced.",
+  "images": [
+    {
+      "id": 48,
+      "gameseries": "Global",
+      "carimage": "https://forza.fandom.com/wiki/Special:FilePath/FH6_Lamborghini_Huracan_Sterrato.png"
+    }
+  ]
+}

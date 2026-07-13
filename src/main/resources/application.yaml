@@ -15,14 +15,46 @@ spring:
     create-schemas: true
 
   jpa:
+    open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.format_sql: true
       hibernate.default_schema: ${DB_SCHEMA}
 
-server:
-  servlet:
-    context-path: /api/v1
+  data:
+    redis:
+      url: ${REDIS_URL}
+
+  web:
+    resources:
+      cache:
+        period: 0
+
+  devtools:
+    restart:
+      exclude: static/**,public/**,resources/**
+
+api:
+  version: 1.0.0
+  admin:
+    username: ${AUTH_USERNAME}
+    password: ${AUTH_PASSWORD}
+
+logging:
+  level:
+    org.hibernate:
+      orm:
+        core: ERROR
+        connections:
+          pooling: WARN
+    org.springframework:
+      cache: DEBUG
+      data:
+        redis: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

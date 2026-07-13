@@ -1,0 +1,23 @@
+{
+  "page": 0,
+  "size": 3,
+  "totalElements": 15,
+  "totalPages": 5,
+  "data": [
+    {
+      "id": 1,
+      "title": "Forza Horizon 1",
+      "releaseYear": 2012
+    },
+    {
+      "id": 2,
+      "title": "Forza Horizon 2",
+      "releaseYear": 2014
+    },
+    {
+      "id": 3,
+      "title": "Forza Horizon 3",
+      "releaseYear": 2016
+    }
+  ]
+}

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About - Forza Open API</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <script id="tailwind-config" src="js/tailwind-config.js">
+    </script>
+    <style>
+        .json-key {
+            color: #dbe3ec;
+        }
+
+        .json-string {
+            color: #45f885;
+        }
+
+        .json-number {
+            color: #ffba38;
+        }
+
+        .json-bracket {
+            color: #514532;
+        }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        #mobile-menu.hidden {
+            display: none;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+        #mobile-menu:not(.hidden) {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+
+<nav class="fixed top-0 left-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-outline-variant">
+    <div class="flex justify-between items-center px-4 md:px-gutter h-16">
+        <div class="flex items-center gap-2 md:gap-md">
+            <a href="index.html" class="flex items-center gap-1 md:gap-2 hover:opacity-90 transition-opacity">
+                <img src="forza-logo.webp" alt="Forza API Logo" class="h-6 md:h-8 w-auto object-contain" />
+                <span class="font-headline-lg text-base md:text-headline-lg font-black text-primary uppercase tracking-tighter hidden sm:inline">
+                    FORZA API
+                </span>
+            </a>
+
+            <div class="hidden md:flex gap-xs">
+                <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2 rounded"
+                   href="index.html">
+                    Home
+                </a>
+                <a class="font-label-sm text-label-sm text-primary bg-surface-container-high px-3 py-2 rounded"
+                   href="about.html">
+                    About
+                </a>
+                <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2 rounded"
+                   href="documentation.html">
+                    Documentation
+                </a>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-1 md:gap-sm">
+            <a class="hidden lg:flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-3 py-2"
+               href="https://github.com/crustercrew/forzaAPI" target="_blank">
+                <span class="material-symbols-outlined text-[18px]">code</span>
+                Source Code
+            </a>
+
+            <a href="/swagger-ui/index.html" target="_blank"
+               class="bg-primary text-on-primary font-label-sm text-xs md:text-label-sm px-2 md:px-4 py-2 rounded font-bold hover:scale-95 duration-100 transition-transform inline-block text-center decoration-none whitespace-nowrap">
+                <span class="hidden sm:inline">Explore </span>Swagger<span class="hidden sm:inline"> UI</span>
+            </a>
+
+            <button id="menu-toggle" class="md:hidden text-primary p-2">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden flex-col bg-background border-b border-outline-variant md:hidden">
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-6 py-4 border-b border-outline-variant/30"
+           href="index.html">
+            Home
+        </a>
+        <a class="font-label-sm text-label-sm text-primary bg-surface-container-high px-6 py-4 border-b border-outline-variant/30"
+           href="about.html">
+            About
+        </a>
+        <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-6 py-4 border-b border-outline-variant/30"
+           href="documentation.html">
+            Documentation
+        </a>
+        <a class="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 px-6 py-4"
+           href="https://github.com/crustercrew/forzaAPI" target="_blank">
+            <span class="material-symbols-outlined text-[18px]">code</span>
+            Source Code
+        </a>
+    </div>
+</nav>
+
+<main class="flex-grow pt-[100px] px-4 md:px-gutter lg:px-margin max-w-4xl mx-auto w-full pb-xl">
+    <div class="flex items-center gap-2 text-primary font-label-sm text-label-sm uppercase tracking-wider mb-2">
+        <span class="material-symbols-outlined text-[20px]">info</span>
+        Project Telemetry
+    </div>
+    <h1 class="font-headline-xl text-[28px] md:text-headline-xl text-on-background mb-8 border-b border-outline-variant/30 pb-4">
+        About Forza Open API
+    </h1>
+
+    <div class="flex flex-col gap-md">
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">What is this?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                This platform provides a RESTful API interface to highly detailed automotive data models built from thousands of lines of schema specifications related to the Forza franchise. We specifically cover both the open-world Horizon events and the simulation track racing Motorsport series. Using this website, application developers can easily consume clean structural data on vehicle specifications, performance tier indices, engine configurations, and dynamic seasonal log components.
+            </p>
+        </section>
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">What is an API?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                An API (Application Programming Interface) is a contractual layer that allows mobile engineering cores, web applications, or community metrics panels to safely interact with a software application through an explicitly declared set of interfaces. In this case, the underlying platform is an optimized relational database containing thousands of automotive instances, mapped cleanly over secure web links.
+            </p>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base mt-2">
+                A RESTful API is an architecture designed around standard HTTP request methods (<code class="font-code-md text-secondary bg-surface p-0.5 rounded">GET</code>, <code class="font-code-md text-secondary bg-surface p-0.5 rounded">POST</code>), clean separation of client-server transaction entities, and strict JSON structural returns encapsulated through distinct Data Transfer Objects (DTOs).
+            </p>
+        </section>
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">Aren't there 101 other Forza websites already?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                Yes, and that is exactly the problem! Dozens of separate community portals and independent tool applications mean dozens of fractured, manual iterations of the <strong>exact same raw vehicle data</strong>.
+            </p>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base mt-2">
+                When a major content drop or a new installment like <em>Forza Horizon 6</em> introduces weekly live-service modifications, standalone repository architectures take <strong>weeks</strong> to update because individual engineers are forced to re-enter metadata tables across duplicate system walls.
+            </p>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base mt-2">
+                Forza Open API resolves this overhead. By offering a <strong>single distributed source of truth</strong>, any numbers of client applications can query precise performance index metrics or reward rosters simultaneously with unified data integrity.
+            </p>
+        </section>
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">How much information is stored here?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base mb-3">
+                A significant volume. Our persistence layer handles comprehensive normalized parameters mapping various gaming telemetry branches, including:
+            </p>
+            <ul class="list-disc list-inside text-on-surface-variant space-y-2 pl-2 text-sm md:text-base">
+                <li>Full Physical Vehicle Metadata (Drivetrain profiles, stock aspiration types, engine variants)</li>
+                <li>Game-Specific Metrics (Precise performance indexes, speed mapping calibrations, launch/braking values)</li>
+                <li>Distinct Automotive Divisions (Hypercars, Extreme Track Toys, Classic Muscle, Modern Saloons)</li>
+                <li>Live-Service Seasonal Logs (Dynamic weekly challenges, PTS progression requirements, Forzathon shop states)</li>
+                <li>Automated Content Unlocks (Backstage passes, Wheelspin exclusive validation nodes)</li>
+            </ul>
+        </section>
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">So who built this?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                Forza Open API was conceptualized, structured, and programmed entirely by <strong>CrusterCrew</strong> as an enterprise-grade backend engineering portfolio display.
+            </p>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base mt-2">
+                The prompt for this asset emerged after discovering that older community endpoints (such as <code class="font-code-md text-primary-fixed-dim">forza-api.tk</code>) had completely dropped offline, leaving hobbyist mobile developers without a central database sandbox. The application is built to demonstrate how real-world enterprise architectures tackle non-bloated, data-intensive cross-relational models.
+            </p>
+        </section>
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">Where did you get all of this data?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                The information serving this system was programmatically parsed and aggregated through custom programmatic pipelines:
+            </p>
+            <ul class="list-disc list-inside text-on-surface-variant space-y-2 pl-2 mt-2 text-sm md:text-base">
+                <li><strong>MediaWiki Extraction Core:</strong> Bulk data ingestion targeted the native underlying MediaWiki structure powering the official Forza Fandom Wiki platform.</li>
+                <li><strong>Normalizer Translation Layer:</strong> Scraped shorthand codes (e.g. <code class="font-code-md text-secondary">div = csc</code> or unclear rarity logs) were extracted, parsed via string dictionaries, and mapped into clean relational data layouts adhering to Third Normal Form (3NF) requirements.</li>
+            </ul>
+        </section>
+
+        <section class="bg-surface-container-low border border-outline-variant p-sm md:p-md rounded-lg">
+            <h3 class="text-primary font-headline-lg text-[20px] md:text-[22px] mb-3">What's the technology stack?</h3>
+            <p class="text-on-surface-variant leading-relaxed text-sm md:text-base">
+                Unlike traditional monolithic architectures that handle simplistic in-memory caches, this project replicates heavy enterprise data loads through production-ready micro-infrastructures:
+            </p>
+            <ul class="list-disc list-inside text-on-surface-variant space-y-2 pl-2 mt-2 text-sm md:text-base">
+                <li><strong>Backend Application Engine:</strong> Written in <strong>Kotlin</strong> utilizing the <strong>Spring Boot 3.x</strong> framework ecosystem with strict Data Transfer Object (DTO) isolation layers to completely prevent infinite relation looping recursions.</li>
+                <li><strong>Persistence Layer Architecture:</strong> Relational entity mapping utilizes a production serverless <strong>PostgreSQL instance via Neon cloud</strong>. DDL tracking and incremental baseline operations are version-controlled strictly via <strong>Flyway Migrations</strong> on application startup.</li>
+                <li><strong>Distributed Cache System:</strong> Heavy multi-criteria filtering and spec comparisons are protected through an external <strong>Redis Distributed Cache cluster via Upstash Cloud TLS</strong>, keeping core query dispatches optimized down to double-digit millisecond responses.</li>
+                <li><strong>Security Ecosystem:</strong> Configured using robust stateless protocols ensuring proper route encapsulation between open queries and transactional maintenance lines.</li>
+            </ul>
+        </section>
+
+    </div>
+</main>
+
+<footer class="w-full py-10 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#070f15] border-t border-outline-variant text-primary mt-auto z-50 relative">
+    <div class="font-headline text-[20px] font-bold text-primary">FORZA API</div>
+    <div class="flex flex-wrap justify-center gap-6 font-body text-[14px]">
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="about.html">About Project</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="documentation.html">API Specs</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="https://github.com/crustercrew/forzaAPI" target="_blank">GitHub</a>
+        <a class="text-on-surface-variant hover:text-secondary transition-colors" href="swagger-ui/index.html" target="_blank">Swagger UI</a>
+    </div>
+    <div class="font-code text-[12px] text-on-surface-variant">
+        © 2026 FORZA TELEMETRY SYSTEMS. ALL RIGHTS RESERVED.
+    </div>
+</footer>
+<script src="js/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#menu-toggle').click(function() {
+            $('#mobile-menu').toggleClass('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        $('#mobile-menu a').click(function() {
+            $('#mobile-menu').addClass('hidden');
+        });
+    });
+</script>
+</body>
+</html>

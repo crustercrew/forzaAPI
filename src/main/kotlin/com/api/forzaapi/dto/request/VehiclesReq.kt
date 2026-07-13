@@ -23,7 +23,8 @@ data class VehiclesReq(
     val drivetrain: Drivetrain,
 
     val transmission: String,
-    val weightkg: Int,
+    val weightlbs: Int,
     val weightdistribution: String,
-    val description: String
+    val description: String,
+    val images: List<String>?
 )

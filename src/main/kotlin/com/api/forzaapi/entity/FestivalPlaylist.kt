@@ -17,7 +17,7 @@ class FestivalPlaylist (
     @Column(name = "series_number", nullable = false)
     var seriesNumber: Int, // Misal: Series 32, Series 33
 
-    @Column(name = "season", nullable = false, length = 20)
+    @Column(name = "season", nullable = false, length = 100)
     var season: String, // "Summer", "Autumn", "Winter", "Spring", "Series Milestone"
 
     @Column(name = "points_required")

@@ -1,17 +1,28 @@
 package com.api.forzaapi.services
 
 import com.api.forzaapi.dto.request.GameVehicleStatsReq
-import com.api.forzaapi.dto.responses.GameVehicleStatsResp
-import com.api.forzaapi.dto.responses.PerformanceProfile
+import com.api.forzaapi.dto.responses.*
+import com.api.forzaapi.dto.responses.ManufacturerResp
 import com.api.forzaapi.entity.GameVehicleStats
+import com.api.forzaapi.enumerates.DriveType
+import com.api.forzaapi.enumerates.PerformanceClass
+import com.api.forzaapi.enumerates.Rarity
+import com.api.forzaapi.enumerates.UniqueUnlock
 import com.api.forzaapi.repositories.DivisionRepository
 import com.api.forzaapi.repositories.GameRepository
 import com.api.forzaapi.repositories.GameVehicleStatsRepository
 import com.api.forzaapi.repositories.VehiclesRepository
-import jakarta.transaction.Transactional
+import com.api.forzaapi.utils.errorhandler.InvalidRequestException
+import com.api.forzaapi.utils.errorhandler.ResourceNotFoundException
+import jakarta.persistence.criteria.Predicate
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
@@ -21,30 +32,168 @@ class GameVehicleStatsService(
     private val gameRepository: GameRepository,
     private val divisionRepository: DivisionRepository
 ) {
-    /**
-     * 1. Create game VehicleStats
-     */
+    @Cacheable(value = ["vehiclestats"],
+        key = "{" +
+                "#vehicleId," +
+                "#vehicleName," +
+                "#manufacturerId," +
+                "#manufacturername," +
+                "#divisionId," +
+                "#divisionName,"+
+                "#gameId,"+
+                "#rarity,"+
+                "#driveType,"+
+                "#performanceClass,"+
+                "#driveType,"+
+                "#pageable.pageNumber," +
+                "#pageable.pageSize," +
+                "#pageable.sort" +
+                "}")
+    @Transactional(readOnly = true)
+    fun getStats(
+        vehicleId: Int?,
+        vehicleName: String?,
+        manufacturerId: Int?,
+        manufacturername: String?,
+        divisionId: Int?,
+        divisionName: String?,
+        gameId: Int?,
+        rarity: Rarity?,
+        driveType: DriveType?,
+        performanceClass: PerformanceClass?,
+        pageable: Pageable
+    ): PageResponse<GameVehicleStatsResp> {
+        // Merakit relasi antar tabel (Join) dan filter
+        val spec = Specification<GameVehicleStats> { root, _, cb ->
+            val predicates = mutableListOf<Predicate>()
+
+            // Langsung menembak ke relasi Vehicle
+            vehicleId?.let { predicates.add(cb.equal(root.get<Any>("vehicle").get<Int>("id"), it)) }
+            vehicleName?.let {
+                val path = root.get<Any>("vehicle").get<String>("modelName")
+                predicates.add(cb.like(cb.lower(path), "%${it.lowercase()}%"))
+            }
+            driveType?.let { predicates.add(cb.equal(root.get<Any>("vehicle").get<DriveType>("driveType"), it)) }
+
+            // Relasi dua tingkat: Stats -> Vehicle -> Manufacturer
+            manufacturerId?.let {
+                val vehicleJoin = root.join<Any, Any>("vehicle")
+                predicates.add(cb.equal(vehicleJoin.get<Any>("manufacturer").get<Int>("id"), it))
+            }
+            manufacturername?.let {
+                val path = root.get<Any>("vehicle").get<Any>("manufacturer").get<String>("name")
+                predicates.add(cb.like(cb.lower(path), "%${it.lowercase()}%"))
+            }
+            divisionName?.let {
+                val path = root.get<Any>("division").get<String>("name")
+                predicates.add(cb.like(cb.lower(path), "%${it.lowercase()}%"))
+            }
+
+            // Relasi dasar lainnya
+            divisionId?.let { predicates.add(cb.equal(root.get<Any>("division").get<Int>("id"), it)) }
+            gameId?.let { predicates.add(cb.equal(root.get<Any>("game").get<Int>("id"), it)) }
+            rarity?.let { predicates.add(cb.equal(root.get<Rarity>("rarity"), it)) }
+            performanceClass?.let { predicates.add(cb.equal(root.get<PerformanceClass>("performanceclass"), it)) }
+
+            cb.and(*predicates.toTypedArray())
+        }
+
+        // 1. Jalankan kueri dinamis
+        val statsPage = gameVehicleStatsRepository.findAll(spec, pageable)
+
+        // 2. Map ke DTO (Kode lu yang dtoList di bawahnya biarkan sama persis, tidak perlu diubah)
+        val dtoList = statsPage.content.map { entity ->
+            GameVehicleStatsResp(
+                id = entity.id,
+                game = GameResp(
+                    id = entity.game.id,
+                    title = entity.game.title,
+                    releaseYear = entity.game.releaseYear
+                ),
+                division = entity.division?.let {
+                    DivisionResp(id = it.id, name = it.name)
+                },
+                vehicle = VehiclesResp(
+                    id = entity.vehicle.id,
+                    modelName = entity.vehicle.modelName,
+                    productionyear = entity.vehicle.productionyear,
+                    manufacturer = ManufacturerResp(
+                        id = entity.vehicle.manufacturer.id,
+                        name = entity.vehicle.manufacturer.name,
+                        country = entity.vehicle.manufacturer.country
+                    ),
+                    enginespec = entity.vehicle.enginespec,
+                    horsepower = entity.vehicle.horsepower,
+                    torque = entity.vehicle.torque,
+                    driveType = entity.vehicle.driveType.name,
+                    drivetrain = entity.vehicle.drivetrain.name,
+                    transmission = entity.vehicle.transmission,
+                    weightlbs = entity.vehicle.weightlbs,
+                    weightdistribution = entity.vehicle.weightdistribution,
+                    description = entity.vehicle.description,
+                    images = entity.vehicle.images.map {
+                        VehicleImagesResp(
+                            id = it.id,
+                            gameseries = it.gameimageseries,
+                            carimage = it.imageUrl
+                        )
+                    }
+                ),
+                rarity = entity.rarity,
+                unlockType = entity.unlocktype,
+                performanceClass = entity.performanceclass,
+                performanceRating = entity.performancerating,
+                stats = VehicleMetricsResp(
+                    speed = entity.statSpeed,
+                    handling = entity.statHandling,
+                    acceleration = entity.statAcceleration,
+                    launch = entity.statLaunch,
+                    braking = entity.statBraking,
+                    offroad = entity.statOffroad
+                ),
+                acquisition = VehicleAcquisitionResp(
+                    autoshowCost = entity.autoshowCost,
+                    isBackstageAvailable = entity.isBackstageAvailable,
+                    dlcRequired = entity.dlcRequired,
+                )
+            )
+        }
+
+        return PageResponse(
+            page = statsPage.number, size = statsPage.size, totalElements = statsPage.totalElements,
+            totalPages = statsPage.totalPages, data = dtoList
+        )
+    }
+
+    @Cacheable(value = ["vehiclestats"], key = "#id")
+    @Transactional(readOnly = true)
+    fun getStatsById(id: Int): GameVehicleStatsResp =
+        gameVehicleStatsRepository.findByIdOrNull(id)
+            ?.toResponse()
+            ?: throw ResourceNotFoundException("Vehicle Stats with ID $id Not Found")
+
+
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun createStats(request: GameVehicleStatsReq): GameVehicleStatsResp {
         // 1. Validasi Keberadaan Relasi Parent
         val vehicle = vehiclesRepository.findByIdOrNull(request.vehicleId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle dengan ID ${request.vehicleId} tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Vehicle dengan ID ${request.vehicleId} tidak ditemukan")
 
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game dengan ID ${request.gameId} tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Game dengan ID ${request.gameId} tidak ditemukan")
 
         // Cari division jika id dikirim (karena di entity field ini nullable)
         val division = request.divisionId?.let {
             divisionRepository.findByIdOrNull(it)
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Division dengan ID $it tidak ditemukan")
+                ?: throw ResourceNotFoundException( "Division dengan ID $it tidak ditemukan")
         }
 
         // 2. Validasi Duplikasi (1 Mobil hanya boleh punya 1 Record Stat per Game)
         val isExist = gameVehicleStatsRepository.existsByVehicleAndGame(vehicle, game)
         if (isExist) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "Statistik untuk mobil '${vehicle.modelName}' di game '${game.title}' sudah terdaftar!"
+            throw InvalidRequestException(
+                "Statistik with Vehicle '${vehicle.modelName}' in game '${game.title}' has already exist!"
             )
         }
 
@@ -66,7 +215,6 @@ class GameVehicleStatsService(
             statOffroad = request.statOffroad,
             autoshowCost = request.autoshowCost,
             dlcRequired = request.dlcRequired,
-            forzathonShopCost = request.forzathonShopCost,
             isBackstageAvailable = request.isBackstageAvailable
         )
 
@@ -78,6 +226,7 @@ class GameVehicleStatsService(
     /**
      * 2. Bulk Create game VehicleStats
      */
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun bulkCreateStats(requests: List<GameVehicleStatsReq>): List<GameVehicleStatsResp> {
         val validStatsList = mutableListOf<GameVehicleStats>()
@@ -94,7 +243,7 @@ class GameVehicleStatsService(
             // 2. Safe Check Duplikasi di Database
             val isExistInDb = gameVehicleStatsRepository.existsByVehicleAndGame(vehicle, game)
             if (isExistInDb) {
-                println("Skip Bulk: Stat untuk mobil '${vehicle.modelName}' di game '${game.title}' sudah ada di database.")
+                println("Skip Bulk: Stat for vehicle '${vehicle.modelName}' in game '${game.title}' has already exist in database.")
                 continue
             }
 
@@ -122,7 +271,6 @@ class GameVehicleStatsService(
                 statOffroad = it.statOffroad,
                 autoshowCost = it.autoshowCost,
                 dlcRequired = it.dlcRequired,
-                forzathonShopCost = it.forzathonShopCost,
                 isBackstageAvailable = it.isBackstageAvailable
             )
             validStatsList.add(statsEntity)
@@ -132,32 +280,29 @@ class GameVehicleStatsService(
         val savedEntities = gameVehicleStatsRepository.saveAll(validStatsList)
         return savedEntities.map { it.toResponse() }
     }
-
-    /**
-     * 3. update game VehicleStats
-     */
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun updateStats(id: Int, request: GameVehicleStatsReq): GameVehicleStatsResp {
         // Cek record statistik utama yang mau di-update
         val currentStats = gameVehicleStatsRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Record statistik dengan ID $id tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Record Stats with ID $id not found")
 
         // Cari parent relasi baru jika user ingin mengganti relasi mobil/game/division
         val vehicle = vehiclesRepository.findByIdOrNull(request.vehicleId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle tidak valid")
+            ?: throw ResourceNotFoundException( "Vehicle not valid")
 
         val game = gameRepository.findByIdOrNull(request.gameId)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Game tidak valid")
+            ?: throw ResourceNotFoundException( "Game not valid")
 
         val division = request.divisionId?.let {
-            divisionRepository.findByIdOrNull(it) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Division tidak valid")
+            divisionRepository.findByIdOrNull(it) ?: throw ResourceNotFoundException( "Division not valid")
         }
 
         // Proteksi: Jika mengganti mobil/game, pastikan kombinasi barunya tidak menabrak record lain yang sudah ada
         if (currentStats.vehicle.id != vehicle.id || currentStats.game.id != game.id) {
             val isViolatingUnique = gameVehicleStatsRepository.existsByVehicleAndGame(vehicle, game)
             if (isViolatingUnique) {
-                throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Gagal Update: Kombinasi mobil dan game tersebut sudah ada di record lain!")
+                throw ResourceNotFoundException( "Failed Update: this vehicle and game combination has already in another record!")
             }
         }
 
@@ -177,48 +322,77 @@ class GameVehicleStatsService(
         currentStats.statOffroad = request.statOffroad
         currentStats.autoshowCost = request.autoshowCost
         currentStats.dlcRequired = request.dlcRequired
-        currentStats.forzathonShopCost = request.forzathonShopCost
         currentStats.isBackstageAvailable = request.isBackstageAvailable
 
         return gameVehicleStatsRepository.save(currentStats).toResponse()
     }
 
-    /**
-     * 4. delete game VehicleStats
-     */
+    @CacheEvict(value = ["vehiclestats"], allEntries = true)
     @Transactional
     fun deleteStats(id: Int): String {
         val currentStats = gameVehicleStatsRepository.findByIdOrNull(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Record statistik dengan ID $id tidak ditemukan")
+            ?: throw ResourceNotFoundException( "Statistical record with ID $id not found")
 
         gameVehicleStatsRepository.delete(currentStats)
-        return "Success delete statistik ID $id untuk mobil '${currentStats.vehicle.modelName}' di game '${currentStats.game.title}'"
+        return "Successful delete Statistical record with ID $id for car '${currentStats.vehicle.modelName}' in game '${currentStats.game.title}'"
     }
 
     // Extension function mapping dari Entity ke Response DTO
     private fun GameVehicleStats.toResponse(): GameVehicleStatsResp {
         return GameVehicleStatsResp(
             id = this.id,
-            vehicleModelName = this.vehicle.modelName,
-            gameTitle = this.game.title,
-            divisionName = this.division?.name, // Ambil nama dari objek relasi Division
-            rarity = this.rarity.name,
-            unlockType = this.unlocktype.name,
-            performanceProfile = PerformanceProfile(
-                className = this.performanceclass.name,
-                rating = this.performancerating
+            game = GameResp(
+                id = this.game.id,
+                title = this.game.title,
+                releaseYear = this.game.releaseYear
             ),
-            metrics = mapOf(
-                "speed" to this.statSpeed,
-                "handling" to this.statHandling,
-                "acceleration" to this.statAcceleration,
-                "launch" to this.statLaunch,
-                "braking" to this.statBraking,
-                "offroad" to this.statOffroad
+            division = DivisionResp(
+                id = this.division?.id ?: 0,
+                name = this.division?.name ?: "Unknown"
             ),
-            dlcRequired = this.dlcRequired,
-            forzathonShopCost = this.forzathonShopCost,
-            isBackstageAvailable = this.isBackstageAvailable
+            vehicle = VehiclesResp(
+                id = this.vehicle.id,
+                modelName = this.vehicle.modelName,
+                productionyear = this.vehicle.productionyear,
+                manufacturer = ManufacturerResp(
+                    id = this.vehicle.manufacturer.id,
+                    name = this.vehicle.manufacturer.name,
+                    country = this.vehicle.manufacturer.country
+                ),
+                enginespec = this.vehicle.enginespec,
+                horsepower = this.vehicle.horsepower,
+                torque = this.vehicle.torque,
+                driveType = this.vehicle.driveType.name,
+                drivetrain = this.vehicle.drivetrain.name,
+                transmission = this.vehicle.transmission,
+                weightlbs = this.vehicle.weightlbs,
+                weightdistribution = this.vehicle.weightdistribution,
+                description = this.vehicle.description,
+                images = this.vehicle.images.map{
+                    VehicleImagesResp(
+                        id = it.id,
+                        gameseries = it.gameimageseries,
+                        carimage = it.imageUrl
+                    )
+                }
+            ),
+            rarity = Rarity.valueOf(this.rarity.name),
+            unlockType = UniqueUnlock.valueOf(this.unlocktype.name),
+            performanceClass = this.performanceclass,
+            performanceRating = this.performancerating,
+            stats = VehicleMetricsResp(
+                speed = this.statSpeed,
+                handling = this.statHandling,
+                acceleration = this.statAcceleration,
+                launch = this.statLaunch,
+                braking = this.statBraking,
+                offroad = this.statOffroad
+            ),
+            acquisition = VehicleAcquisitionResp(
+                autoshowCost = this.autoshowCost,
+                dlcRequired = this.dlcRequired,
+                isBackstageAvailable = this.isBackstageAvailable
+            ),
         )
     }
 }

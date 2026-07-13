@@ -1,0 +1,28 @@
+{
+  "page": 0,
+  "size": 5,
+  "totalElements": 251,
+  "totalPages": 51,
+  "data": [
+    {
+      "id": 1,
+      "name": "1970s Grand Prix"
+    },
+    {
+      "id": 2,
+      "name": "488 Challenge Spec"
+    },
+    {
+      "id": 3,
+      "name": "90s Rally"
+    },
+    {
+      "id": 4,
+      "name": "American Motorsport"
+    },
+    {
+      "id": 5,
+      "name": "American Muscle Revival"
+    }
+  ]
+}

@@ -2,26 +2,145 @@ package com.api.forzaapi.controllers
 
 import com.api.forzaapi.dto.request.GameVehicleStatsReq
 import com.api.forzaapi.dto.responses.GameVehicleStatsResp
+import com.api.forzaapi.dto.responses.PageResponse
+import com.api.forzaapi.enumerates.DriveType
+import com.api.forzaapi.enumerates.PerformanceClass
+import com.api.forzaapi.enumerates.Rarity
 import com.api.forzaapi.services.GameVehicleStatsService
+import io.swagger.v3.oas.annotations.Hidden
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springdoc.core.annotations.ParameterObject
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.InitBinder
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.beans.PropertyEditorSupport
+import java.util.Locale
+import java.util.Locale.getDefault
 
+@Tag(name = "Vehicle Performance Stats", description = "Endpoints to query game-specific performance index (PI) matrices, rarity flags, and telemetry stats breakdown")
 @RestController
 @RequestMapping("/vehicle-stats")
 class GameVehicleStatsController(
     private val gameVehicleStatsService: GameVehicleStatsService
 ) {
-    /**
-     * 1. CREATE SINGLE RECORD STATS
-     * URL: POST http://localhost:8080/api/v1/vehicle-stats
-     */
+    @InitBinder
+    fun initBinder(binder: WebDataBinder) {
+        // 1. Pengaman untuk DriveType Enum
+        binder.registerCustomEditor(DriveType::class.java, object : PropertyEditorSupport() {
+            override fun setAsText(text: String?) {
+                if (text.isNullOrBlank()) {
+                    value = null
+                } else {
+                    try {
+                        // Otomatis di-uppercase agar ?drivetype=awd (huruf kecil) tidak bikin crash 400
+                        value = DriveType.valueOf(text.uppercase().trim())
+                    } catch (e: IllegalArgumentException) {
+                        // Jika nilainya ngawur (tidak ada di enum), set jadi null agar kueri database mengabaikan filter ini
+                        value = null
+                    }
+                }
+            }
+        })
+
+        // 2. Pengaman untuk PerformanceClass Enum
+        binder.registerCustomEditor(PerformanceClass::class.java, object : PropertyEditorSupport() {
+            override fun setAsText(text: String?) {
+                if (text.isNullOrBlank()) {
+                    value = null
+                } else {
+                    try {
+                        value = PerformanceClass.valueOf(text.uppercase().trim())
+                    } catch (e: IllegalArgumentException) {
+                        value = null
+                    }
+                }
+            }
+        })
+
+        // 3. Pengaman untuk Rarity Enum (Jika diperlukan)
+        binder.registerCustomEditor(Rarity::class.java, object : PropertyEditorSupport() {
+            override fun setAsText(text: String?) {
+                if (text.isNullOrBlank()) {
+                    value = null
+                } else {
+                    try {
+                        value = Rarity.valueOf(text.uppercase(getDefault()).trim())
+                    } catch (e: IllegalArgumentException) {
+                        value = null
+                    }
+                }
+            }
+        })
+    }
+
+    @Operation(
+        summary = "Query game-specific vehicle performance profiles via multi-tier parameters",
+        description = "Provides an advanced, paginated search layer to look up a vehicle's specific profile inside a targeted game title. " +
+                "Accepts fine-grained filter properties including explicit Vehicle IDs, Manufacturer origins, Game Editions, Rarity tiers, layouts, and Performance Classes. " +
+                "Essential for cross-game benchmarking. Balanced and accelerated via the global Redis distributed memory structure."
+    )
+    @GetMapping
+    fun getStats(
+        @RequestParam(value = "vehicleid", required = false) vehicleId: Int?,
+        @RequestParam(value = "vehiclename", required = false)vehicleName: String?,
+        @RequestParam(value = "manufacturerid", required = false) manufacturerid: Int?,
+        @RequestParam(value = "manufacturername", required = false) manufacturername: String?,
+        @RequestParam(value = "divisionid", required = false) divisionid: Int?,
+        @RequestParam(value = "divisionname", required = false) divisionname: String?,
+        @RequestParam(value = "gameid", required = false) gameid: Int?,
+        @RequestParam(value = "rarity", required = false) rarities: Rarity?,
+        @RequestParam(value = "drivetype", required = false) drivetype: DriveType?,
+        @RequestParam(value = "performanceclass", required = false) performanceclass: PerformanceClass?,
+        @ParameterObject
+        @PageableDefault(page = 0, size = 20, sort = ["id"],direction = Sort.Direction.ASC) pageable: Pageable
+    ): ResponseEntity<PageResponse<GameVehicleStatsResp>> {
+        val response = gameVehicleStatsService.getStats(
+            vehicleId,
+            vehicleName,
+            manufacturerid,
+            manufacturername,
+            divisionid,
+            divisionname,
+            gameid,
+            rarities,
+            drivetype,
+            performanceclass,
+            pageable
+        )
+        return ResponseEntity.ok(response)
+    }
+
+    @Operation(
+        summary = "Retrieve strict standalone game telemetry profile by record key",
+        description = "Fetches a singular flat statistics entry mapping a unique parent car to its internal in-game performance rating. " +
+                "Exposes nested telemetry maps (Speed, Handling, Acceleration, Braking, Offroad) and cost acquisition metadata structures. " +
+                "Optimized heavily using Redis Single-Key lookups."
+    )
+    @GetMapping("/{vehiclestatsId}")
+    fun getStatsByVehicleId(
+        @PathVariable("vehiclestatsId")vehiclestatsId: Int
+    ): ResponseEntity<GameVehicleStatsResp> {
+        val resp =  gameVehicleStatsService.getStatsById(vehiclestatsId)
+        return ResponseEntity.ok(resp)
+    }
+
+    @Hidden
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     fun createStats(
         @RequestBody request: GameVehicleStatsReq
@@ -30,10 +149,8 @@ class GameVehicleStatsController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    /**
-     * 2. BULK CREATE RECORDS STATS (INPUT MASSAL)
-     * URL: POST http://localhost:8080/api/v1/vehicle-stats/bulk
-     */
+    @Hidden
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     fun bulkCreateStats(
         @RequestBody requests: List<GameVehicleStatsReq>
@@ -42,10 +159,8 @@ class GameVehicleStatsController(
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
-    /**
-     * 3. UPDATE RECORD STATS BY ID
-     * URL: PUT http://localhost:8080/api/v1/vehicle-stats/5
-     */
+    @Hidden
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     fun updateStats(
         @PathVariable("id") id: Int,
@@ -55,10 +170,8 @@ class GameVehicleStatsController(
         return ResponseEntity.ok(response)
     }
 
-    /**
-     * 4. DELETE RECORD STATS BY ID
-     * URL: DELETE http://localhost:8080/api/v1/vehicle-stats/5
-     */
+    @Hidden
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteStats(
         @PathVariable("id") id: Int

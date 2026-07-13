@@ -1,19 +1,18 @@
 package com.api.forzaapi.dto.responses
 
+import com.api.forzaapi.enumerates.PerformanceClass
+import com.api.forzaapi.enumerates.Rarity
+import com.api.forzaapi.enumerates.UniqueUnlock
+
 data class GameVehicleStatsResp(
     val id: Int,
-    val vehicleModelName: String,
-    val gameTitle: String,
-    val divisionName: String?,
-    val rarity: String,
-    val unlockType: String,
-    val performanceProfile: PerformanceProfile,
-    val metrics: Map<String, Double?>,
-    val dlcRequired: String?,
-    val forzathonShopCost: Int?,
-    val isBackstageAvailable: Boolean
-)
-data class PerformanceProfile(
-    val className: String,
-    val rating: Int?
+    val game: GameResp,
+    val division: DivisionResp?,
+    val vehicle: VehiclesResp,
+    val rarity: Rarity,
+    val unlockType: UniqueUnlock,
+    val performanceClass: PerformanceClass,
+    val performanceRating: Int?,
+    val stats: VehicleMetricsResp,
+    val acquisition: VehicleAcquisitionResp
 )
