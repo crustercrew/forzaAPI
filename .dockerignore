@@ -1,0 +1,9 @@
+.git
+.env
+.gradle
+.idea
+.vscode
+.kotlin
+
+# Build output
+build/
